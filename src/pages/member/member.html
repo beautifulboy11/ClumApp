@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button menuToggle ion-button>
+      <ion-icon name="menu" clear></ion-icon>
+    </button>
+    <ion-title>Member List</ion-title>
+  </ion-navbar>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="club">
+      <ion-segment-button value="Nkana">
+        Nkana
+      </ion-segment-button>
+      <ion-segment-button value="Mufulira">
+        Mufulira
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div [ngSwitch]="club">
+
+    <ion-list *ngSwitchCase="'Nkana'">
+      <ion-item *ngIf="!members">
+        No Member Loaded Yet!!!
+      </ion-item>
+      <div *ngIf="members">
+        <ion-item *ngFor="let member of members">
+          <ion-avatar item-start>
+            <!-- <img *ngIf="item.profilePic" [src]="item.profilePic" /> -->
+            <ion-icon name="ios-contact" style="font-size: 50px;"></ion-icon>
+          </ion-avatar>
+          <div class="" (click)="openMemberDetails(member)" tappable>
+            <h2>{{member.firstName}} {{member.lastName}}</h2>
+            <h6 style="color:grey;">{{member.about}}</h6>
+          </div>
+
+          <button item-end ion-button icon-only clear (click)="showPopOver($event, member)">
+            <ion-icon name='more' style="font-size: 30px;"></ion-icon>
+          </button>
+        </ion-item>
+      </div>
+    </ion-list>
+
+
+
+    <ion-list *ngSwitchCase="'Mufulira'">
+      <ion-item *ngIf="!mufMembers">
+        No Member Loaded Yet!!!
+      </ion-item>
+      <div *ngIf="mufMembers">
+        <ion-item *ngFor="let member of mufMembers">
+          <ion-avatar item-start>
+            <!-- <img *ngIf="item.profilePic" [src]="item.profilePic" /> -->
+            <ion-icon name="ios-contact" style="font-size: 50px;"></ion-icon>
+          </ion-avatar>
+          <div class="" (click)="openMemberDetails(member)" tappable>
+            <h2>{{member.firstName}} {{member.lastName}}</h2>
+            <h6 style="color:grey;">{{member.about}}</h6>
+          </div>
+          <button item-end ion-button icon-only clear (click)="showPopOver($event, member)">
+            <ion-icon name='more' style="font-size: 30px;"></ion-icon>
+          </button>
+        </ion-item>
+      </div>
+
+    </ion-list>
+
+    <div *ngIf="authService.isAdmin()">
+      <ion-fab right bottom>
+        <button ion-fab color="primary" (click)="addMember()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-fab>
+    </div>
+
+  </div>
+</ion-content>

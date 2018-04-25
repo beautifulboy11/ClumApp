@@ -1,0 +1,39 @@
+<ion-content>
+  <ion-slides pager (ionSlideDidChange)="slideChanged()" (ionSlideDrag)="slideMoved()">
+    <ion-slide>
+      <div class="diag" style="background: url('assets/img/whitebg.svg') no-repeat">
+        <ion-icon ios="ios-analytics" md="md-analytics" color="primary" [@bounce]='state' (@bounce.done)="animationDone()"></ion-icon>
+        <!--  -->
+      </div>
+      <div [@bounce]='state'>
+        <!-- -->
+        <h2>Track your activity</h2>
+        <p>Whether it's checkins, news, upcoming events, you can see it all with our intuitive interface.</p>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div class="diag" style="background: url('assets/img/whitebg.svg') no-repeat" >
+        <!---->
+        <ion-icon ios="ios-boat" md="md-boat" color="primary" [@bounce]='state'></ion-icon>
+      </div>
+      <div [@bounce]='state'>
+        <!---->
+        <h2>Personal Fun</h2>
+        <p>Life is better on the boat</p>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div class="diag" style="background: url('assets/img/whitebg.svg') no-repeat">
+        <ion-icon ios="ios-chatboxes" md="md-chatboxes" color="primary" [@bounce]='state'></ion-icon>
+        <!---->
+      </div>
+      <div [@bounce]='state'>
+        <!-- -->
+        <h2>Inspire Others</h2>
+        <p>Life provides the wind, you control the driection of it's sail</p>
+      </div>
+    </ion-slide>
+  </ion-slides>
+  <button outline (click)="skip()" id="skip">{{ skipMsg }}</button>
+</ion-content>
+

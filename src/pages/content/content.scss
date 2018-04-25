@@ -1,0 +1,119 @@
+page-content {
+  .item:first-child {
+    border-top: 1px solid #dedede;
+  }
+  .item:last-child {
+    border-bottom: 1px solid #dedede;
+  }
+  .item-md.item-block .item-inner {
+    padding-right: 0px;
+  }
+  .item {
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    border-bottom: 0px solid #dedede;
+    border-top: 0px solid #dedede;
+  }
+  .label-md {
+    margin: 0px 0px 0px 0;
+  }
+  .eventDate {
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    background-color: #c1cfe05c;
+    padding-top: 5px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    color: #0067b8;
+    border-bottom: 1px solid #dedede;
+    width: 100%;
+  }
+  .eventTitle {
+    padding: 10px;
+    border-top: 1px solid #dedede;
+  }
+  .toolbar {
+    color: #FFFFFF;
+  }
+  [col-1] {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 8.33333%;
+    -ms-flex: 0 0 8.33333%;
+    flex: 0 0 14.285714285714286%;
+    width: 14.285714285714286%;
+    max-width: 14.285714285714286%;
+  }
+  .col {
+    text-align: center; //padding: 5px;
+  }
+  .last-month,
+  .next-month {
+    color: #999999;
+    font-size: 90%;
+  }
+  .selected-event {
+    margin-top: 5px;
+  }
+  .currentDate,
+  .otherDate {
+    padding: 5px;
+  }
+  .currentDate {
+    font-weight: bold;
+    background-color: map-get($colors, primary);
+    color: white;
+    width: 200px;
+    border-radius: 5px;
+  }
+  .calendar-header {
+    background-color: map-get($colors, primary); // #1a732d;
+    color: #FFFFFF;
+  }
+  .event-bullet {
+    margin: 2px auto;
+    height: 3px;
+    width: 100%;
+    background-color: green;
+    border-radius: 30px;
+  }
+  .selected-date {
+    width: 20px;
+    height: 2px;
+    background-color: blue;
+  }
+  .unselected-date {
+    border: none;
+  }
+  .card-md {
+    width: 100%;
+    margin: 0px 0px 0px 0px;
+  }
+  .card {
+    width: 100%;
+    margin: 0px 0px 0px 0px;
+  }
+  .calendar-body {
+    .grid {
+      padding: 0;
+    }
+    .col:last-child {
+      border-right: none;
+    }
+    .calendar-weekday,
+    .calendar-date {
+      text-align: center;
+      margin: 0;
+    }
+    .calendar-weekday {
+      font-weight: bold;
+      background-color: map-get($colors, primary);
+      color: white;
+    }
+  }
+}
+

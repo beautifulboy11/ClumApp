@@ -1,0 +1,77 @@
+<ion-content no-padding class="no-scroll bg-image">
+  <div>
+    <ion-grid no-padding>
+      <ion-row align-items-center justify-content-center>
+        <ion-col col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 align-self-center>
+          <div class="splash-bg" [style.display]="showImage">
+            <div class="image-box">
+                <img src='assets/img/yamaha-boat.png' width="250px" />
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row align-items-center justify-content-center style="margin-top:25px">
+        <ion-col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 align-self-center></ion-col>
+        <ion-col col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 align-self-center no-margin no-padding>
+          <form [formGroup]="loginForm" (submit)="Login($event)" novalidate>
+            <ion-list no-lines>
+              <ion-item>
+                <ion-label stacked>Email</ion-label>
+                <ion-input #email formControlName="email" type="email" (change)="elementChanged(email)" [class.invalid]="!loginForm.controls.email.valid && (emailChanged || submitAttempt)"></ion-input>
+              </ion-item>
+              <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid && (emailChanged || submitAttempt)">
+                <p>Please enter a valid email.</p>
+              </ion-item>
+
+              <ion-item>
+                <ion-label stacked>Password</ion-label>
+                <ion-input #password formControlName="password" [type]="type" (change)="elementChanged(password)" [class.invalid]="!loginForm.controls.password.valid && (passwordChanged || submitAttempt)"></ion-input>
+              </ion-item>
+
+              <div no-padding (click)="togglePasswordVisible($event)" tappable>
+                <ion-icon class="eye" item-end [(name)]="passicon" color="dark"></ion-icon>
+              </div>
+
+              <ion-item class="error-message" *ngIf="!loginForm.controls.password.valid && (submitAttempt)">
+                <p>You must enter a password.</p>
+              </ion-item>
+
+              <div style="margin-top:15px;">
+                <div padding-horizontal>
+                  <button ion-button color="primary" type="submit" block round>Log in</button>
+                </div>
+              </div>
+
+              <ion-col col-12 no-padding>
+                <div style="text-align:center; margin-top:0px;">
+                  <button type="button" ion-button clear color="clear" (click)="resetPassword()">
+                    FORGOTTEN PASSWORD?
+                  </button>
+                </div>
+              </ion-col>
+
+              <ion-col col-12>
+                <div style="text-align:center; margin-top:0px; color:#0067b8;">
+                  OR
+                </div>
+              </ion-col>
+
+              <div ion-row no-padding no-margin [style.margin-top.px]="margin_top">
+                <ion-col col-12 col-sm col-md-4 offset-md-4 col-lg-4 offset-lg-4 col-xl-4 offset-xl-4>
+                  <div padding-horizontal>
+                    <button color="clear" type="button" ion-button (click)="Signup()" round block>
+                      Sign Up
+                    </button>
+                  </div>
+                </ion-col>
+              </div>
+            </ion-list>
+          </form>
+        </ion-col>
+        <ion-col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 align-self-stretch></ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+</ion-content>

@@ -1,0 +1,36 @@
+.dark-theme {
+  .note {
+    color: #fff;
+  }
+  ion-content {
+    background-color: #212121;
+    color: #fff;
+    font-size: 1.2rem;
+    .label {
+      color: #fff;
+      font-size: 1.2rem;
+    }
+    .text-input {
+      color: #ffffff;
+    }
+    .select-text {
+      color: #ffffff;
+      font-size: 1.0rem;
+    }
+  }
+  .bar-button {
+    color: #000;
+  }
+  .header {
+    background: #17202A !important;
+  }
+  // .toolbar-title {
+  //   //color: #fff;
+  //   font-weight: 
+  // }
+  .header .toolbar-background {
+    border-color: #ff0fff;
+    background-color: #090f2f;
+  }
+}
+

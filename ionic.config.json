@@ -1,0 +1,8 @@
+{
+  "name": "GolfClubManager",
+  "app_id": "75124530",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}

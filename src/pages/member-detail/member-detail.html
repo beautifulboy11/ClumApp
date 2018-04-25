@@ -1,0 +1,49 @@
+<ion-header no-border no-shadow>
+  <ion-navbar color="primary" align-title="center">
+    <button menuToggle ion-button>
+      <ion-icon name="menu" clear></ion-icon>
+    </button>
+    <ion-title>Member Details</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content no-padding parallax-profile>
+  <ion-toolbar color="primary">
+    <div style="padding-bottom:10px; margin-bottom:15px; color:#fff;" class="item-profile" text-center #profilePic [style.background-image]="'url(' + member?.profilePic + ')'">
+      <ion-avatar style="padding-top:0px; margin-bottom:0px">
+        <img [src]="member?.profilePic" />
+        <ion-icon name="ios-contact" style="font-size: 50px;"></ion-icon>
+      </ion-avatar>
+      <h2 style="padding-top:0px; margin-bottom:0px">{{member.firstName}} {{member.lastName}}</h2>
+      <ion-note>{{member.club}}</ion-note>
+    </div>
+  </ion-toolbar>
+  <div class="main-content">
+    <ion-card>
+      <ion-list>
+        <ion-card ion-item>ID: {{member.membershipNumber}}</ion-card>
+        <ion-card ion-item style="text-transform:capitalize">Status: {{member.status}}</ion-card>
+        <ion-card ion-item>About: {{member.about}}</ion-card>
+        <ion-card ion-item>Contact Number: {{member.contact}}</ion-card>
+      </ion-list>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>Recent Checkins</ion-card-header>
+      <ion-card-content>
+        <ion-list *ngFor="let checkin of checkins">
+          <ion-item>{{checkin.date | date:'fullDate'}}</ion-item>
+          <ion-grid no-padding>
+            <ion-row>
+              <ion-col col-12 col-sm-6 col-md-2 col-lg-1 col-xl-1>
+                <ion-item>
+                  <img [src]="checkin.signature" width="150" height="50" />
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+
+</ion-content>

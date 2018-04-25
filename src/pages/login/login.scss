@@ -1,0 +1,67 @@
+.ios,
+.md {
+  page-login {
+    .error-message {
+      color: map-get($colors, danger);
+    }
+    .input-wrapper {
+      border-bottom: 1px solid #AEB6BF;
+    }
+    .no-scroll .scroll-content {
+      overflow: hidden;
+      background: 0 0;
+    }
+    form {
+      background: transparent;
+    }
+    .eye {
+      font-size: 30px;
+      margin-top: -33px;
+      padding-top: 0px;
+      position: absolute;
+      z-index: 999;
+      right: 10px;
+    }
+    .item {
+      background: transparent;
+    }
+    .bg-image {
+      background: url('../assets/img/white.png') no-repeat;
+      background-position: center center;
+      background-size: cover;
+      height: 100%;
+    }
+    .image-box {
+      margin-left: 50%;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+      text-align: center;
+    }
+    .splash-bg {
+      margin-top: 15vw;
+      position: relative;
+      background-size: cover;
+      height: 100%; //border-radius: 50%;
+      width: 100%;
+      z-index: 1;
+      background-repeat: repeat-x;
+      animation: animatedBackground 40s linear infinite;
+    }
+    @keyframes animatedBackground {
+      from {
+        background-position: 0 0;
+      }
+      to {
+        background-position: 100% 0;
+      }
+    }
+    .splash-intro {
+      font-size: 18px;
+      font-weight: bold;
+      max-width: 80%;
+      margin: auto;
+    }
+  }
+}
+

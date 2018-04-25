@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>New Member</ion-title>
+    <ion-buttons left>
+      <button ion-button icon-only color="light" (click)="cancel()" tappable>
+        <ion-icon name="close" style="font-size: 1.8em; font-weight:bold;"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="done()" color="light" [disabled]="!isReadyToSave" strong tappable>
+        <ion-icon name="checkmark" style="font-size: 1.8em; font-weight:bold;"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content no-padding>
+  <ion-grid>
+    <ion-row class="flexo">
+      <ion-col col-12>
+        <form *ngIf="form" [formGroup]="form" (ngSubmit)="createItem()">
+          <input type="file" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
+          <div class="profile-image-wrapper" (click)="getPicture()" tappable>
+            <div class="profile-image-placeholder" *ngIf="!this.form.controls.profilePic.value">
+              <ion-icon name="add"></ion-icon>
+              <div>
+                Add Image
+              </div>
+            </div>
+            <div class="profile-image" [style.backgroundImage]="getProfileImageStyle()" *ngIf="this.form.controls.profilePic.value"></div>
+          </div>
+          <ion-list>
+            <ion-item>
+              <ion-label stacked>First Name</ion-label>
+              <ion-input type="text" placeholder="" formControlName="firstName"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Last Name</ion-label>
+              <ion-input type="text" placeholder="" formControlName="lastName"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Club MemberShip #</ion-label>
+              <ion-input type="text" formControlName="membershipNumber"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Contact Number</ion-label>
+              <ion-input type="text" placeholder="" formControlName="contact"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Status</ion-label>
+              <ion-select formControlName="status">
+                <ion-option value="active" checked="true">Active</ion-option>
+                <ion-option value="nonactive">Non Active</ion-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>About</ion-label>
+              <ion-input type="text" placeholder="" formControlName="about"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Club Site</ion-label>
+              <ion-select formControlName="club">
+                <ion-option value="Nkana" checked="true">Nkana</ion-option>
+                <ion-option value="Mufulira">Mufulira</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

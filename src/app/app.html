@@ -1,0 +1,41 @@
+<div *ngIf="showSplash" class="splash">
+    <div class="sk-folding-cube">
+        <div class="sk-cube1 sk-cube"></div>
+        <div class="sk-cube2 sk-cube"></div>
+        <div class="sk-cube4 sk-cube"></div>
+        <div class="sk-cube3 sk-cube"></div>
+      </div>
+</div>
+
+<ion-menu [content]="content">
+  <ion-header no-shadow>
+    <ion-toolbar color="primary" class="side-toolbar">
+      <div class="profile" [style.background-image]="'url(' + userProfile?.photoURL + ')'">
+        <div class="profile-image">
+          <img *ngIf="userProfile?.photoURL" [src]="userProfile?.photoURL" alt="User Profile Picture" />
+          <ion-icon *ngIf="!userProfile?.photoURL" name="ios-contact" style="font-size: 100px;text-align: center; margin-left: 5px; margin-bottom: 15px;"></ion-icon>
+        </div>
+        <div class="userdata">
+          <h2 style="margin-bottom:3px;">{{ userProfile?.displayName }}</h2>
+          <ion-note>{{ userProfile?.email }}</ion-note>
+        </div>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content padding-top>
+    <ion-list no-lines>
+      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        <ion-icon [name]='p.icon' item-start></ion-icon>
+        {{p.title}}
+      </button>
+      <button menuClose ion-item (click)="signOut()">
+        <ion-icon name='log-out' item-start></ion-icon>
+        Logout
+      </button>
+
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+<ion-nav #content [root]="rootPage" [class]="selectedTheme"></ion-nav>

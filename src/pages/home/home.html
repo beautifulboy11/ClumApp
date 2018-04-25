@@ -1,0 +1,57 @@
+<ion-header no-shadow no-border>
+  <ion-navbar color='primary'>
+    <button menuToggle ion-button clear>
+      <ion-icon name="menu" color="light"></ion-icon>
+    </button>
+    <ion-title>Home</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only color="light" (click)="search()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="card-background-page" no-padding>
+  <div ion-grid no-padding>
+    <div ion-row>
+      <ion-col col-12 col-sm-12>
+        <ion-card (click)="goto('MemberPage')" tappable>
+          <img src="assets/imgs/card-saopaolo.png" />
+          <div class="card-title">
+            Member
+          </div>
+          <div class="card-subtitle">
+            Listings
+            <br/>
+            <button ion-button color="light" outline outline style="color:azure;">
+              View
+            </button>
+          </div>
+        </ion-card>
+      </ion-col>
+    </div>
+  </div>
+
+  <ion-card (click)="gotoMap($event)" tappable>
+    <img src="assets/imgs/card-madison.png" />
+    <div class="card-title">Boating</div>
+    <div class="card-subtitle">Locations
+    </div>
+  </ion-card>
+
+  <ion-card (click)="goto('ContentPage')" tappable>
+
+    <img src="assets/imgs/card-amsterdam.png" />
+    <div class="card-title">Up Coming</div>
+    <div class="card-subtitle">
+      Events
+    </div>
+  </ion-card>
+
+  <ion-card (click)="goto('CardsPage')" tappable>
+    <img src="assets/imgs/card-sf.png" />
+    <div class="card-title">News</div>
+    <div class="card-subtitle">Latest stories</div>
+  </ion-card>
+</ion-content>

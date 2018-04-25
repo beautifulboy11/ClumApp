@@ -1,0 +1,288 @@
+
+@import "theme.light";
+@import "theme.dark";
+// Shared Variables
+// --------------------------------------------------
+$font-path: "../assets/fonts";
+@import "ionic.theme.default";
+@import "ionic.globals";
+@import "ionic.ionicons";
+@import "roboto";
+@import "noto-sans";
+body,
+body:hover,
+body a,
+body button,
+body media-switch {
+  cursor: url('http://ionicframework.com/img/finger.png') 8 8, auto;
+}
+
+body ion-app {
+  overflow: visible;
+}
+
+ion-page {
+  display: flex;
+}
+
+ion-scroll {
+  width: 100%;
+  height: 100%;
+}
+
+body.has-scrollbar scroll-content {
+  margin-right: -15px;
+}
+
+body.has-scrollbar ion-menu scroll-content {
+  margin-right: 0;
+}
+
+scroll-content {
+  overflow-y: scroll;
+}
+
+.statusbar-img {
+  display: none;
+}
+
+//$text-color: #000;
+//$background-color: #f7f7f7;
+
+$colors: ( 
+  primary: #0067b8,
+  secondary: #32db64,
+  danger: #f53d3d,  
+  light: #f4f4f4, 
+  glow: #F7DC6F,
+  dark: #475867);
+
+$toolbar-md-background: color($colors, primary);
+$toolbar-md-active-color: #fff;
+$checkbox-md-icon-checkmark-color: #fff;
+$cordova-md-statusbar-padding: 29px;
+$toast-width: 100%;
+$toast-max-width:	700px;
+
+
+//$loading-md-background: 0 0;
+// App Material Design Variables Material Design only Sass variables can go here
+// --------------------------------------------------
+.md {
+  .statusbar-img-md {
+    display: block !important;
+    position: absolute;
+    background-color: transparent;
+    top: 0px;
+    width: 100%;
+    height: auto;
+    z-index: 999;
+  }
+  .tabs-icon-text ion-title div.toolbar-title {
+    color: #fff !important;
+  }
+  .tabs-icon-text tabbar {
+    background-color: #7e60ff;
+    a {
+      color: #fff !important;
+    }
+  }
+  .tabs-icon-text tab-highlight {
+    color: #fff;
+    background-color: #fff;
+  }
+}
+//USING IOS VARIABLES FOR ANDROID
+$checkbox-md-icon-border-radius: 50%;
+$checkbox-md-icon-size: 21px;
+$checkbox-md-icon-checkmark-width: 1px;
+$checkbox-md-icon-checkmark-style: none;
+
+$popover-md-width: 200px;
+$popover-md-min-width: 0;
+$popover-md-min-height: 0;
+$popover-md-max-height: 90%;
+$popover-md-border-radius: 10px;
+$popover-md-text-color: $text-color;
+$popover-md-background: #f7f7f7; 
+$popover-md-arrow-background: $popover-md-background;
+
+$list-md-margin-top: 10px;
+$list-md-margin-bottom: 32px;
+$list-inset-md-margin-top: 16px;
+$list-inset-md-border-radius: 4px;
+$segment-button-md-background-color: transparent;
+$segment-button-md-background-color-activated: $toolbar-md-active-color;
+$segment-button-md-text-color: color-contrast($colors,light);
+$segment-button-md-transition-activated: 100ms all linear;
+$segment-button-md-transition-hover: 100ms all linear;
+$segment-button-md-transition-active: 100ms all linear;
+$segment-button-md-opacity-hover: .1;
+$segment-button-md-opacity-active: .16;
+$segment-button-md-opacity-activated: 1;
+$segment-button-md-opacity-disabled: .3;
+$segment-button-md-border-width: 1px;
+$segment-button-md-height: 3.2rem;
+$segment-button-md-line-height: 3rem;
+$segment-button-md-font-size: 1.3rem;
+$segment-button-md-border-radius: 4px;
+$segment-button-md-icon-size: 2.6rem;
+$segment-button-md-icon-line-height: 2.8rem;
+$segment-button-md-toolbar-button-max-width: 100px;
+$segment-button-md-toolbar-button-height: 2.6rem;
+$segment-button-md-toolbar-line-height: 2.5rem;
+$segment-button-md-toolbar-font-size: 1.2rem;
+$segment-button-md-toolbar-icon-size: 2.2rem;
+$segment-button-md-toolbar-icon-line-height: 2.4rem;
+$alert-md-max-width: 270px;
+$alert-md-border-radius: 13px;
+$alert-md-background: #f8f8f8;
+$list-md-background-color: transparent;
+$alert-md-box-shadow: none;
+$alert-md-head-padding-top: 12px;
+$alert-md-head-padding-end: 16px;
+$alert-md-head-padding-bottom: 7px;
+$alert-md-head-padding-start: $alert-md-head-padding-end;
+$alert-md-head-text-align: center;
+$alert-md-title-margin-top: 8px;
+$alert-md-title-font-size: 17px;
+$alert-md-title-font-weight: 600;
+$alert-md-sub-title-font-size: 14px;
+$alert-md-sub-title-text-color: #666;
+$alert-md-message-padding-top: 0;
+$alert-md-message-padding-end: 16px;
+$alert-md-message-padding-bottom: 21px;
+$alert-md-message-padding-start: $alert-md-message-padding-end;
+$alert-md-message-font-size: 13px;
+$alert-md-message-text-align: center;
+$alert-md-message-text-color: inherit;
+$alert-md-message-empty-padding-top: 0;
+$alert-md-message-empty-padding-end: 0;
+$alert-md-message-empty-padding-bottom: 12px;
+$alert-md-message-empty-padding-start: 0;
+$alert-md-content-max-height: 240px;
+$alert-md-input-margin-top:10px;
+$alert-md-input-padding-top: 6px;
+$alert-md-input-padding-end: $alert-md-input-padding-top;
+$alert-md-input-padding-bottom: $alert-md-input-padding-top;
+$alert-md-input-padding-start: $alert-md-input-padding-end;
+$alert-md-input-border-color: #ccc;
+
+//$alert-ios-input-border	$hairlines-width solid $alert-ios-input-border-color;
+
+$alert-md-input-border-radius: 4px;
+$alert-md-input-background-color: #fff;
+$alert-md-button-group-flex-wrap: wrap;
+$alert-md-button-flex: 1 1 auto;
+
+//$alert-md-button-margin: 0;
+
+$alert-md-button-min-width: 50%;
+$alert-md-button-min-height: 44px;
+$alert-md-button-font-size: 17px;
+$alert-md-button-text-color: color($colors, primary);
+$alert-md-button-background-color: transparent;
+$alert-md-button-background-color-activated: #e9e9e9;
+$alert-md-button-border-width: $hairlines-width;
+$alert-md-button-border-style: solid;
+$alert-md-button-border-color: #dbdbdf;
+$alert-md-button-border-radius: 0;
+$alert-md-button-main-font-weight: bold;
+
+//$alert-md-list-border-top	$alert-md-button-border-width $alert-md-button-border-style $alert-md-button-border-color;
+
+$alert-md-radio-label-padding-top: 13px;
+$alert-md-radio-label-padding-end: $alert-md-radio-label-padding-top;
+$alert-md-radio-label-padding-bottom: $alert-md-radio-label-padding-top;
+$alert-md-radio-label-padding-start: $alert-md-radio-label-padding-end;
+$alert-md-radio-label-text-color: initial;
+$alert-md-radio-label-text-color-checked: $alert-md-button-text-color;
+$alert-md-radio-min-width: 30px;
+$alert-md-radio-icon-top: -7px;
+//$alert-md-radio-icon-start:	$alert-md-radio-icon-left;
+
+$alert-md-radio-icon-width: 6px;
+$alert-md-radio-icon-height: 12px;
+$alert-md-radio-icon-border-width: 2px;
+$alert-md-radio-icon-border-style: solid;
+$alert-md-radio-icon-border-color: $alert-md-button-text-color;
+$alert-md-radio-icon-transform: rotate(45deg);
+$alert-md-checkbox-label-padding-top: 13px;
+$alert-md-checkbox-label-padding-end: $alert-md-checkbox-label-padding-top;
+$alert-md-checkbox-label-padding-bottom: $alert-md-checkbox-label-padding-top;
+$alert-md-checkbox-label-padding-start: $alert-md-checkbox-label-padding-end;
+$alert-md-checkbox-label-text-color: initial;
+$alert-md-checkbox-label-text-color-checked: initial;
+$alert-md-checkbox-margin-top: 10px;
+$alert-md-checkbox-margin-end: 6px;
+$alert-md-checkbox-margin-bottom:10px;
+$alert-md-checkbox-margin-start: 16px;
+$alert-md-checkbox-size: 21px;
+$alert-md-checkbox-border-width: $hairlines-width;
+$alert-md-checkbox-border-style: solid;
+$alert-md-checkbox-border-radius: 50%;
+
+//$alert-md-checkbox-border-color-off:	$list-md-border-color;
+
+$alert-md-checkbox-border-color-on: color($colors, primary);
+$alert-md-checkbox-background-color-off: $list-md-background-color;
+$alert-md-checkbox-background-color-on: color($colors, primary);
+$alert-md-checkbox-icon-top: 4px;
+
+//$alert-md-checkbox-icon-start:	$alert-md-checkbox-icon-left;
+
+$alert-md-checkbox-icon-width: 4px;
+$alert-md-checkbox-icon-height: 9px;
+$alert-md-checkbox-icon-border-width: $alert-md-checkbox-border-width;
+$alert-md-checkbox-icon-border-style: $alert-md-checkbox-border-style;
+
+//$alert-md-checkbox-icon-border-color: $background-md-color;
+$alert-md-checkbox-icon-transform: rotate(45deg);
+//END
+
+// App Windows Styles
+// --------------------------------------------------
+// Windows only styles can go here
+$cordova-wp-statusbar-padding: 31px;
+.wp {  
+  .statusbar-img-wp {
+    display: block !important;
+    position: absolute;
+    background-color: transparent;
+    padding: 5px 0;
+    top: 0px;
+    width: 100%;
+    height: auto;
+    z-index: 999;
+  }
+}
+
+$checkbox-ios-icon-checkmark-color: #fff;
+$cordova-ios-statusbar-padding: 20px;
+$checkbox-ios-icon-border-radius: 50%;
+$checkbox-ios-icon-size: 21px;
+$checkbox-ios-icon-checkmark-width: 1px;
+$checkbox-ios-icon-checkmark-style: none;
+.ios { 
+  .statusbar-img-ios {
+    display: block !important;
+    position: absolute;
+    background-color: transparent;
+    padding: 5px 0;
+    top: 0px;
+    width: 100%;
+    height: auto;
+    z-index: 999;
+  }
+  .tabs-icon-text tabbar {
+    .tab-button[aria-selected=true],
+    .tab-button:hover:not(.disable-hover) {
+      color: #7e60ff;
+    }
+  }
+}
+
+
+
+
+
