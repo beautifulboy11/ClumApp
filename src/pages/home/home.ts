@@ -1,13 +1,8 @@
 import { Component } from "@angular/core";
-import {
-  IonicPage,
-  NavController,
-  NavParams,
-  ToastController
-} from "ionic-angular";
+import { IonicPage, NavController, NavParams, ToastController} from "ionic-angular";
 import { SiteLocationsPage } from "../pages";
 import { AngularFireAuth } from "angularfire2/auth";
-
+import { AuthService } from '../../providers/providers';
 @IonicPage()
 @Component({
   selector: "page-home",
@@ -18,7 +13,8 @@ export class HomePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private afAuth: AngularFireAuth,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private authService: AuthService,
   ) {}
 
   ionViewDidLoad() {
@@ -44,7 +40,7 @@ export class HomePage {
       console.log(e);
     }
   }
-  
+
   goto(page: string): void {
     this.navCtrl.push(page);
   }

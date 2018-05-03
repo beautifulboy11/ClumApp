@@ -1,4 +1,5 @@
 <ion-header no-shadow no-border>
+
   <ion-navbar color='primary'>
     <button menuToggle ion-button clear>
       <ion-icon name="menu" color="light"></ion-icon>
@@ -10,48 +11,88 @@
       </button>
     </ion-buttons>
   </ion-navbar>
+
 </ion-header>
 
 <ion-content class="card-background-page" no-padding>
+
   <div ion-grid no-padding>
     <div ion-row>
-      <ion-col col-12 col-sm-12>
-        <ion-card (click)="goto('MemberPage')" tappable>
+      <ion-col col-12 col-sm-12 col-md-6 md-offest-3 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3>
+        <ion-card (click)="goto('MemberPage')"  *ngIf="authService.isAdmin()" tappable>
           <img src="assets/imgs/card-saopaolo.png" />
-          <div class="card-title">
-            Member
-          </div>
+          <div class="card-title">Member</div>
           <div class="card-subtitle">
             Listings
             <br/>
-            <button ion-button color="light" outline outline style="color:azure;">
-              View
+            <button ion-button icon-only clear style="color:azure;">
+                <ion-icon name="arrow-forward"></ion-icon>
+              </button>
+          </div>
+        </ion-card>
+        <ion-card (click)="goto('CheckinPage')"  *ngIf="authService.isSecurity()" tappable>
+          <img src="assets/imgs/card-saopaolo.png" />
+          <div class="card-title">Member</div>          
+          <div class="card-subtitle">
+            Check-in   
+            <br/>         
+            <button ion-button icon-only clear style="color:azure;">
+              <ion-icon name="arrow-forward"></ion-icon>
             </button>
+          </div>
+        </ion-card>
+        <ion-card (click)="goto('CheckinSummaryPage')"  *ngIf="authService.isUser()" tappable>
+            <img src="assets/imgs/card-saopaolo.png" />
+            <div class="card-title">Check-in</div>          
+            <div class="card-subtitle">
+             History   
+              <br/>         
+              <button ion-button icon-only clear style="color:azure;">
+                <ion-icon name="arrow-forward"></ion-icon>
+              </button>
+            </div>
+          </ion-card>
+      </ion-col>
+
+      <ion-col col-12 col-sm-12 col-md-6 md-offest-3 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3>
+        <ion-card (click)="gotoMap($event)" tappable>
+          <img src="assets/imgs/card-madison.png" />
+          <div class="card-title">Boating</div>
+          <div class="card-subtitle">Locations
+            <br/>
+            <button ion-button icon-only clear style="color:azure;">
+                <ion-icon name="arrow-forward"></ion-icon>
+              </button>
+          </div>
+        </ion-card>
+      </ion-col>
+      <ion-col col-12 col-sm-12 col-md-6 md-offest-3 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3>
+        <ion-card (click)="goto('ContentPage')" tappable>
+
+          <img src="assets/imgs/card-amsterdam.png" />
+          <div class="card-title">Up Coming</div>
+          <div class="card-subtitle">
+            Events
+            <br/>
+            <button ion-button icon-only clear style="color:azure;">
+                <ion-icon name="arrow-forward"></ion-icon>
+              </button>
+          </div>
+        </ion-card>
+      </ion-col>
+      <ion-col col-12 col-sm-12 col-md-6 md-offest-3 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3>
+        <ion-card (click)="goto('CardsPage')" tappable>
+          <img src="assets/imgs/card-sf.png" />
+          <div class="card-title">News</div>
+          <div class="card-subtitle">Latest stories
+              <br/>
+              <button ion-button icon-only clear style="color:azure;">
+                  <ion-icon name="arrow-forward"></ion-icon>
+                </button>
           </div>
         </ion-card>
       </ion-col>
     </div>
   </div>
 
-  <ion-card (click)="gotoMap($event)" tappable>
-    <img src="assets/imgs/card-madison.png" />
-    <div class="card-title">Boating</div>
-    <div class="card-subtitle">Locations
-    </div>
-  </ion-card>
-
-  <ion-card (click)="goto('ContentPage')" tappable>
-
-    <img src="assets/imgs/card-amsterdam.png" />
-    <div class="card-title">Up Coming</div>
-    <div class="card-subtitle">
-      Events
-    </div>
-  </ion-card>
-
-  <ion-card (click)="goto('CardsPage')" tappable>
-    <img src="assets/imgs/card-sf.png" />
-    <div class="card-title">News</div>
-    <div class="card-subtitle">Latest stories</div>
-  </ion-card>
 </ion-content>

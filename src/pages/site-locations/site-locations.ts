@@ -8,11 +8,13 @@ import { Geolocation } from '@ionic-native/geolocation';
   templateUrl: 'site-locations.html',
 })
 export class SiteLocationsPage implements OnInit {
-
+  club: any;
   lat: number = -12.785101573708145;
   lng: number = 28.177270889282227;
   locationSelected: boolean = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private geolocation: Geolocation) {
+    this.club = 'Nkana';
   }
 
   ionViewDidLoad() {
@@ -26,6 +28,7 @@ export class SiteLocationsPage implements OnInit {
   private getUserLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
+        console.log("Current Location",position);
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
       });

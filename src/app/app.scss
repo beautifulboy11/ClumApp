@@ -2,16 +2,19 @@
 ion-content {
   font-family: 'Raleway';
 }
-.note{
+.list-on-ios{
+  margin: -1px 0 12px; 
+}
+p{
   color: #fff;
 }
 .profile {
   width: 100%;
-  height: 190px;
+  height: 180px;
   background-position: center top;
   background-size: cover;
   padding-top: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 }
 
 .img-cirle {
@@ -23,9 +26,10 @@ ion-content {
 }
 
 .userdata {
+  padding-top: 10px;
   padding-left: 16px;
   margin-bottom: 10px;
-  color: #fff;
+  //color: #fff;
   text-align: left;
 }
 

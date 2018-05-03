@@ -40,7 +40,7 @@ export class MyApp {
     });
     this.pages = [
       {
-        title: "News",
+        title: "News Feeds",
         icon: "paper",
         component: "CardsPage"
       },
@@ -50,8 +50,8 @@ export class MyApp {
         component: "ContentPage"
       },
       {
-        title: "Member Listings",
-        icon: "ios-person-add",
+        title: "My notifications",
+        icon: "notifications",
         component: "MemberPage"
       },
       {

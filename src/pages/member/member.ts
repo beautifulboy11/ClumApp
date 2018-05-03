@@ -61,8 +61,7 @@ export class MemberPage {
   }
 
   ionViewDidLoad() {
-    this.loadMembers();
-    console.log("**Admin", this.authService.isAdmin());
+    this.loadMembers();   
   }
 
   loadMembers(): any {

@@ -2,26 +2,59 @@
   <ion-navbar color='primary'>
     <ion-title>SiteLocations</ion-title>
   </ion-navbar>
-
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="club">
+      <ion-segment-button value="Nkana">
+        Nkana
+      </ion-segment-button>
+      <ion-segment-button value="Mufulira">
+        Mufulira
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 
 <ion-content no-padding>
-  <div *ngIf="lat && lng">
-    <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="onLocationChosen($event)">
-      <agm-marker [latitude]="lat" [longitude]="lng" *ngIf="locationSelected">
-        <agm-info-window>
-          <h3>
-            <strong>Howdy!</strong>
-          </h3>
-          <p></p>
-        </agm-info-window>
-      </agm-marker>
-    </agm-map>
-    <ion-fab left bottom>
-      <button ion-fab color="primary" (click)="getDirections($event)">
-        <ion-icon name="navigate"></ion-icon>
-      </button>
-    </ion-fab>
+  <div [ngSwitch]="club">
+    <div *ngSwitchCase="'Nkana'">
+      <div *ngIf="lat && lng">
+        <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="onLocationChosen($event)">
+          <agm-marker [latitude]="lat" [longitude]="lng" *ngIf="locationSelected">
+            <agm-info-window>
+              <h3>
+                <strong>Howdy!</strong>
+              </h3>
+              <p></p>
+            </agm-info-window>
+          </agm-marker>
+        </agm-map>
+        <ion-fab left bottom>
+          <button ion-fab color="primary" (click)="getDirections($event)">
+            <ion-icon name="navigate"></ion-icon>
+          </button>
+        </ion-fab>
+      </div>
+    </div>
+    <div *ngSwitchCase="'Mufulira'">
+      <div *ngIf="lat && lng">
+        <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="onLocationChosen($event)">
+          <agm-marker [latitude]="lat" [longitude]="lng" *ngIf="locationSelected">
+            <agm-info-window>
+              <h3>
+                <strong>Howdy!</strong>
+              </h3>
+              <p></p>
+            </agm-info-window>
+          </agm-marker>
+        </agm-map>
+        <ion-fab left bottom>
+          <button ion-fab color="primary" (click)="getDirections($event)">
+            <ion-icon name="navigate"></ion-icon>
+          </button>
+        </ion-fab>
+      </div>
+    </div>
   </div>
+
 </ion-content>

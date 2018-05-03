@@ -10,3 +10,5 @@ export * from './popover/popover';
 export * from './member-detail/member-detail';
 export * from './site-locations/site-locations';
 export * from './reset-password/reset-password';
+export * from './checkin/checkin';
+export * from './checkin-summary/checkin-summary';
