@@ -7,6 +7,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { Settings, AuthService } from "../providers/providers";
 import { AngularFireAuth } from "angularfire2/auth";
 import { timer } from "rxjs/observable/timer";
+import { E2EPage } from "../pages/e2e/e2e";
 
 @Component({
   templateUrl: "app.html"
@@ -123,5 +124,8 @@ export class MyApp {
     return this.af.auth.signOut().then(res => {
       this.nav.setRoot("LoginPage");
     });
+  }
+  SwipePage(): void{
+    this.nav.push(E2EPage);
   }
 }

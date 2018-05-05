@@ -1,77 +1,91 @@
-<ion-content no-padding class="no-scroll bg-image">
-  <div>
-    <ion-grid no-padding>
-      <ion-row align-items-center justify-content-center>
-        <ion-col col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 align-self-center>
-          <div class="splash-bg" [style.display]="showImage">
-            <div class="image-box">
-                <img src='assets/img/yamaha-boat.png' width="250px" />
+<ion-content no-padding [class]="noScroll" id="bg-image">
+  <div id="dashboard-container">
+    <div id="dashboard-wrap" class="flush">
+      <div id="dashboard-main-content">
+        <div id="register-container" class="container">
+
+          <div class="login-pane">
+            <div id="login-page" class="auth-form-wrapper">
+              <div class="text-center" [style.display]="showImage">
+                <img src='assets/img/logo.png' class="round-image" width="96" height="96" alt="Boating Club" />
+                <div class="splash-bg">
+                  <div class="splash-intro rn-q9ob72">
+                    <h1>Rokana and Mufulira Boating Clubs</h1>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-wrapper">
+                <form [formGroup]="loginForm" (submit)="Login()" novalidate>
+                  <div class="floating relatively">
+                    <input type="email" class="form-control empty ok input-lg" name="email" id="id_email" tabindex="1"
+                      #email formControlName="email" (change)="emailChanged()" [class.invalid]="!isValidEmailFormat && (emailchanged || submitAttempt)"
+                      required>                     
+                    <label for="id_email">
+                      <span>Email</span>
+                    </label>
+                  </div>
+                  <div *ngIf="!validEmail && (emailchanged || submitAttempt)" class="alert alert-danger">
+                    Email is invalid
+                  </div>                  
+                  <div class="floating relatively">
+                    <input [type]="type" name="password" id="id_password" tabindex="2" class="form-control empty ok input-lg" required="" #password
+                      formControlName="password" (change)="passwordChanged()" [class.invalid]="!validPassword && (passwordchanged || submitAttempt)">                   
+                    <label for="id_password">
+                      <span>Password</span>
+                    </label>
+                    <div no-padding (click)="togglePasswordVisible($event)" tappable>
+                      <ion-icon class="eye" item-end [(name)]="passicon" color="dark"></ion-icon>
+                    </div>
+                  </div>
+
+                  <div class="error-message" *ngIf="!validPassword && (submitAttempt)">
+                    <p>You must provide a password.</p>
+                  </div>
+                  <div class="form-group">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" tabindex="3" [disabled]="!isFormValid">                                          
+                      <span class="login-button-icon"></span>Log in</button>
+                  </div>
+                  <div ion-col col-12 no-padding>
+                    <div class="text-center help">Forgot your password? &nbsp;
+                      <a title="Reset Password?" (click)="resetPassword()" style="text-align:center; margin-top:0px; color:#0067b8;">Reset it</a>
+                    </div>
+                  </div>
+                  <div ion-col col-12 text-center>
+                    <div style="margin-top:-15px; font-weight: bold;">
+                      OR
+                    </div>
+                  </div>
+                </form>
+                <div ion-row no-padding no-margin [style.margin-top.px]="margin_top">
+                  <ion-col col-12>
+                    <div padding-horizontal>
+                      <div class="text-center help">Don't have a Member account?
+                        <a class="btn white outline sm" (click)="Signup()">
+                          Sign Up
+                        </a>
+                      </div>
+                    </div>
+                  </ion-col>
+                </div>
+              </div>
             </div>
           </div>
-        </ion-col>
-      </ion-row>
 
-      <ion-row align-items-center justify-content-center style="margin-top:25px">
-        <ion-col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 align-self-center></ion-col>
-        <ion-col col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8 align-self-center no-margin no-padding>
-          <form [formGroup]="loginForm" (submit)="Login($event)" novalidate>
-            <ion-list no-lines>
-              <ion-item>
-                <ion-label stacked>Email</ion-label>
-                <ion-input #email formControlName="email" type="email" (change)="elementChanged(email)" [class.invalid]="!loginForm.controls.email.valid && (emailChanged || submitAttempt)"></ion-input>
-              </ion-item>
-              <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid && (emailChanged || submitAttempt)">
-                <p>Please enter a valid email.</p>
-              </ion-item>
-
-              <ion-item>
-                <ion-label stacked>Password</ion-label>
-                <ion-input #password formControlName="password" [type]="type" (change)="elementChanged(password)" [class.invalid]="!loginForm.controls.password.valid && (passwordChanged || submitAttempt)"></ion-input>
-              </ion-item>
-
-              <div no-padding (click)="togglePasswordVisible($event)" tappable>
-                <ion-icon class="eye" item-end [(name)]="passicon" color="dark"></ion-icon>
+          <div class="register-pane" id="register-info">
+            <div id="register-info-wrap">
+              <div id="register-content">
+                <img src="../../assets/imgs/seen-the-future.png" alt="The future">
               </div>
+            </div>
+            <div id="register-bottom">
+              <div id="register-note">You're in good company</div>
+              <div id="register-logos"></div>
+            </div>
+          </div>
 
-              <ion-item class="error-message" *ngIf="!loginForm.controls.password.valid && (submitAttempt)">
-                <p>You must enter a password.</p>
-              </ion-item>
-
-              <div style="margin-top:15px;">
-                <div padding-horizontal>
-                  <button ion-button color="primary" type="submit" block round>Log in</button>
-                </div>
-              </div>
-
-              <ion-col col-12 no-padding>
-                <div style="text-align:center; margin-top:0px;">
-                  <button type="button" ion-button clear color="clear" (click)="resetPassword()">
-                    FORGOTTEN PASSWORD?
-                  </button>
-                </div>
-              </ion-col>
-
-              <ion-col col-12>
-                <div style="text-align:center; margin-top:0px; color:#0067b8;">
-                  OR
-                </div>
-              </ion-col>
-
-              <div ion-row no-padding no-margin [style.margin-top.px]="margin_top">
-                <ion-col col-12 col-sm-12 col-md-4 offset-md-4 col-lg-4 offset-lg-4 col-xl-4 offset-xl-4>
-                  <div padding-horizontal>
-                    <button color="clear" type="button" ion-button (click)="Signup()" round block>
-                      Sign Up
-                    </button>
-                  </div>
-                </ion-col>
-              </div>
-            </ion-list>
-          </form>
-        </ion-col>
-        <ion-col col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 align-self-stretch></ion-col>
-      </ion-row>
-    </ion-grid>
+        </div>
+      </div>
+    </div>
   </div>
-
 </ion-content>

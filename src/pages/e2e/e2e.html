@@ -1,0 +1,33 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>
+      Segment Swipeable under Navbar
+    </ion-title>
+  </ion-navbar>
+
+  <ion-toolbar color="primary">
+    <ion-searchbar (ionInput)="getItems($event)" placeholder="Search the members list"></ion-searchbar>   
+  </ion-toolbar>
+
+</ion-header>
+<ion-content padding>
+    <ion-segment [(ngModel)]="selectedSegment" (ionChange)="onSegmentChanged($event)" color="primary">
+      <ion-segment-button value="first">
+        First
+      </ion-segment-button>
+      <ion-segment-button value="second">
+        Second
+      </ion-segment-button>
+      <ion-segment-button value="third">
+        Third
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-slides (ionSlideDidChange)="onSlideChanged($event)" #loopSlider>
+      <ion-slide *ngFor="let slide of slides">
+        <h1>{{ slide.title }}</h1>
+      </ion-slide>
+    </ion-slides>
+
+  </ion-content>

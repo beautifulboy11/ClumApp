@@ -27,7 +27,9 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation'
 import { Geolocation } from '@ionic-native/geolocation';
 import { environment } from '../environments/environment';
 import { Sqlstorage } from '../providers/sqlstorage/sqlstorage';
-
+import{ LocationStrategy,PathLocationStrategy, APP_BASE_HREF } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { E2EPage } from '../pages/e2e/e2e';
 export const firebaseConfig = environment.firebaseConfig;
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -51,6 +53,7 @@ export function provideSettings(storage: Storage) {
     AddEventPage,
     SignaturePage,
     PopoverPage,
+    E2EPage,
     MemberDetailPage,
     SiteLocationsPage,
     ResetPasswordPage,
@@ -60,6 +63,7 @@ export function provideSettings(storage: Storage) {
 
   imports: [
     BrowserModule,
+    FormsModule,
     SignaturePadModule,
     HttpClientModule,
     BrowserAnimationsModule,    
@@ -80,7 +84,7 @@ export function provideSettings(storage: Storage) {
       modalLeave: 'modal-slide-out',
       tabsPlacement: 'bottom',
       pageTransition: 'ios-transition',
-      pageTransitionDelay: 16
+      //pageTransitionDelay: 16
     }),
     IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig),
@@ -99,6 +103,7 @@ export function provideSettings(storage: Storage) {
     AddEventPage,
     SignaturePage,
     PopoverPage,
+    E2EPage,
     MemberDetailPage,
     SiteLocationsPage,
     ResetPasswordPage
@@ -114,6 +119,7 @@ export function provideSettings(storage: Storage) {
     Geolocation,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     { provide: ErrorHandler, useClass: IonicErrorHandler },
+    // { provide: LocationStrategy, useClass: PathLocationStrategy },
     Calendar,
     AuthService,
     SQLite,
