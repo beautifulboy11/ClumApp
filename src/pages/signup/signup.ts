@@ -3,7 +3,6 @@ import { TranslateService } from "@ngx-translate/core";
 import {
   IonicPage,
   NavController,
-  ToastController,
   AlertController,
   LoadingController,
   MenuController
@@ -29,7 +28,6 @@ export class SignupPage {
   constructor(
     public navCtrl: NavController,
     private authService: AuthService,
-    private toastCtrl: ToastController,
     private formBuilder: FormBuilder,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,

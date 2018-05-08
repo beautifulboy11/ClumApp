@@ -19,7 +19,7 @@ import { ParallaxHeaderDirective } from '../directives/parallax-header/parallax-
 import { ParallaxProfileDirective } from '../directives/parallax-profile/parallax-profile';
 import { Network } from '@ionic-native/network';
 import { Api, Settings, AuthService } from '../providers/providers';
-import { HomePage, AddEventPage, SignaturePage, PopoverPage, MemberDetailPage, SiteLocationsPage, ResetPasswordPage } from '../pages/pages';
+import { HomePage, SignaturePage, PopoverPage, SiteLocationsPage, ResetPasswordPage, CheckinPage} from '../pages/pages';
 import { AgmCoreModule } from '@agm/core';
 import { SQLite } from '@ionic-native/sqlite'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,9 +27,13 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation'
 import { Geolocation } from '@ionic-native/geolocation';
 import { environment } from '../environments/environment';
 import { Sqlstorage } from '../providers/sqlstorage/sqlstorage';
-import{ LocationStrategy,PathLocationStrategy, APP_BASE_HREF } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+// import{ LocationStrategy, PathLocationStrategy, APP_BASE_HREF } from '@angular/common';
 import { E2EPage } from '../pages/e2e/e2e';
+import { AddEventPageModule } from '../pages/add-event/add-event.module';
+import { MemberDetailPageModule } from '../pages/member-detail/member-detail.module';
+import { ResetPasswordPageModule } from '../pages/reset-password/reset-password.module';
+import { CheckinPageModule } from '../pages/checkin/checkin.module';
+
 export const firebaseConfig = environment.firebaseConfig;
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -48,23 +52,23 @@ export function provideSettings(storage: Storage) {
 
 @NgModule({
   declarations: [
-    MyApp,
-    HomePage,
-    AddEventPage,
+    MyApp,        
     SignaturePage,
-    PopoverPage,
     E2EPage,
-    MemberDetailPage,
-    SiteLocationsPage,
-    ResetPasswordPage,
+    HomePage,   
+    CheckinPage, 
+    PopoverPage,        
+    SiteLocationsPage,    
     ParallaxHeaderDirective,
     ParallaxProfileDirective
   ],
 
   imports: [
-    BrowserModule,
-    FormsModule,
-    SignaturePadModule,
+    BrowserModule,            
+    MemberDetailPageModule,
+    ResetPasswordPageModule,    
+    AddEventPageModule,
+    SignaturePadModule,    
     HttpClientModule,
     BrowserAnimationsModule,    
     TranslateModule.forRoot({
@@ -100,14 +104,11 @@ export function provideSettings(storage: Storage) {
   entryComponents: [
     MyApp,
     HomePage,
-    AddEventPage,
+    E2EPage,  
+    CheckinPage,          
     SignaturePage,
-    PopoverPage,
-    E2EPage,
-    MemberDetailPage,
-    SiteLocationsPage,
-    ResetPasswordPage
-
+    PopoverPage,    
+    SiteLocationsPage    
   ],
   providers: [
     Api,

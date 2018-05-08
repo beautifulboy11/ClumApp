@@ -12,7 +12,9 @@
 bin/
 gen/
 out/
-
+/.vscode
+/.idea
+.sourcemaps
 # Gradle files
 .gradle/
 build/
@@ -116,7 +118,8 @@ temp/
 core/theme-builder/
 core/test-components/
 $RECYCLE.BIN/
-
+/package-lock.json 
+.package-lock.json 
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate

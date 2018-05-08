@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Slides, SegmentButton } from 'ionic-angular';
 
-@IonicPage()
+// @IonicPage()
 @Component({
   selector: 'page-e2e',
   templateUrl: 'e2e.html',

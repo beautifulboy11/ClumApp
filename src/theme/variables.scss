@@ -58,7 +58,7 @@ $colors: (
   codeply:#192f53,
   dark: #475867);
 
-$toolbar-md-background: color($colors, codeply);
+$toolbar-md-background: color($colors, primary);
 $toolbar-md-active-color: #fff;
 $checkbox-md-icon-checkmark-color: #fff;
 $cordova-md-statusbar-padding: 29px;

@@ -11,15 +11,11 @@
     .invalid  {
       border-left: 5px solid #a94442; /* red */
     }
-    .form-control {
-      box-shadow: none;
-    }
+    
     img {
       vertical-align: middle;
     }
-    .error-message {
-      color: map-get($colors, danger);
-    }
+    
     .no-scroll .scroll-content {
       overflow: hidden;
       background: 0 0;
@@ -39,9 +35,7 @@
       z-index: 999;
       right: 10px;
     }
-    .item {
-      background: transparent;
-    }
+   
     #bg-image {
       background: url('../assets/img/white.png') no-repeat;
       background-position: center center;

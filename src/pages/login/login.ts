@@ -32,7 +32,8 @@ export class LoginPage {
   validEmail: boolean = false;
   validPassword: boolean = false;
   isFormValid: boolean;
-
+  email_dirty: string = "form-control empty ok input-lg";
+  password_dirty: string = "form-control empty ok input-lg";
   constructor(
     public navCtrl: NavController,
     public authservice: AuthService,
@@ -91,6 +92,16 @@ export class LoginPage {
     this[field + "changed"] = true;
     this.isFormValid = this.loginForm.valid;
     this.validEmail = this.loginForm.controls.email.valid;
+    if (this.loginForm.controls.email.value === "") {
+      this.email_dirty = "form-control empty ok input-lg";
+    } else {
+      if(this.validEmail){
+        this.email_dirty = "form-control not-empty ok input-lg";
+
+      }else{
+        this.email_dirty = "form-control not-empty not-ok input-lg";
+      }
+    }
   }
 
   public passwordChanged() {
@@ -98,13 +109,21 @@ export class LoginPage {
     this[field + "changed"] = true;
     this.isFormValid = this.loginForm.valid;
     this.validPassword = this.loginForm.controls.password.valid;
+    if (this.loginForm.controls.password.value === "") {
+      this.password_dirty = "form-control empty not-ok input-lg";
+    } else {
+      this.password_dirty = "form-control not-empty ok input-lg";
+    }
   }
 
   public Signup() {
     this.navCtrl.push("SignupPage");
   }
-  public removeAuth(code: string): string{
-     return code.substring(5).replace('-',' ').toUpperCase();    
+  public removeAuth(code: string): string {
+    return code
+      .substring(5)
+      .replace("-", " ")
+      .toUpperCase();
   }
 
   public Login(): any {
@@ -113,9 +132,9 @@ export class LoginPage {
     } else {
       var credentials = {
         email: this.loginForm.controls.email.value,
-        password:this.loginForm.controls.password.value,
+        password: this.loginForm.controls.password.value
       };
-     
+
       this.authservice.doLogin(credentials).subscribe(
         auth => {
           this.navCtrl.setRoot("TabsPage");

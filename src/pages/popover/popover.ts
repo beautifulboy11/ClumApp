@@ -3,8 +3,8 @@ import { ViewController, ModalController, NavController, AlertController, NavPar
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { SignaturePage, MemberDetailPage } from '../pages';
 import { Member } from '../../models/member';
-
 import { AuthService } from '../../providers/providers';
+
 @Component({
   selector: 'page-popover',
   template: `

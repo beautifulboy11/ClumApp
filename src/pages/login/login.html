@@ -5,7 +5,7 @@
         <div id="register-container" class="container">
 
           <div class="login-pane">
-            <div id="login-page" class="auth-form-wrapper">
+            <div id="login-page" class="auth-form-wrapper" style="margin-top: 70px;">
               <div class="text-center" [style.display]="showImage">
                 <img src='assets/img/logo.png' class="round-image" width="96" height="96" alt="Boating Club" />
                 <div class="splash-bg">
@@ -18,9 +18,10 @@
               <div class="form-wrapper">
                 <form [formGroup]="loginForm" (submit)="Login()" novalidate>
                   <div class="floating relatively">
-                    <input type="email" class="form-control empty ok input-lg" name="email" id="id_email" tabindex="1"
-                      #email formControlName="email" (change)="emailChanged()" [class.invalid]="!isValidEmailFormat && (emailchanged || submitAttempt)"
-                      required>                     
+                    <input type="email" value="" [class]="email_dirty" name="email" id="id_email" tabindex="1"
+                      #email formControlName="email" (change)="emailChanged()" [class.invalid]="!validEmail && (emailchanged || submitAttempt)"
+                      required>  
+                      <!-- class=""-->
                     <label for="id_email">
                       <span>Email</span>
                     </label>
@@ -29,7 +30,7 @@
                     Email is invalid
                   </div>                  
                   <div class="floating relatively">
-                    <input [type]="type" name="password" id="id_password" tabindex="2" class="form-control empty ok input-lg" required="" #password
+                    <input [type]="type" value="" name="password" id="id_password" tabindex="2" [class]="password_dirty" required="" #password
                       formControlName="password" (change)="passwordChanged()" [class.invalid]="!validPassword && (passwordchanged || submitAttempt)">                   
                     <label for="id_password">
                       <span>Password</span>
@@ -43,7 +44,8 @@
                     <p>You must provide a password.</p>
                   </div>
                   <div class="form-group">
-                    <button class="btn btn-primary btn-lg btn-block" type="submit" tabindex="3" [disabled]="!isFormValid">                                          
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" tabindex="3" >       
+                        <!-- [disabled]="!isFormValid"                                    -->
                       <span class="login-button-icon"></span>Log in</button>
                   </div>
                   <div ion-col col-12 no-padding>

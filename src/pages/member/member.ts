@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController, AlertController, LoadingController, PopoverController, ToastController, NavParams } from 'ionic-angular';
-import { AngularFireDatabase, AngularFireList, AngularFireAction } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { PopoverPage, MemberDetailPage } from '../pages';
 import { Observable } from 'rxjs/Observable';

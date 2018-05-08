@@ -1,9 +1,9 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams, ToastController} from "ionic-angular";
-import { SiteLocationsPage } from "../pages";
+import { SiteLocationsPage, CheckinPage } from "../pages";
 import { AngularFireAuth } from "angularfire2/auth";
 import { AuthService } from '../../providers/providers';
-@IonicPage()
+// @IonicPage()
 @Component({
   selector: "page-home",
   templateUrl: "home.html"
@@ -40,7 +40,9 @@ export class HomePage {
       console.log(e);
     }
   }
-
+  gotoCheckin(): void{
+    this.navCtrl.push(CheckinPage);
+  }
   goto(page: string): void {
     this.navCtrl.push(page);
   }

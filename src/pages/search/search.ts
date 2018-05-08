@@ -1,36 +1,41 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, ToastController, NavParams } from 'ionic-angular';
-import * as _ from 'lodash';
-import { Api } from '../../providers/providers';
-import { Member } from '../../models/member';
-
+import { Component } from "@angular/core";
+import {
+  IonicPage,
+  NavController,
+  ToastController,
+  NavParams
+} from "ionic-angular";
+import * as _ from "lodash";
+import { Api } from "../../providers/providers";
+import { Member } from "../../models/member";
 
 @IonicPage()
 @Component({
-  selector: 'page-search',
-  templateUrl: 'search.html'
+  selector: "page-search",
+  templateUrl: "search.html"
 })
-
 export class SearchPage {
-
   currentItems: any = [];
-  members: any = [];
+  members: any;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public toastCtrl: ToastController,
-    public api: Api) { }
+    public api: Api
+  ) {}
 
   ionViewDidLoad() {
-    this.api.get('members.json').subscribe(
-      resp => { this.currentItems = resp; },
-      error => {
+    this.api.getMembers().subscribe(
+      (resp) => {      
+        this.currentItems = resp;       
+      },
+      (error) => {
         let toast = this.toastCtrl.create({
-          position: 'bottom',
+          position: "bottom",
           message: error,
           showCloseButton: true,
-          cssClass: 'toast-message',
-          closeButtonText: 'OK',
+          cssClass: "toast-message",
+          closeButtonText: "OK",
           dismissOnPageChange: true
         });
         toast.present();
@@ -40,12 +45,18 @@ export class SearchPage {
 
   getItems(ev) {
     let val = ev.target.value;
+    console.log(JSON.stringify(val));
     if (!val || !val.trim()) {
       this.members = [];
       return;
     }
-    this.members = this.query({ firstName: val, lastName: val, membershipNumber: val });
-    console.info('**Search Results', this.members);
+    console.log(JSON.stringify(this.members));
+    this.members = this.query({
+      firstName: val,
+      lastName: val,
+      membershipNumber: val
+    });
+    console.info("**Search Results", this.members);
   }
 
   query(params?: any) {
@@ -53,26 +64,29 @@ export class SearchPage {
       return;
     }
     return _.chain(this.currentItems)
-      .filter(member => {
+      .filter(membersArr => {
+        console.log("Member in query ", membersArr);
         for (let key in params) {
-          let field = member[key];
+          console.log("Params in query ",params);
+          let field = membersArr[key];
+          console.log("Fiels in Array ",field);
           if (
-            _.includes(member,params[key])
+            _.includes(membersArr, params[key])
             //typeof field == 'string' && field.toLowerCase().indexOf(params[key].toLowerCase()) >= 0
           ) {
-            return member;
+            return membersArr;
           } else if (field == params[key]) {
-            return member;
+            return membersArr;
           }
         }
         return null;
       })
       .map(member => {
-        let isActive = member.status === 'active';
+        let isActive = member.status === "active";
         let status = isActive ? true : false;
-        let chk = status ? 'secondary' : 'dark';
+        let chk = status ? "secondary" : "dark";
         let name = this.concatenateName(member.firstName, member.lastName);
-        console.log('****');
+        console.log("****");
         return {
           About: member.about,
           Club: member.club,
@@ -83,7 +97,7 @@ export class SearchPage {
           Status: status,
           Note: member.status,
           Chk: chk
-        }
+        };
       })
       .value();
   }
@@ -93,9 +107,8 @@ export class SearchPage {
   }
 
   openItem(item: Member) {
-    this.navCtrl.push('MemberDetailPage', {
+    this.navCtrl.push("MemberDetailPage", {
       item: item
     });
   }
-
 }
