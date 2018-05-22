@@ -9,7 +9,7 @@ import {
 } from "ionic-angular";
 import { FormBuilder, Validators } from "@angular/forms";
 import { AuthService } from "../../providers/providers";
-import { MainPage } from "../pages";
+
 
 @IonicPage()
 @Component({

@@ -1,197 +1,99 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component } from "@angular/core";
 import {
   NavController,
-  ViewController,
-  AlertController,
-  NavParams,
+  AlertController, 
   LoadingController,
   ToastController
 } from "ionic-angular";
-import { SignaturePad } from "angular2-signaturepad/signature-pad";
-import { AngularFireDatabase, AngularFireList } from "angularfire2/database";
+
 import { Api } from "../../providers/providers";
+
 @Component({
   selector: "page-checkin",
   templateUrl: "checkin.html"
 })
 export class CheckinPage {
-  membersList: any;
-  @ViewChild(SignaturePad) public signaturePad: SignaturePad;
-
-  public signaturePadOptions: Object = {
-    minWidth: 2,
-    canvasWidth: 340,
-    canvasHeight: 200
-  };
-  public signatureImage: string;
-  public member: any;
-  public prevCheckin: any = [];
-  public checkinRef: AngularFireList<any>;
-  public MaxcheckinRef: AngularFireList<any>;
-  public previousCheckin: AngularFireList<any>;
+  club: string;
+  private membersList: any;
   public maxAllowed: number;
   public loading: any;
-
+  mufMembers: any = [];
+  members: any = [];
   constructor(
-    public navCtrl: NavController,
-    public viewCtrl: ViewController,
-    public navParams: NavParams,
-    public db: AngularFireDatabase,
+    private navCtrl: NavController,
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
     private api: Api
   ) {
-    //this.member = navParams.get("member");
-    //this.checkinRef = db.list("checkins");
-    //this.previousCheckin = this.api.getCheck_Ins(this.member);
-    this.membersList = this.api.getMembers().subscribe(
-      success => {
-        console.log(JSON.stringify(success));
-      },
-      error => {
-        console.log(JSON.stringify(error));
-      }
-    );
-    
+    this.club = 'Nkana';
   }
 
-  canvasResize() {
-    let canvas = document.querySelector("canvas");
-    this.signaturePad.set("minWidth", 1);
-    this.signaturePad.set("canvasWidth", canvas.offsetWidth);
-    this.signaturePad.set("canvasHeight", canvas.offsetHeight);
-  }
-  ionViewWillEnter() {
-    this.api.getMaxCheckInLock().subscribe(
-      res => {
-        this.maxAllowed = res;
-      },
-      error => {
-        console.log(error);
-      }
-    );
-  }
-  ionViewDidEnter() {
-    //this.initView();
+  ionViewDidLoad() {
+    this.loadMembers();
   }
 
-  private initView() {
+  loadMembers(): any {
     this.loading = this.loadingCtrl.create({
-      spinner: "circles",
+      content: "Loading...",
+      spinner: "bubbles",
       showBackdrop: false
     });
 
     this.loading.present().then(() => {
-      this.previousCheckin.valueChanges().subscribe(resp => {
-        resp.map(res => {
-          var ob = {
-            mon: this.getMonthFromDate(res.date),
-            year: this.getYearFromDate(res.date),
-            memberId: res.memberId
-          };
-          this.prevCheckin.push(ob);
-        });
-        this.checkCheckins();
-      });
-    });
-  }
-
-  checkCheckins() {
-    let matcheddates = [];
-    this.prevCheckin.forEach(element => {
-      if (
-        element.mon === new Date().getMonth() + 1 &&
-        element.year === new Date().getFullYear()
-      ) {
-        matcheddates.push(element);
-      }
-    });
-
-    var isMax = matcheddates.length < this.maxAllowed ? true : false;
-
-    if (isMax) {
-      this.loading.dismiss();
-    } else {
-      this.loading.dismiss();
-      this.presentToast();
-    }
-  }
-
-  presentToast() {
-    let toast = this.toastCtrl.create({
-      message: `You have used up ${this.maxAllowed} checkin this month`,
-      duration: 4000,
-      position: "top",
-      showCloseButton: true,
-      dismissOnPageChange: true,
-      closeButtonText: "OK"
-    });
-
-    toast.onDidDismiss(() => {
-      this.navCtrl.pop();
-    });
-
-    toast.present();
-  }
-
-  getYearFromDate(date: string): number {
-    let d = new Date(date);
-    var m = d.getFullYear();
-    return m;
-  }
-
-  getMonthFromDate(date: string): number {
-    let d = new Date(date);
-    var m = d.getMonth() + 1;
-    return m;
-  }
-
-  ngAfterViewInit() {
-    this.signaturePad.clear();
-    this.canvasResize();
-  }
-
-  cancel() {
-    this.viewCtrl.dismiss();
-  }
-
-  save() {
-    this.signatureImage = this.signaturePad.toDataURL();
-    var today = new Date();
-    var date =
-      today.getFullYear() +
-      "-" +
-      (today.getMonth() + 1) +
-      "-" +
-      today.getDate();
-
-    this.checkinRef.push({
-      date: date,
-      memberId: this.member.membershipNumber,
-      signature: this.signatureImage
-    });
-    this.showSuccess();
-  }
-
-  drawClear() {
-    this.signaturePad.clear();
-  }
-
-  showSuccess() {
-    let confirm = this.alertCtrl.create({
-      title: "Success",
-      message: "You have successfully checked in this user",
-      buttons: [
-        {
-          text: "OK",
-          handler: () => {
-            console.log("Agree clicked");
-            this.navCtrl.pop();
-          }
+      this.api.getMembers().subscribe(
+        res => {
+          this.members = [];
+          this.mufMembers = [];
+          res.forEach(resp => {
+            if (resp.club === "Nkana") {
+              this.members.push(resp);
+            } else {
+              this.mufMembers.push(resp);
+            }
+          });
+          this.loading.dismiss();
+        },
+        error => {
+          this.loading.dismiss().then(() => {
+            this.toastCtrl
+              .create({
+                position: "bottom",
+                message: error.message,
+                showCloseButton: true,
+                cssClass: "toast-message",
+                closeButtonText: "Dismiss",
+                dismissOnPageChange: true
+              })
+              .present();
+          });
         }
-      ]
+      );
     });
-    confirm.present();
+  }
+
+  ionViewWillEnter() {
+    this.api.getMaxCheckInLock().subscribe(
+      res => {
+        this.maxAllowed = res;
+        console.log(res);
+      },
+      error => {
+        alert(error);
+      }
+    );
+  }
+
+  getItems(ev) {
+    let val = ev.target.value;
+    if (!val || !val.trim()) {
+      return;
+    }
+
+    // this.members = this.query({
+    //   firstName: val,
+    //   lastName: val,
+    //   membershipNumber: val
+    // });
   }
 }

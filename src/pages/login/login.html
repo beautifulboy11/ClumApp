@@ -20,8 +20,7 @@
                   <div class="floating relatively">
                     <input type="email" value="" [class]="email_dirty" name="email" id="id_email" tabindex="1"
                       #email formControlName="email" (change)="emailChanged()" [class.invalid]="!validEmail && (emailchanged || submitAttempt)"
-                      required>  
-                      <!-- class=""-->
+                      required>
                     <label for="id_email">
                       <span>Email</span>
                     </label>
@@ -31,7 +30,7 @@
                   </div>                  
                   <div class="floating relatively">
                     <input [type]="type" value="" name="password" id="id_password" tabindex="2" [class]="password_dirty" required="" #password
-                      formControlName="password" (change)="passwordChanged()" [class.invalid]="!validPassword && (passwordchanged || submitAttempt)">                   
+                      formControlName="password" (change)="passwordChanged()" [class.invalid]="!validPassword && (passwordchanged || submitAttempt)" autocomplete="false">                   
                     <label for="id_password">
                       <span>Password</span>
                     </label>
@@ -44,8 +43,7 @@
                     <p>You must provide a password.</p>
                   </div>
                   <div class="form-group">
-                    <button class="btn btn-primary btn-lg btn-block" type="submit" tabindex="3" >       
-                        <!-- [disabled]="!isFormValid"                                    -->
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" tabindex="3" >
                       <span class="login-button-icon"></span>Log in</button>
                   </div>
                   <div ion-col col-12 no-padding>

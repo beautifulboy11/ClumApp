@@ -51,6 +51,6 @@ export class HomePage {
     this.navCtrl.push(SiteLocationsPage);
   }
   search() {
-    this.navCtrl.push("SearchPage");
+    this.navCtrl.push(CheckinPage);
   }
 }

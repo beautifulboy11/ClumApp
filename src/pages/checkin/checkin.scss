@@ -1,20 +1,4 @@
 page-checkin {
-  .ion-icon {
-    font-size: 1.8em;
-  }
-  signature-pad {
-    canvas {
-      border: dashed 1px #cccccc;
-      width: 100%;
-      height: 150px;
-    }
-  }
-  .item-profile {
-    width: 100%;
-    background-position: center center;
-    background-size: cover;
-    height: 100px;
-  }
   $segment-button-md-background-color: transparent;
   $segment-button-md-background-color-activated: $toolbar-md-active-color;
   $segment-button-md-text-color: color-contrast($colors, $segment-button-md-background-color-activated);
@@ -38,225 +22,135 @@ page-checkin {
   $segment-button-md-toolbar-font-size: 1.2rem;
   $segment-button-md-toolbar-icon-size: 2.2rem;
   $segment-button-md-toolbar-icon-line-height: 2.4rem;
-
-
-  /// @prop - Background of the segment button
-$segment-button-md-background-color:           transparent !default;
-
-/// @prop - Background of the activated segment button
-$segment-button-md-background-color-activated: $toolbar-md-active-color !default;
-
-/// @prop - Text color of the segment button
-$segment-button-md-text-color:                 color-contrast($colors-md, $segment-button-md-background-color-activated) !default;
-
-/// @prop - Transition of the activated segment button
-$segment-button-md-transition-activated:       100ms all linear !default;
-
-/// @prop - Transition of the segment button on hover
-$segment-button-md-transition-hover:           100ms all linear !default;
-
-/// @prop - Transition of the segment button when pressed
-$segment-button-md-transition-active:          100ms all linear !default;
-
-/// @prop - Opacity of the segment button on hover
-$segment-button-md-opacity-hover:              .1 !default;
-
-/// @prop - Opacity of the segment button when pressed
-$segment-button-md-opacity-active:             .16 !default;
-
-/// @prop - Opacity of the activated segment button
-$segment-button-md-opacity-activated:          1 !default;
-
-/// @prop - Opacity of the disabled segment button
-$segment-button-md-opacity-disabled:           .3 !default;
-
-/// @prop - Border width of the segment button
-$segment-button-md-border-width:               1px !default;
-
-/// @prop - Height of the segment button
-$segment-button-md-height:                     3.2rem !default;
-
-/// @prop - Line height of the segment button
-$segment-button-md-line-height:                3rem !default;
-
-/// @prop - Font size of the segment button
-$segment-button-md-font-size:                  1.3rem !default;
-
-/// @prop - Border radius of the segment button
-$segment-button-md-border-radius:              4px !default;
-
-/// @prop - Size of an icon in the segment button
-$segment-button-md-icon-size:                  2.6rem !default;
-
-/// @prop - Line height of an icon in the segment button
-$segment-button-md-icon-line-height:           2.8rem !default;
-
-/// @prop - Max width of the segment button in a toolbar
-$segment-button-md-toolbar-button-max-width:   100px !default;
-
-/// @prop - Height of the segment button in a toolbar
-$segment-button-md-toolbar-button-height:      2.6rem !default;
-
-/// @prop - Line height of the segment button in a toolbar
-$segment-button-md-toolbar-line-height:        2.5rem !default;
-
-/// @prop - Font size of the segment button in a toolbar
-$segment-button-md-toolbar-font-size:          1.2rem !default;
-
-/// @prop - Size of an icon in the segment button in a toolbar
-$segment-button-md-toolbar-icon-size:          2.2rem !default;
-
-/// @prop - Line height of an icon in the segment button in a toolbar
-$segment-button-md-toolbar-icon-line-height:   2.4rem !default;
-
-
-.segment-md .segment-button {
-  flex: 1;
-
-  width: 0;
-
-  height: $segment-button-md-height;
-
-  border-width: $segment-button-md-border-width;
-  border-style: solid;
-  border-color: $segment-button-md-background-color-activated;
-
-  font-size: $segment-button-md-font-size;
-  line-height: $segment-button-md-line-height;
-
-  color: $segment-button-md-background-color-activated;
-  background-color: $segment-button-md-background-color;
-
-  ion-icon {
-    font-size: $segment-button-md-icon-size;
-    line-height: $segment-button-md-icon-line-height;
+  $segment-button-md-background-color: transparent !default;
+  $segment-button-md-background-color-activated: $toolbar-md-active-color !default;
+  $segment-button-md-text-color: map-get($colors,primary);//color-contrast($colors-md, $segment-button-md-background-color-activated) !default;
+  $segment-button-md-transition-activated: 100ms all linear !default;
+  $segment-button-md-transition-hover: 100ms all linear !default;
+  $segment-button-md-transition-active: 100ms all linear !default;
+  $segment-button-md-opacity-hover: .1 !default;
+  $segment-button-md-opacity-active: .16 !default;
+  $segment-button-md-opacity-activated: 1 !default;
+  $segment-button-md-opacity-disabled: .3 !default;
+  $segment-button-md-border-width: 1px !default;
+  $segment-button-md-height: 3.2rem !default;
+  $segment-button-md-line-height: 3rem !default;
+  $segment-button-md-font-size: 1.3rem !default;
+  $segment-button-md-border-radius: 4px !default;
+  $segment-button-md-icon-size: 2.6rem !default;
+  $segment-button-md-icon-line-height: 2.8rem !default;
+  $segment-button-md-toolbar-button-max-width: 100px !default;
+  $segment-button-md-toolbar-button-height: 2.6rem !default;
+  $segment-button-md-toolbar-line-height: 2.5rem !default;
+  $segment-button-md-toolbar-font-size: 1.2rem !default;
+  $segment-button-md-toolbar-icon-size: 2.2rem !default;
+  $segment-button-md-toolbar-icon-line-height: 2.4rem !default;
+  
+  .segment-md .segment-button {
+    flex: 1;
+    width: 0;
+    height: $segment-button-md-height;
+    border-width: $segment-button-md-border-width;
+    border-style: solid;
+    border-color: map-get($colors , primary); //$segment-button-md-background-color-activated;
+    font-size: $segment-button-md-font-size;
+    line-height: $segment-button-md-line-height;
+    color: map-get($colors, primary);  //$segment-button-md-background-color-activated;
+    background-color: $segment-button-md-background-color;
+    ion-icon {
+      font-size: $segment-button-md-icon-size;
+      line-height: $segment-button-md-icon-line-height;
+    }
+    &.segment-activated {
+      color: $segment-button-md-text-color;
+      background-color: $segment-button-md-background-color-activated;
+      opacity: $segment-button-md-opacity-activated;
+      transition: $segment-button-md-transition-activated;
+    }
+    &:hover:not(.segment-activated) {
+      background-color: rgba($segment-button-md-background-color-activated, $segment-button-md-opacity-hover);
+      transition: $segment-button-md-transition-hover;
+    }
+    &:active:not(.segment-activated) {
+      background-color: rgba($segment-button-md-background-color-activated, $segment-button-md-opacity-active);
+      transition: $segment-button-md-transition-active;
+    }
+    &:first-of-type {
+      @include border-radius($segment-button-md-border-radius, 0, 0, $segment-button-md-border-radius);
+      @include margin-horizontal(null, 0);
+    }
+    &:not(:first-of-type) {
+      border-left-width: 0;
+    }
+    &:last-of-type {
+      @include border-radius(0, $segment-button-md-border-radius, $segment-button-md-border-radius, 0);
+      @include margin-horizontal(0, null);
+      border-left-width: 0;
+    }
   }
-
-  &.segment-activated {
-    color: $segment-button-md-text-color;
-    background-color: $segment-button-md-background-color-activated;
-    opacity: $segment-button-md-opacity-activated;
-    transition: $segment-button-md-transition-activated;
+  [dir="rtl"] .segment-md .segment-button {
+    &:first-of-type {
+      border-left-width: 0;
+    }
+    &:last-of-type {
+      border-left-width: $segment-button-md-border-width;
+    }
   }
-
-  &:hover:not(.segment-activated) {
-    background-color: rgba($segment-button-md-background-color-activated, $segment-button-md-opacity-hover);
-    transition: $segment-button-md-transition-hover;
+  .segment-md.segment-disabled {
+    opacity: .4;
+    pointer-events: none;
   }
-
-  &:active:not(.segment-activated) {
-    background-color: rgba($segment-button-md-background-color-activated, $segment-button-md-opacity-active);
-    transition: $segment-button-md-transition-active;
+  .segment-md .segment-button-disabled {
+    color: rgba($segment-button-md-background-color-activated, $segment-button-md-opacity-disabled);
+    pointer-events: none;
   }
-
-  &:first-of-type {
-    @include border-radius($segment-button-md-border-radius, 0, 0, $segment-button-md-border-radius);
-    @include margin-horizontal(null, 0);
+  // md Segment in Toolbar
+  // --------------------------------------------------
+  .toolbar-md .segment-md {
+    @include position(0, 0, 0, 0);
+    position: absolute;
   }
-
-  &:not(:first-of-type) {
-    border-left-width: 0;
+  .toolbar-md .segment-button {
+    max-width: $segment-button-md-toolbar-button-max-width;
+    height: $segment-button-md-toolbar-button-height;
+    font-size: $segment-button-md-toolbar-font-size;
+    line-height: $segment-button-md-toolbar-line-height;
+    ion-icon {
+      font-size: $segment-button-md-toolbar-icon-size;
+      line-height: $segment-button-md-toolbar-icon-line-height;
+    }
   }
-
-  &:last-of-type {
-    @include border-radius(0, $segment-button-md-border-radius, $segment-button-md-border-radius, 0);
-    @include margin-horizontal(0, null);
-
-    border-left-width: 0;
-  }
-}
-
-[dir="rtl"] .segment-md .segment-button {
-  &:first-of-type {
-    border-left-width: 0;
-  }
-
-  &:last-of-type {
-    border-left-width: $segment-button-md-border-width;
-  }
-}
-
-
-.segment-md.segment-disabled {
-  opacity: .4;
-
-  pointer-events: none;
-}
-
-.segment-md .segment-button-disabled {
-  color: rgba($segment-button-md-background-color-activated, $segment-button-md-opacity-disabled);
-
-  pointer-events: none;
-}
-
-
-// md Segment in Toolbar
-// --------------------------------------------------
-
-.toolbar-md .segment-md {
-  @include position(0, 0, 0, 0);
-
-  position: absolute;
-}
-
-.toolbar-md .segment-button {
-  max-width: $segment-button-md-toolbar-button-max-width;
-  height: $segment-button-md-toolbar-button-height;
-
-  font-size: $segment-button-md-toolbar-font-size;
-  line-height: $segment-button-md-toolbar-line-height;
-
-  ion-icon {
-    font-size: $segment-button-md-toolbar-icon-size;
-    line-height: $segment-button-md-toolbar-icon-line-height;
-  }
-}
-
-
-// md Segment Button Mixin
-// --------------------------------------------------
-
-@mixin md-segment-button($color-name, $color-base, $color-contrast) {
-
-  .segment-md-#{$color-name} {
-
-    .segment-button {
-      border-color: $color-base;
-      color: $color-base;
-
-      &:hover:not(.segment-activated) {
-        background-color: rgba($color-base, $segment-button-md-opacity-hover);
+  // md Segment Button Mixin
+  // --------------------------------------------------
+  @mixin md-segment-button($color-name, $color-base, $color-contrast) {
+    .segment-md-#{$color-name} {
+      .segment-button {
+        border-color: map-get($colors, primary); //$color-base;
+        color: map-get($colors, primary); //$color-base;
+        &:hover:not(.segment-activated) {
+          background-color: rgba(map-get($colors, primary), $segment-button-md-opacity-hover);
+        }
+        &:active:not(.segment-activated) {
+          background-color: rgba(map-get($colors, primary), $segment-button-md-opacity-active);
+        }
+        &.segment-activated {
+          color: $color-contrast;
+          background-color: map-get($colors , primary);
+        }
       }
-
-      &:active:not(.segment-activated) {
-        background-color: rgba($color-base, $segment-button-md-opacity-active);
-      }
-
-      &.segment-activated {
-        color: $color-contrast;
-        background-color: $color-base;
+      .segment-button-disabled {
+        color: rgba(#fff, $segment-button-md-opacity-disabled);
       }
     }
-
-    .segment-button-disabled {
-      color: rgba($color-base, $segment-button-md-opacity-disabled);
+  } // md Segment Color Generation
+  // --------------------------------------------------
+  @each $color-name,
+  $color-base,
+  $color-contrast in get-colors($colors-md) {
+    @include md-segment-button($color-name, $color-base, $color-contrast);
+    .toolbar-md-#{$color-name} .segment-md .segment-button.segment-activated {
+      color:map-get($colors , primary);
     }
-
   }
-
-}
-
-
-// md Segment Color Generation
-// --------------------------------------------------
-
-@each $color-name, $color-base, $color-contrast in get-colors($colors-md) {
-
-  @include md-segment-button($color-name, $color-base, $color-contrast);
-
-  .toolbar-md-#{$color-name} .segment-md .segment-button.segment-activated {
-    color: $color-base;
-  }
-}
 }
 

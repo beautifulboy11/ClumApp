@@ -1,13 +1,30 @@
 {
-  "name": "Ionic",
-  "short_name": "Ionic",
+  "name": "Boating Club Manager",
+  "short_name": "Boating Club",
   "start_url": "index.html",
   "display": "standalone",
-  "icons": [{
-    "src": "assets/imgs/logo.png",
-    "sizes": "512x512",
-    "type": "image/png"
-  }],
-  "background_color": "#4e8ef7",
-  "theme_color": "#4e8ef7"
+  "icons": [
+    {
+      "src": "assets/imgs/icons/app-icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/imgs/icons/app-icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/imgs/icons/app-icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/imgs/icons/app-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "background_color": "#fff",
+  "theme_color": "#5FAAE5"
 }

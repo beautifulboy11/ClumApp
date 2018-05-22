@@ -20,7 +20,7 @@ import { User } from '../../providers/authentication-service/user';
 
 export class MemberPage {
 
-  club: any;
+  club: string;
   membersRef: AngularFireList<any>;
   members: any = [];
   mufMembers: any = [];

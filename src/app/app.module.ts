@@ -32,7 +32,6 @@ import { E2EPage } from '../pages/e2e/e2e';
 import { AddEventPageModule } from '../pages/add-event/add-event.module';
 import { MemberDetailPageModule } from '../pages/member-detail/member-detail.module';
 import { ResetPasswordPageModule } from '../pages/reset-password/reset-password.module';
-import { CheckinPageModule } from '../pages/checkin/checkin.module';
 
 export const firebaseConfig = environment.firebaseConfig;
 export function createTranslateLoader(http: HttpClient) {

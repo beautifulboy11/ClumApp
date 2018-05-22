@@ -1,100 +1,99 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-buttons left>
-      <button ion-button icon-only (click)="cancel()">
-        <ion-icon name="close" color="light" style="font-size: 1.8em; font-weight:bold;"></ion-icon>
-      </button>
-    </ion-buttons>
     <ion-title>Checkin</ion-title>
-    <ion-buttons end>
-      <button ion-button ion-only (click)="save()">
-        <ion-icon name="checkmark" color="light" style="font-size: 1.8em; font-weight:bold;"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
-  <ion-toolbar color="primary" text-center>
-    <div *ngIf='member' style="padding-bottom:10px; margin-bottom:15px; color:#fff;" class="item-profile" text-center #profilePic [style.background-image]="'url(' + member?.profilePic + ')'">
-      <!-- -->
-      <ion-avatar style="padding-top:0px; margin-bottom:0px">
-        <!-- <img [src]="item.profilePic" /> -->
-        <ion-icon name="ios-contact" style="font-size: 50px;"></ion-icon>
-      </ion-avatar>
-      <h2 style="padding-top:0px; margin-bottom:0px">{{member.firstName}} {{member.lastName}}</h2>
-      <ion-note>{{member.club}}</ion-note>
-    </div>
+  <ion-toolbar>
+    <ion-searchbar (ionInput)="getItems($event)" placeholder="Search the members list"></ion-searchbar>
   </ion-toolbar>
+
 </ion-header>
 
 
-<ion-content no-padding>
+<ion-content padding>
   <ion-grid no-padding>
-    <ion-row align-items-center justify-content-center>
-      <ion-col col-12 col-sm-12 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2 align-self-center>
-        <ion-searchbar (ionInput)="getItems($event)" placeholder="Search the members list"></ion-searchbar>
-      </ion-col>
+    <!-- <ion-row align-items-center justify-content-center>
+      <ion-col col-12 col-sm-12 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2 align-self-center></ion-col>
       <ion-col col-12 col-sm col-md-2 col-lg-2 col-xl-2 align-self-stretch>
       </ion-col>
-    </ion-row>
+    </ion-row> -->
+
     <ion-row align-items-center justify-content-center>
-      <ion-col col-12 col-sm-12 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2 align-self-center>
-        <ion-segment [(ngModel)]="icons" color="secondary">
-          <ion-segment-button value="camera">
-            <ion-icon name="camera"></ion-icon>
+      <ion-col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 align-self-center>
+        <ion-segment [(ngModel)]="club" color="primary">
+          <ion-segment-button value="Nkana">
+            Nkana
           </ion-segment-button>
-          <ion-segment-button value="bookmark1">
-            <ion-icon name="bookmark"></ion-icon>
+          <ion-segment-button value="Mufulira">
+            Mufulira
           </ion-segment-button>
-          <ion-segment-button value="camera1">
-            <ion-icon name="camera"></ion-icon>
-          </ion-segment-button>
-          <ion-segment-button value="bookmark">
-            <ion-icon name="bookmark"></ion-icon>
+          <ion-segment-button value="Guest">
+            Guest
           </ion-segment-button>
         </ion-segment>
 
       </ion-col>
-      <ion-col col-12 col-sm col-md-2 col-lg-2 col-xl-2 align-self-stretch>
-      </ion-col>
     </ion-row>
 
-    <ion-row align-items-center justify-content-center >
+    <ion-row align-items-center justify-content-center>
       <ion-col col-12 col-sm-12 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2 align-self-center>
-        <ion-card *ngIf='member'>
-          <ion-list>
-            <ion-item>
-              Membership Number: {{member.membershipNumber}}
-            </ion-item>
-            <ion-item>
-              Contact: {{member.contact}}
-            </ion-item>
-            <ion-item>
-              Boating Site: {{member.club}}
-            </ion-item>
-            <ion-item style="text-transform: capitalize;">
-              Member Status: {{member.status}}
-            </ion-item>
-          </ion-list>
-        </ion-card>
-        <ion-card>
-          <ion-list>
-            <ion-item>
-              Signature:
-            </ion-item>
-            <ion-item>
-              <signature-pad [options]="signaturePadOptions" id="signatureCanvas"></signature-pad>
-            </ion-item>
-            <ion-item style="margin-top:-10px;">
-              <button ion-button (click)="drawClear()">
-                Clear Signature
-              </button>
-            </ion-item>
-          </ion-list>
-        </ion-card>
-      </ion-col>
+        <div [ngSwitch]="club">
 
-      <ion-col col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4 align-self-stretch>
-        3 of 3
+          <ion-list *ngSwitchCase="'Nkana'">
+            <ion-item *ngIf="!members">
+              No Member Loaded Yet!!!
+            </ion-item>
+            <div *ngIf="members">
+              <ion-item *ngFor="let member of members">
+                <ion-avatar item-start>
+                  <!-- <img *ngIf="item.profilePic" [src]="item.profilePic" /> -->
+                  <ion-icon name="ios-contact" style="font-size: 50px;"></ion-icon>
+                </ion-avatar>
+                <div class="" (click)="openMemberDetails(member)" tappable>
+                  <h2>{{member.firstName}} {{member.lastName}}</h2>
+                  <h6 style="color:grey;">{{member.about}}</h6>
+                </div>
+
+                <button item-end ion-button icon-only clear (click)="showPopOver($event, member)">
+                  <ion-icon name='more' style="font-size: 30px;"></ion-icon>
+                </button>
+              </ion-item>
+            </div>
+          </ion-list>
+
+
+
+          <ion-list *ngSwitchCase="'Mufulira'">
+            <ion-item *ngIf="!mufMembers">
+              No Member Loaded Yet!!!
+            </ion-item>
+            <div *ngIf="mufMembers">
+              <ion-item *ngFor="let member of mufMembers">
+                <ion-avatar item-start>
+                  <!-- <img *ngIf="item.profilePic" [src]="item.profilePic" /> -->
+                  <ion-icon name="ios-contact" style="font-size: 50px;"></ion-icon>
+                </ion-avatar>
+                <div class="" (click)="openMemberDetails(member)" tappable>
+                  <h2>{{member.firstName}} {{member.lastName}}</h2>
+                  <h6 style="color:grey;">{{member.about}}</h6>
+                </div>
+                <button item-end ion-button icon-only clear (click)="showPopOver($event, member)">
+                  <ion-icon name='more' style="font-size: 30px;"></ion-icon>
+                </button>
+              </ion-item>
+            </div>
+
+          </ion-list>
+
+          <!-- <div *ngIf="authService.isAdmin()">
+            <ion-fab right bottom>
+              <button ion-fab color="primary" (click)="addMember()">
+                <ion-icon name="add"></ion-icon>
+              </button>
+            </ion-fab>
+          </div> -->
+
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>
