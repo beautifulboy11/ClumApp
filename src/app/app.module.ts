@@ -32,6 +32,7 @@ import { E2EPage } from '../pages/e2e/e2e';
 import { AddEventPageModule } from '../pages/add-event/add-event.module';
 import { MemberDetailPageModule } from '../pages/member-detail/member-detail.module';
 import { ResetPasswordPageModule } from '../pages/reset-password/reset-password.module';
+import { DateWorker } from '../providers/date-worker/date-worker';
 
 export const firebaseConfig = environment.firebaseConfig;
 export function createTranslateLoader(http: HttpClient) {
@@ -90,7 +91,7 @@ export function provideSettings(storage: Storage) {
       //pageTransitionDelay: 16
     }),
     IonicStorageModule.forRoot(),
-    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireModule.initializeApp(firebaseConfig),    
     AngularFireDatabaseModule,
     AngularFireStorageModule,
     AngularFireAuthModule,
@@ -123,7 +124,8 @@ export function provideSettings(storage: Storage) {
     Calendar,
     AuthService,
     SQLite,
-    Sqlstorage
+    Sqlstorage,
+    DateWorker
   ]
 })
 export class AppModule { }

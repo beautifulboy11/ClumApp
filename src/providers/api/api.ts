@@ -22,13 +22,28 @@ const httpOptions = {
 
 @Injectable()
 export class Api {
+  members: Member[] = [];
   private maxCheckin: number;
-  public members: any;
   private url: string = "https://boating-manager.firebaseio.com";
 
-  constructor(public http: HttpClient, private db: AngularFireDatabase) {}
+  constructor(public http: HttpClient, private db: AngularFireDatabase) { }
 
-  getMembers() {
+  public getPreviousCheckins(membershipNumber: any) {
+    return Observable.create(q => {
+      return this.db
+        .list('/checkins/' + membershipNumber, ref =>
+          ref.orderByChild("memberId")
+            .equalTo(membershipNumber)
+        ).valueChanges().subscribe(
+          (res) => {
+            return q.next(res);
+          },
+          error => { }
+        );
+    });
+  }
+
+  public getMembers() {
     return Observable.create(observer => {
       return this.db
         .list<Member>("members")
@@ -38,12 +53,12 @@ export class Api {
             this.members = res;
             return observer.next(res);
           },
-          error => {}
+          error => { }
         );
     });
   }
 
-  getMaxCheckInLock(): Observable<any> {
+  public getMaxCheckInLock(): Observable<any> {
     return Observable.create(observer => {
       var res = this.db
         .list("maxCheckin")
@@ -56,13 +71,53 @@ export class Api {
     });
   }
 
-  getCheck_Ins(member: any): Observable<CheckIn> {
+  public getMemberCheckins(member: any): Observable<CheckIn> {
     return Observable.create(observer => {
-      var res = this.db.list("/checkins", ref =>
+      return this.db.list('/checkins/' + member.membershipNumber, ref =>
         ref.orderByChild("memberId").equalTo(member.membershipNumber)
-      );
-      return observer.next(res);
+      ).valueChanges().subscribe(res => {
+        return observer.next(res);
+      });
     });
+  }
+
+  public getLatestCheckin(membershipNumber: string): any {
+    return Observable.create(observer => {
+      return this.db.list('/checkins/' + membershipNumber, ref => ref.orderByChild('memberId')
+        .equalTo(membershipNumber).limitToLast(1))
+        .valueChanges()
+        .subscribe(data => {
+          return observer.next(data);
+        });
+    });
+  }
+
+  public postCheckin(checkinRec: CheckIn): any {
+    try {
+      return Observable.create(observer => {
+        return this.db
+          .list('checkins/' + checkinRec.memberId)
+          .push({
+            date: checkinRec.date,
+            memberId: checkinRec.memberId,
+            signature: checkinRec.signature
+          }).then((value) => {
+            return observer.next(value);
+          });
+      });
+    } catch (error) { }
+  }
+
+  public postGuestCheckin(checkinRec: CheckIn, guests: string[]): any {
+    try {
+      this.db
+        .list('guests/' + checkinRec.memberId + "/" + new Date().getFullYear() + "/" + new Date().getMonth() + 1)
+        .push({
+          guests
+        }).then((value) => {
+          return value;
+        });
+    } catch (error) { }
   }
 
   public get(endpoint: string, params?: any, reqOpts?: any): Observable<any> {
@@ -83,19 +138,19 @@ export class Api {
       .pipe(retry(3), catchError(this.handleError));
   }
 
-  post(endpoint: string, body: any, reqOpts?: any) {
+  public post(endpoint: string, body: any, reqOpts?: any) {
     return this.http.post(this.url + "/" + endpoint, body, reqOpts);
   }
 
-  put(endpoint: string, body: any, reqOpts?: any) {
+  public put(endpoint: string, body: any, reqOpts?: any) {
     return this.http.put(this.url + "/" + endpoint, body, reqOpts);
   }
 
-  delete(endpoint: string, reqOpts?: any) {
+  public delete(endpoint: string, reqOpts?: any) {
     return this.http.delete(this.url + "/" + endpoint, reqOpts);
   }
 
-  patch(endpoint: string, body: any, reqOpts?: any) {
+  public patch(endpoint: string, body: any, reqOpts?: any) {
     return this.http.patch(this.url + "/" + endpoint, body, reqOpts);
   }
 
@@ -111,5 +166,23 @@ export class Api {
     return new ErrorObservable(
       "Connection Error; Check connection & try again later."
     );
+  }
+
+  public query(params?: any) {
+    if (!params) {
+      return this.members;
+    }
+
+    return this.members.filter((item) => {
+      for (let key in params) {
+        let field = item[key];
+        if (typeof field == 'string' && field.toLowerCase().indexOf(params[key].toLowerCase()) >= 0) {
+          return item;
+        } else if (field == params[key]) {
+          return item;
+        }
+      }
+      return null;
+    });
   }
 }

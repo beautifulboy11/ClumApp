@@ -44,7 +44,7 @@ export class SlidePage {
 
   slideChanged() {
     if (this.slides.isEnd()) {
-      this.skipMsg = "Alright, I got it";
+      this.skipMsg = "Alright, Get Started";
     } else {
       this.skipMsg = "Skip";
     }

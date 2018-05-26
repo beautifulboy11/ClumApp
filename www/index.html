@@ -11,7 +11,7 @@
   <meta name="format-detection" content="telephone=no">
   <meta name="msapplication-tap-highlight" content="no">
   <meta "content_security_policy":
-    "script-src 'self' https://apis.google.com https://www.googleapis.com https://securetoken.googleapis.com; object-src 'self'", "permissions": [ "https://*/*", "activeTab"]>
+    "script-src 'self' https://apis.google.com https://www.googleapis.com https://securetoken.googleapis.com https://s-usc1c-nss-208.firebaseio.com; object-src 'self'", "permissions": [ "https://*/*", "activeTab"]>
   <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4e8ef7">
@@ -24,7 +24,7 @@
   <script src="cordova.js"></script>
 
   <!-- un-comment this code to enable service worker-->
-  <script>
+  <!-- <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/service-worker.js')
@@ -32,8 +32,7 @@
           .catch(err => console.error('Error', err));
       });
     }
-
-  </script>
+  </script> -->
 
   <link href="build/main.css" rel="stylesheet">
   <link href="assets/css/font-awesome.min.css" rel="stylesheet" />
@@ -52,10 +51,7 @@
   <script src="build/vendor.js"></script>
 
   <!-- The main bundle js is generated during the build process -->
-  <script src="build/main.js"></script>
-  <!--<noscript>
-    Please enable Javascript in order to use the application
-  </noscript>-->
+  <script src="build/main.js"></script> 
 </body>
 
 </html>

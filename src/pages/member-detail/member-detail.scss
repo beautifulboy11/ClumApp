@@ -1,16 +1,34 @@
-page-member-detail {
-  .item-profile {
-    width: 100%;
-    background-position: center center;
-    background-size: cover;
-    height: 120px;
+.ios,.md,.wd{
+  page-member-detail {
+    .card-header{
+      padding-bottom: 0px;
+    }
+    .item-profile {
+      width: 100%;
+      background-position: center center;
+      background-size: cover;
+      height: 120px;
+    }
+    .card-text {
+      font-weight: bold;
+      font-size: 10px;
+      color: map-get($colors, primary);
+    }
+    .system-message{
+      color: map-get($colors, secondary);
+      font-weight: inherit;
+    }
+    .checkin-log{
+      color: map-get($colors, primary);
+    }
+    .item-detail {
+      width: 100%;
+      background: white;
+      position: absolute;
+    }
   }
-//ion-card{
-  //height: 700px;
-//}
-  .item-detail {
-    width: 100%;
-    background: white;
-    position: absolute;
-  }
+  
 }
+
+
+

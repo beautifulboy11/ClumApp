@@ -12,6 +12,10 @@ module.exports = Object.assign(existingConfig, {
   copyFontawesomeCss: {
     src: ['{{ROOT}}/node_modules/font-awesome/css/font-awesome.min.css'],
     dest: '{{WWW}}/assets/css'
+  },
+  copyServiceWorker:{
+    src: ['{{ROOT}}/src/workbox-sw.js'],
+    dest:'{{WWW}}/build'
   }
 }
 );

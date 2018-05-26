@@ -10,9 +10,9 @@ import { AuthService } from '../../providers/providers';
   template: `
   <ion-list>
     <ion-list-header>What would you like to do?</ion-list-header>  
-    <button ion-item (click)="openMemberDetails(member)">Details</button>
+    <button ion-item (click)="openMemberDetails(member)" *ngIf="authService.isAdmin()">Details</button>
     <button ion-item (click)="showCheckin(member)" *ngIf="authService.isSecurity()">Checkin</button>
-    <button ion-item (click)="close()">Cancel</button>
+    <button ion-item (click)="close()">Close</button>
     <button ion-item (click)="showConfirm(member)" *ngIf="authService.isAdmin()">Delete</button>
   </ion-list>
 `
@@ -22,17 +22,16 @@ export class PopoverPage {
   member: any;
   membersRef: AngularFireList<any>;
   public signatureImage: any;
-  
+
   constructor(public viewCtrl: ViewController,
-     private alertCtrl: AlertController, 
-     private authService: AuthService,
-     public db: AngularFireDatabase, public modalCtrl: ModalController, public navParams: NavParams, public navCtrl: NavController) {
+    private alertCtrl: AlertController,
+    private authService: AuthService,
+    public db: AngularFireDatabase, public modalCtrl: ModalController, public navParams: NavParams, public navCtrl: NavController) {
     this.membersRef = db.list('members');
-    this.member = navParams.get('member');   
+    this.member = navParams.get('member');
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PopoverPage');
   }
 
   close() {
@@ -40,7 +39,6 @@ export class PopoverPage {
   }
 
   openMemberDetails(member: Member) {
-    console.log('***navParams', member);
     this.navCtrl.push(MemberDetailPage, {
       member: member
     });
@@ -48,10 +46,9 @@ export class PopoverPage {
 
 
   showCheckin(member: any) {
-    let modal = this.modalCtrl.create(SignaturePage,{member: member});
+    let modal = this.modalCtrl.create(SignaturePage, { member: member });
     modal.onDidDismiss((item) => {
       this.signatureImage = item;
-      console.log(this.signatureImage);
     });
     modal.present();
   }
@@ -64,13 +61,11 @@ export class PopoverPage {
         {
           text: 'No',
           handler: () => {
-            console.log('Disagree clicked');
           }
         },
         {
           text: 'Yes',
           handler: () => {
-            console.log('Agree clicked');
             this.removeMember(item);
           }
         }

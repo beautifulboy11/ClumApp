@@ -4,8 +4,14 @@
       <ion-icon name="menu" clear></ion-icon>
     </button>
     <ion-title>Member Details</ion-title>
+    <ion-buttons end>
+      <a ion-button ion-only (click)="gotoCheckin()">
+        checkin
+      </a>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
+
 <ion-content no-padding parallax-profile>
   <ion-toolbar color="primary">
     <div style="padding-bottom:10px; margin-bottom:15px; color:#fff;" class="item-profile" text-center #profilePic [style.background-image]="'url(' + member?.profilePic + ')'">
@@ -20,30 +26,49 @@
   <div class="main-content">
     <ion-card>
       <ion-list>
-        <ion-card ion-item>ID: {{member.membershipNumber}}</ion-card>
-        <ion-card ion-item style="text-transform:capitalize">Status: {{member.status}}</ion-card>
-        <ion-card ion-item>About: {{member.about}}</ion-card>
-        <ion-card ion-item>Contact Number: {{member.contact}}</ion-card>
+        <ion-card ion-item>
+          <b>ID:</b> {{member.membershipNumber}}</ion-card>
+        <ion-card ion-item style="text-transform:capitalize">
+          <b>Status:</b> {{member.status}}</ion-card>
+        <ion-card ion-item>
+          <b>About:</b> {{member.about}}</ion-card>
+        <ion-card ion-item>
+          <b>Contact Number:</b> {{member.contact}}</ion-card>
       </ion-list>
     </ion-card>
-    <ion-card>
-      <ion-card-header>Recent Checkins</ion-card-header>
-      <ion-card-content>
-        <ion-list *ngFor="let checkin of checkins">
-          <ion-item>{{checkin.date | date:'fullDate'}}</ion-item>
-          <ion-grid no-padding>
-            <ion-row>
-              <ion-col col-12 col-sm-6 col-md-2 col-lg-1 col-xl-1>
-                <ion-item>
-                  <img [src]="checkin.signature" width="150" height="50" />
-                </ion-item>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-list>
-      </ion-card-content>
+    <div text-center *ngIf="show">
+      <ion-spinner name="bubbles" item-center></ion-spinner>
+    </div>
+
+    <ion-card *ngIf="!show">
+      <ion-card-header style="padding-bottom: 0px;">
+        <ion-row>
+          <ion-col>
+            <b>Most Recent Checkin</b>
+          </ion-col>
+          <ion-col>
+            <div *ngIf="!noResults" class="card-text" (click)="goto('CheckinSummaryPage')" tappable="true" text-right>
+              MORE
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-card-header>
+      <ion-row>
+        <ion-col col-12 col-sm-6 col-md-2 col-lg-1 col-xl-1>
+          <ion-list *ngIf="noResults">
+            <ion-item class="system-message">No Previous Checkins Found!!!</ion-item>
+          </ion-list>
+          <ion-list *ngFor="let checkin of checkins">
+            <ion-item class="checkin-log">{{checkin.date | date:'fullDate'}}</ion-item>
+            <div style="width:80px; padding-left: 16px;">
+              <img [src]="checkin.signature" width="50" height="30" />
+            </div>
+          </ion-list>
+        </ion-col>
+      </ion-row>
     </ion-card>
   </div>
 
 
 </ion-content>
+

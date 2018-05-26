@@ -129,8 +129,6 @@ export class MemberPage {
     const filePath = 'name-your-file-path-here';
     const task = this.storage.upload(filePath, file);
 
-    // observe percentage changes
-    // get notified when the download URL is available
     this.uploadPercent = task.percentageChanges();
     this.downloadURL = task.downloadURL();
   }

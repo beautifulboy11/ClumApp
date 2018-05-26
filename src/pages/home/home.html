@@ -21,8 +21,8 @@
       <ion-col col-12 col-sm-12 col-md-6 md-offest-3 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3>
         <ion-card>
           <img src="assets/imgs/card-saopaolo.png" />
-          <div (click)="goto('MemberPage')" *ngIf="authService.isAdmin()" tappable>
-            <div class="card-title">Member</div>
+          <div class="card-title">Member</div>
+          <div (click)="goto('MemberPage')" *ngIf="authService.isAdmin()" tappable>           
             <div class="card-subtitle">
               Listings
               <br/>
@@ -31,10 +31,18 @@
               </button>
             </div>
           </div>
-          <div (click)="gotoCheckin()" *ngIf="authService.isSecurity()" tappable>          
-            <div class="card-title">Member</div>
+          <div (click)="gotoCheckin()" *ngIf="authService.isSecurity() && !authService.isAdmin()" tappable>                   
             <div class="card-subtitle">
               Check-in
+              <br/>
+              <button ion-button icon-only clear style="color:azure;">
+                <ion-icon name="arrow-forward"></ion-icon>
+              </button>
+            </div>
+          </div>  
+          <div (click)="goto('CheckinSummaryPage')" *ngIf="authService.isUser()" tappable>          
+            <div class="card-subtitle">
+              History
               <br/>
               <button ion-button icon-only clear style="color:azure;">
                 <ion-icon name="arrow-forward"></ion-icon>
@@ -43,17 +51,7 @@
           </div>
         </ion-card>
 
-        <ion-card (click)="goto('CheckinSummaryPage')" *ngIf="authService.isUser()" tappable>
-          <img src="assets/imgs/card-saopaolo.png" />
-          <div class="card-title">Check-in</div>
-          <div class="card-subtitle">
-            History
-            <br/>
-            <button ion-button icon-only clear style="color:azure;">
-              <ion-icon name="arrow-forward"></ion-icon>
-            </button>
-          </div>
-        </ion-card>
+        
       </ion-col>
 
       <ion-col col-12 col-sm-12 col-md-6 md-offest-3 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3>

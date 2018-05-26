@@ -5,7 +5,7 @@
         <div id="register-container" class="container">
 
           <div class="login-pane">
-            <div id="login-page" class="auth-form-wrapper" style="margin-top: 70px;">
+            <div id="login-page" class="auth-form-wrapper" style="margin-top: 40px;">
               <div class="text-center" [style.display]="showImage">
                 <img src='assets/img/logo.png' class="round-image" width="96" height="96" alt="Boating Club" />
                 <div class="splash-bg">
@@ -59,12 +59,14 @@
                 </form>
                 <div ion-row no-padding no-margin [style.margin-top.px]="margin_top">
                   <ion-col col-12>
-                    <div padding-horizontal>
+                    <div padding-horizontal class="text-center help">
                       <div class="text-center help">Don't have a Member account?
-                        <a class="btn white outline sm" (click)="Signup()">
+                        <br/>
+                        
+                      </div>
+                      <a class="btn white outline sm" (click)="Signup()">
                           Sign Up
                         </a>
-                      </div>
                     </div>
                   </ion-col>
                 </div>

@@ -9,7 +9,6 @@ import { Observable } from "rxjs/Observable";
 import { switchMap } from 'rxjs/operator/switchMap';
 import 'rxjs/add/observable/of';
 import * as _ from 'lodash';
-//import { forEach } from '@firebase/util';
 export interface Credentials {
   email: string;
   password: string;

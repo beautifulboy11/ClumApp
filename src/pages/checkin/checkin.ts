@@ -1,12 +1,14 @@
 import { Component } from "@angular/core";
 import {
   NavController,
-  AlertController, 
+  AlertController,
   LoadingController,
-  ToastController
+  ToastController,
+  PopoverController
 } from "ionic-angular";
 
 import { Api } from "../../providers/providers";
+import { MemberDetailPage, PopoverPage } from "../pages";
 
 @Component({
   selector: "page-checkin",
@@ -19,14 +21,16 @@ export class CheckinPage {
   public loading: any;
   mufMembers: any = [];
   members: any = [];
+  currentMembers: any = [];
   constructor(
     private navCtrl: NavController,
     private alertCtrl: AlertController,
+    private popoverCtrl: PopoverController,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
     private api: Api
   ) {
-    this.club = 'Nkana';
+    this.club = "Nkana";
   }
 
   ionViewDidLoad() {
@@ -43,8 +47,6 @@ export class CheckinPage {
     this.loading.present().then(() => {
       this.api.getMembers().subscribe(
         res => {
-          this.members = [];
-          this.mufMembers = [];
           res.forEach(resp => {
             if (resp.club === "Nkana") {
               this.members.push(resp);
@@ -71,29 +73,37 @@ export class CheckinPage {
       );
     });
   }
-
-  ionViewWillEnter() {
-    this.api.getMaxCheckInLock().subscribe(
-      res => {
-        this.maxAllowed = res;
-        console.log(res);
-      },
-      error => {
-        alert(error);
-      }
-    );
+  
+  showPopOver($event, member: any) {
+    let popover = this.popoverCtrl.create(PopoverPage, { member: member });
+    popover.present({
+      ev: $event,
+    });
   }
 
   getItems(ev) {
+    this.members = [];
+    this.mufMembers = [];
     let val = ev.target.value;
     if (!val || !val.trim()) {
+      this.currentMembers = [];
       return;
     }
+    this.currentMembers = this.api.query({
+      firstName: val,lastName: val,membershipNumber: val
+    });
+    this.currentMembers.forEach(resp => {
+      if (resp.club === "Nkana") {
+        this.members.push(resp);
+      } else {
+        this.mufMembers.push(resp);
+      }
+    });
+  }
 
-    // this.members = this.query({
-    //   firstName: val,
-    //   lastName: val,
-    //   membershipNumber: val
-    // });
+  viewDetails(member: any) {
+    this.navCtrl.push(MemberDetailPage, {
+      member: member
+    });
   }
 }

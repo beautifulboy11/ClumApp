@@ -9,6 +9,8 @@ import {
 } from "ionic-angular";
 import { SignaturePad } from "angular2-signaturepad/signature-pad";
 import { AngularFireDatabase, AngularFireList } from "angularfire2/database";
+import { Api } from "../../providers/api/api";
+import { DateWorker } from "../../providers/date-worker/date-worker";
 
 @Component({
   selector: "page-signature",
@@ -22,17 +24,20 @@ export class SignaturePage {
     canvasWidth: 340,
     canvasHeight: 200
   };
+
   public signatureImage: string;
   public member: any;
   public prevCheckin: any = [];
   public checkinRef: AngularFireList<any>;
   public MaxcheckinRef: AngularFireList<any>;
-  public previousCheckin: AngularFireList<any>;
+  public previousCheckin: any = [];
   public maxAllowed: number;
   public loading: any;
   constructor(
     public navCtrl: NavController,
     public viewCtrl: ViewController,
+    private api: Api,
+    private dateWorker: DateWorker,
     public navParams: NavParams,
     public db: AngularFireDatabase,
     private alertCtrl: AlertController,
@@ -40,10 +45,11 @@ export class SignaturePage {
     private toastCtrl: ToastController
   ) {
     this.member = navParams.get("member");
-    this.checkinRef = db.list("checkins");
-    this.MaxcheckinRef = db.list("maxCheckin");
-    this.previousCheckin = this.db.list("/checkins", ref =>
-      ref.orderByChild("memberId").equalTo(this.member.membershipNumber)
+    this.api.getPreviousCheckins(this.member.membershipNumber).subscribe(
+      res => {
+        this.previousCheckin = res;
+      },
+      error => { }
     );
   }
 
@@ -54,6 +60,17 @@ export class SignaturePage {
     this.signaturePad.set("canvasHeight", canvas.offsetHeight);
   }
 
+  ionViewWillEnter() {
+    this.api.getMaxCheckInLock().subscribe(
+      res => {
+        this.maxAllowed = res;
+      },
+      error => {
+        alert(error);
+      }
+    );
+  }
+
   ionViewDidEnter() {
     this.loading = this.loadingCtrl.create({
       spinner: "circles",
@@ -61,40 +78,24 @@ export class SignaturePage {
     });
 
     this.loading.present().then(() => {
-      this.MaxcheckinRef.valueChanges().subscribe(data => {
-        data.map(result => {
-          this.maxAllowed = result;
-          console.log("**Max Allowed", this.maxAllowed);
-        });
-      });
+      for (let element of this.previousCheckin) {
+        var mon = this.dateWorker.getMonthFromDate(element.date);
+        var year = this.dateWorker.getYearFromDate(element.date);
 
-      this.previousCheckin.valueChanges().subscribe(resp => {
-        resp.map(res => {
-          var ob = {
-            mon: this.getMonthFromDate(res.date),
-            year: this.getYearFromDate(res.date),
-            memberId: res.memberId
-          };
+        if (
+          mon == this.dateWorker.CurrenMonth() &&
+          year == this.dateWorker.CurrentYear()
+        ) {
+          let ob = { mon, year, memberId: element.memberId };
           this.prevCheckin.push(ob);
-        });
-        this.checkCheckins();
-      });
+        }
+      }
+      this.countCheckins();
     });
   }
 
-  checkCheckins() {
-    let matcheddates = [];
-    this.prevCheckin.forEach(element => {
-      if (
-        element.mon === new Date().getMonth() + 1 &&
-        element.year === new Date().getFullYear()
-      ) {
-        matcheddates.push(element);
-      }
-    });
-
-    var isMax = matcheddates.length < this.maxAllowed ? true : false;
-
+  countCheckins() {
+    var isMax = this.prevCheckin.length < this.maxAllowed ? true : false;
     if (isMax) {
       this.loading.dismiss();
     } else {
@@ -120,18 +121,6 @@ export class SignaturePage {
     toast.present();
   }
 
-  getYearFromDate(date: string): number {
-    let d = new Date(date);
-    var m = d.getFullYear();
-    return m;
-  }
-
-  getMonthFromDate(date: string): number {
-    let d = new Date(date);
-    var m = d.getMonth() + 1;
-    return m;
-  }
-
   ngAfterViewInit() {
     this.signaturePad.clear();
     this.canvasResize();
@@ -141,37 +130,77 @@ export class SignaturePage {
     this.viewCtrl.dismiss();
   }
 
-  save() {
-    this.signatureImage = this.signaturePad.toDataURL();
-    var today = new Date();
-    var date =
-      today.getFullYear() +
-      "-" +
-      (today.getMonth() + 1) +
-      "-" +
-      today.getDate();
-
-    this.checkinRef.push({
-      date: date,
-      memberId: this.member.membershipNumber,
-      signature: this.signatureImage
-    });
-    this.showSuccess();
-  }
-
   drawClear() {
     this.signaturePad.clear();
   }
 
+  save() {
+    this.signatureImage = this.signaturePad.toDataURL();
+    var today = new Date();
+    var date = today.getFullYear() +
+      "-" + (today.getMonth() + 1) +
+      "-" + today.getDate();
+    this.api.postCheckin({
+      date: date,
+      memberId: this.member.membershipNumber,
+      signature: this.signatureImage
+    }).subscribe(res =>{
+      this.showSuccess();
+    });    
+  }
+
+  PromptGuestCheckin() {
+
+  }
+
+  presentConfirm() {
+    let alert = this.alertCtrl.create({
+      title: 'Confirm Guests',
+      message: 'Do you have any guests?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            this.navCtrl.pop();
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Buy clicked');
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   showSuccess() {
+    let toast = this.toastCtrl.create({
+      message: "You have successfully checked in",
+      duration: 4000,
+      position: "top",
+      showCloseButton: true,
+      dismissOnPageChange: true,
+      closeButtonText: "OK"
+    });
+
+    toast.onDidDismiss(() => {
+      this.presentConfirm();
+    });
+
+    toast.present();
+  }
+
+  showError(Error: string) {
     let confirm = this.alertCtrl.create({
-      title: "Success",
-      message: "You have successfully checked in this user",
+      title: "Error",
+      message: Error,
       buttons: [
         {
           text: "OK",
           handler: () => {
-            console.log("Agree clicked");
             this.navCtrl.pop();
           }
         }
