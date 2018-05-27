@@ -1,4 +1,4 @@
-<ion-header no-shadow no-border>
+<ion-header no-shadow no-border #head>
 
   <ion-navbar>
     <button menuToggle ion-button clear>
@@ -14,7 +14,7 @@
 
 </ion-header>
 
-<ion-content class="card-background-page" no-padding>
+<ion-content class="card-background-page" no-padding parallax-header [header]="head">
 
   <div ion-grid no-padding>
     <div ion-row>

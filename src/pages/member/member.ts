@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/switchMap';
-import { Network } from '@ionic-native/network';
 import { AuthService } from '../../providers/providers';
 import { Member } from '../../models/member';
 import * as _ from 'lodash';
@@ -41,8 +40,7 @@ export class MemberPage {
     public toastCtrl: ToastController,
     private authService: AuthService,
     public db: AngularFireDatabase,
-    private storage: AngularFireStorage,
-    private network: Network
+    private storage: AngularFireStorage
   ) {
 
     this.club = 'Nkana';
@@ -52,16 +50,10 @@ export class MemberPage {
   }
 
   ionViewDidEnter() {
-    //TODO check Network connection 
-    //unknown, ethernet, wifi, 2g, 3g, 4g, cellular, none
-    //this.network.onchange().subscribe(() => {});    
-    //this.network.onConnect().subscribe(data => console.log('network connected!', data), error => console.log('network connected!', error));
-
-    //this.network.onDisconnect().subscribe(data => console.log('network was disconnected', data), error => console.log(error));
   }
 
   ionViewDidLoad() {
-    this.loadMembers();   
+    this.loadMembers();
   }
 
   loadMembers(): any {
@@ -129,7 +121,7 @@ export class MemberPage {
     const filePath = 'name-your-file-path-here';
     const task = this.storage.upload(filePath, file);
 
-    this.uploadPercent = task.percentageChanges();
-    this.downloadURL = task.downloadURL();
+    //this.uploadPercent = task.percentageChanges();
+    //this.downloadURL = task.downloadURL();
   }
 }

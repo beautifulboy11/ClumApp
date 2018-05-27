@@ -8,6 +8,7 @@ import {
 import { SiteLocationsPage, CheckinPage } from "../pages";
 import { AngularFireAuth } from "angularfire2/auth";
 import { AuthService } from "../../providers/providers";
+import { NetworkService } from "../../providers/network-service/network-service";
 // @IonicPage()
 @Component({
   selector: "page-home",
@@ -15,9 +16,6 @@ import { AuthService } from "../../providers/providers";
 })
 export class HomePage {
   loading: any;
-  admin: boolean;
-  user: boolean;
-  security: boolean;
 
   constructor(
     public navCtrl: NavController,
@@ -25,9 +23,18 @@ export class HomePage {
     private afAuth: AngularFireAuth,
     private toastCtrl: ToastController,
     private authService: AuthService,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    public networkService: NetworkService
   ) {
 
+  }
+  ionViewWillEnter() {
+    this.networkService.NetworkCheck();
+
+    console.log(
+      "network Connection Status!",
+      this.networkService.connectionStatus
+    );
   }
 
   ionViewDidLoad() {

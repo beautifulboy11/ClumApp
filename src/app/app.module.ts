@@ -33,6 +33,7 @@ import { AddEventPageModule } from '../pages/add-event/add-event.module';
 import { MemberDetailPageModule } from '../pages/member-detail/member-detail.module';
 import { ResetPasswordPageModule } from '../pages/reset-password/reset-password.module';
 import { DateWorker } from '../providers/date-worker/date-worker';
+import { NetworkService } from '../providers/network-service/network-service';
 
 export const firebaseConfig = environment.firebaseConfig;
 export function createTranslateLoader(http: HttpClient) {
@@ -125,7 +126,8 @@ export function provideSettings(storage: Storage) {
     AuthService,
     SQLite,
     Sqlstorage,
-    DateWorker
+    DateWorker,
+    NetworkService
   ]
 })
 export class AppModule { }
