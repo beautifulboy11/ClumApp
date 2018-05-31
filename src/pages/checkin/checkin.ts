@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {
   NavController,
   AlertController,
@@ -14,7 +14,7 @@ import { MemberDetailPage, PopoverPage } from "../pages";
   selector: "page-checkin",
   templateUrl: "checkin.html"
 })
-export class CheckinPage {
+export class CheckinPage implements OnInit {
   club: string;
   private membersList: any;
   public maxAllowed: number;
@@ -22,6 +22,7 @@ export class CheckinPage {
   mufMembers: any = [];
   members: any = [];
   currentMembers: any = [];
+  isLoading = false;
   constructor(
     private navCtrl: NavController,
     private alertCtrl: AlertController,
@@ -32,52 +33,48 @@ export class CheckinPage {
   ) {
     this.club = "Nkana";
   }
-
-  ionViewDidLoad() {
+  ngOnInit() {
     this.loadMembers();
   }
 
   loadMembers(): any {
-    this.loading = this.loadingCtrl.create({
-      content: "Loading...",
-      spinner: "bubbles",
-      showBackdrop: false
-    });
-
-    this.loading.present().then(() => {
-      this.api.getMembers().subscribe(
-        res => {
-          res.forEach(resp => {
-            if (resp.club === "Nkana") {
-              this.members.push(resp);
-            } else {
-              this.mufMembers.push(resp);
-            }
-          });
-          this.loading.dismiss();
-        },
-        error => {
-          this.loading.dismiss().then(() => {
-            this.toastCtrl
-              .create({
-                position: "bottom",
-                message: error.message,
-                showCloseButton: true,
-                cssClass: "toast-message",
-                closeButtonText: "Dismiss",
-                dismissOnPageChange: true
-              })
-              .present();
-          });
-        }
-      );
-    });
+    this.isLoading = true;
+    this.api.getMembers().subscribe(
+      res => {
+        res.forEach(resp => {
+          if (resp.club === "Nkana") {
+            this.members.push(resp);
+          } else {
+            this.mufMembers.push(resp);
+          }
+        });
+        this.isLoading = false;
+      },
+      error => {
+        this.showAlert(error);
+      }
+    );
   }
   
+  showAlert(error) {
+    this.loading.dismiss().then(() => {
+      this.toastCtrl
+        .create({
+          position: "bottom",
+          message: error.message,
+          showCloseButton: true,
+          cssClass: "toast-message",
+          closeButtonText: "Dismiss",
+          dismissOnPageChange: true
+        })
+        .present();
+    });
+  }
+
   showPopOver($event, member: any) {
     let popover = this.popoverCtrl.create(PopoverPage, { member: member });
     popover.present({
-      ev: $event,
+      ev: $event
     });
   }
 
@@ -90,7 +87,9 @@ export class CheckinPage {
       return;
     }
     this.currentMembers = this.api.query({
-      firstName: val,lastName: val,membershipNumber: val
+      firstName: val,
+      lastName: val,
+      membershipNumber: val
     });
     this.currentMembers.forEach(resp => {
       if (resp.club === "Nkana") {

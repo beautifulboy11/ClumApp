@@ -9,15 +9,8 @@
 
 </ion-header>
 
-
 <ion-content padding>
   <ion-grid no-padding>
-    <!-- <ion-row align-items-center justify-content-center>
-      <ion-col col-12 col-sm-12 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2 align-self-center></ion-col>
-      <ion-col col-12 col-sm col-md-2 col-lg-2 col-xl-2 align-self-stretch>
-      </ion-col>
-    </ion-row> -->
-
     <ion-row align-items-center justify-content-center>
       <ion-col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 align-self-center>
         <ion-segment [(ngModel)]="club" color="primary">
@@ -34,6 +27,12 @@
 
       </ion-col>
     </ion-row>
+    <div *ngIf="isLoading" style="margin: auto; margin-top: 10px;" text-center>
+      <ion-spinner name="bubbles" style="color:#488aff;" item-center></ion-spinner>
+      <p style="color:#488aff;">
+        <i>Loading... </i>
+      </p>
+    </div>
 
     <ion-row align-items-center justify-content-center>
       <ion-col col-12 col-sm-12 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2 align-self-center>
@@ -46,7 +45,7 @@
             <div *ngIf="members">
               <ion-item *ngFor="let member of members">
                 <ion-avatar item-start>
-                  <!-- <img *ngIf="item.profilePic" [src]="item.profilePic" /> -->
+                  <img *ngIf="item?.profilePic" [src]="item?.profilePic" />
                   <ion-icon name="ios-contact" style="font-size: 50px;"></ion-icon>
                 </ion-avatar>
                 <div class="" (click)="viewDetails(member)" tappable>
@@ -60,8 +59,6 @@
               </ion-item>
             </div>
           </ion-list>
-
-
 
           <ion-list *ngSwitchCase="'Mufulira'">
             <ion-item *ngIf="!mufMembers">
@@ -70,7 +67,7 @@
             <div *ngIf="mufMembers">
               <ion-item *ngFor="let member of mufMembers">
                 <ion-avatar item-start>
-                  <!-- <img *ngIf="item.profilePic" [src]="item.profilePic" /> -->
+                  <img *ngIf="item?.profilePic" [src]="item?.profilePic" />
                   <ion-icon name="ios-contact" style="font-size: 50px;"></ion-icon>
                 </ion-avatar>
                 <div class="" (click)="viewDetails(member)" tappable>
@@ -84,17 +81,9 @@
             </div>
 
           </ion-list>
-
-          <!-- <div *ngIf="authService.isAdmin()">
-            <ion-fab right bottom>
-              <button ion-fab color="primary" (click)="addMember()">
-                <ion-icon name="add"></ion-icon>
-              </button>
-            </ion-fab>
-          </div> -->
-
         </div>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
+

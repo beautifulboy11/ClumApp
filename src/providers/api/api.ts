@@ -28,13 +28,13 @@ export class Api {
 
   constructor(public http: HttpClient, private db: AngularFireDatabase) { }
 
-  public getPreviousCheckins(membershipNumber: any) {
+  getPreviousCheckins(membershipNumber: any) {
     return Observable.create(q => {
       return this.db
         .list('/checkins/' + membershipNumber, ref =>
           ref.orderByChild("memberId")
-            .equalTo(membershipNumber)
-        ).valueChanges().subscribe(
+            .equalTo(membershipNumber)).valueChanges()
+        .subscribe(
           (res) => {
             return q.next(res);
           },
@@ -43,22 +43,24 @@ export class Api {
     });
   }
 
-  public getMembers() {
+  getMembers() {
     return Observable.create(observer => {
       return this.db
-        .list<Member>("members")
+        .list<Member>("/members")
         .valueChanges()
         .subscribe(
           res => {
             this.members = res;
             return observer.next(res);
           },
-          error => { }
+          error => {
+            //error;
+          }
         );
     });
   }
 
-  public getMaxCheckInLock(): Observable<any> {
+  getMaxCheckInLock(): Observable<any> {
     return Observable.create(observer => {
       var res = this.db
         .list("maxCheckin")
@@ -71,7 +73,7 @@ export class Api {
     });
   }
 
-  public getMemberCheckins(member: any): Observable<CheckIn> {
+  getMemberCheckins(member: any): Observable<CheckIn> {
     return Observable.create(observer => {
       return this.db.list('/checkins/' + member.membershipNumber, ref =>
         ref.orderByChild("memberId").equalTo(member.membershipNumber)
@@ -81,7 +83,7 @@ export class Api {
     });
   }
 
-  public getLatestCheckin(membershipNumber: string): any {
+  getLatestCheckin(membershipNumber: string): any {
     return Observable.create(observer => {
       return this.db.list('/checkins/' + membershipNumber, ref => ref.orderByChild('memberId')
         .equalTo(membershipNumber).limitToLast(1))
@@ -92,26 +94,24 @@ export class Api {
     });
   }
 
-  public postCheckin(checkinRec: CheckIn): any {
-    try {
-      return Observable.create(observer => {
-        return this.db
-          .list('checkins/' + checkinRec.memberId)
-          .push({
-            date: checkinRec.date,
-            memberId: checkinRec.memberId,
-            signature: checkinRec.signature
-          }).then((value) => {
-            return observer.next(value);
-          });
-      });
-    } catch (error) { }
+  postCheckin(checkinRec: CheckIn): any {
+    return Observable.create(observer => {
+      return this.db
+        .list('checkins/' + checkinRec.memberId)
+        .push({
+          date: checkinRec.date,
+          memberId: checkinRec.memberId,
+          signature: checkinRec.signature
+        }).then((value) => {
+          return observer.next(value);
+        });
+    });
   }
 
-  public postGuestCheckin(checkinRec: CheckIn, guests: string[]): any {
+  postGuestCheckin(membershipNumber: string, guests: string[]): any {
     try {
       this.db
-        .list('guests/' + checkinRec.memberId + "/" + new Date().getFullYear() + "/" + new Date().getMonth() + 1)
+        .list('guests/' + membershipNumber + "/" + new Date().getFullYear() + "/" + new Date().getMonth() + 1)
         .push({
           guests
         }).then((value) => {
@@ -120,7 +120,25 @@ export class Api {
     } catch (error) { }
   }
 
-  public get(endpoint: string, params?: any, reqOpts?: any): Observable<any> {
+  query(params?: any) {
+    if (!params) {
+      return this.members;
+    }
+
+    return this.members.filter((item) => {
+      for (let key in params) {
+        let field = item[key];
+        if (typeof field == 'string' && field.toLowerCase().indexOf(params[key].toLowerCase()) >= 0) {
+          return item;
+        } else if (field == params[key]) {
+          return item;
+        }
+      }
+      return null;
+    });
+  }
+
+  get(endpoint: string, params?: any, reqOpts?: any): Observable<any> {
     if (!reqOpts) {
       reqOpts = {
         params: new HttpParams()
@@ -134,8 +152,9 @@ export class Api {
     }
 
     return this.http
-      .get(`${this.url}/${endpoint}`, reqOpts)
-      .pipe(retry(3), catchError(this.handleError));
+      .get(`${this.url}/${endpoint}`, reqOpts);
+
+       //.pipe(retry(3), catchError());
   }
 
   public post(endpoint: string, body: any, reqOpts?: any) {
@@ -154,35 +173,13 @@ export class Api {
     return this.http.patch(this.url + "/" + endpoint, body, reqOpts);
   }
 
-  private handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-      console.error("An error occurred:", error.error.message);
-    } else {
-      // The backend returned an unsuccessful response code.// The response body may contain clues as to what went wrong,
-      console.error(
-        `Backend returned code ${error.status}, ` + `body was: ${error.error}`
-      );
-    }
-    return new ErrorObservable(
-      "Connection Error; Check connection & try again later."
-    );
-  }
+  // private handleError(error: HttpErrorResponse) {
 
-  public query(params?: any) {
-    if (!params) {
-      return this.members;
-    }
-
-    return this.members.filter((item) => {
-      for (let key in params) {
-        let field = item[key];
-        if (typeof field == 'string' && field.toLowerCase().indexOf(params[key].toLowerCase()) >= 0) {
-          return item;
-        } else if (field == params[key]) {
-          return item;
-        }
-      }
-      return null;
-    });
-  }
+  //   if (error.error instanceof ErrorEvent) {
+  //     console.log("An error occurred:" + error.error.message);
+  //   } else {
+  //     console.log(`Backend returned code ${error.status}, ` + `body was: ${error.error}`);
+  //   }
+  //   //return new ErrorObservable("Connection Error; Check connection & try again later.");
+  // }
 }

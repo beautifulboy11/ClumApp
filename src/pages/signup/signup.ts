@@ -73,7 +73,7 @@ export class SignupPage {
   doSignup() {
     this.submitAttempt = true;
     if (!this.registerForm.valid) {
-      console.log(this.registerForm.value);
+      return;     
     } else {
       this.authService
         .registerUser(

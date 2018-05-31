@@ -32,8 +32,10 @@ import { E2EPage } from '../pages/e2e/e2e';
 import { AddEventPageModule } from '../pages/add-event/add-event.module';
 import { MemberDetailPageModule } from '../pages/member-detail/member-detail.module';
 import { ResetPasswordPageModule } from '../pages/reset-password/reset-password.module';
-import { DateWorker } from '../providers/date-worker/date-worker';
+import { DateWorkerService } from '../providers/date-worker/date-worker';
 import { NetworkService } from '../providers/network-service/network-service';
+import { GuestCheckinPage } from '../pages/guest-checkin/guest-checkin';
+import { FormsModule } from '@angular/forms';
 
 export const firebaseConfig = environment.firebaseConfig;
 export function createTranslateLoader(http: HttpClient) {
@@ -49,8 +51,6 @@ export function provideSettings(storage: Storage) {
   });
 }
 
-
-
 @NgModule({
   declarations: [
     MyApp,        
@@ -59,7 +59,8 @@ export function provideSettings(storage: Storage) {
     HomePage,   
     CheckinPage, 
     PopoverPage,        
-    SiteLocationsPage,    
+    SiteLocationsPage,
+    GuestCheckinPage,    
     ParallaxHeaderDirective,
     ParallaxProfileDirective
   ],
@@ -71,7 +72,8 @@ export function provideSettings(storage: Storage) {
     AddEventPageModule,
     SignaturePadModule,    
     HttpClientModule,
-    BrowserAnimationsModule,    
+    BrowserAnimationsModule,
+    FormsModule,    
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -109,7 +111,8 @@ export function provideSettings(storage: Storage) {
     CheckinPage,          
     SignaturePage,
     PopoverPage,    
-    SiteLocationsPage    
+    SiteLocationsPage ,
+    GuestCheckinPage  
   ],
   providers: [
     Api,
@@ -126,7 +129,7 @@ export function provideSettings(storage: Storage) {
     AuthService,
     SQLite,
     Sqlstorage,
-    DateWorker,
+    DateWorkerService,
     NetworkService
   ]
 })

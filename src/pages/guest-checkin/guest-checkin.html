@@ -1,0 +1,39 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Guest Checkin</ion-title>
+    <ion-buttons left>
+        <button ion-button icon-only color="light" (click)="cancel()" tappable>
+          <ion-icon name="close" style="font-size: 1.8em; font-weight:bold;"></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-buttons end>
+        <button ion-button icon-only (click)="done()" color="light" strong tappable>
+          <ion-icon name="checkmark" style="font-size: 1.8em; font-weight:bold;"></ion-icon>
+        </button>
+      </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <form (ngSubmit)="logForm()" #guestForm="ngForm">
+    <ion-item>
+      <ion-label>ID</ion-label>
+      <input type="text" class="form-control" id="Id" required [(ngModel)]="guest.Id" name="Id">
+      <div [hidden]="Id.valid || Id.pristine"class="alert alert-danger"> ID is required</div>
+    </ion-item>
+    <ion-item>
+      <ion-label>First Name:</ion-label>
+      <ion-input type="text" [(ngModel)]="guest.firstName" name="firstname"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Last Name:</ion-label>
+      <ion-textarea [(ngModel)]="guest.lastName" name="lastname"></ion-textarea>
+    </ion-item>
+
+    <button  type="submit" block></button>
+    <button ion-button type="submit" class="btn btn-success" [disabled]="!heroForm.form.valid">Add Guest</button>
+  </form>
+</ion-content>
+

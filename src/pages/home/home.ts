@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {
   NavController,
   NavParams,
@@ -14,9 +14,8 @@ import { NetworkService } from "../../providers/network-service/network-service"
   selector: "page-home",
   templateUrl: "home.html"
 })
-export class HomePage {
+export class HomePage implements OnInit {
   loading: any;
-
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -26,54 +25,39 @@ export class HomePage {
     private loadingCtrl: LoadingController,
     public networkService: NetworkService
   ) {
-
-  }
-  ionViewWillEnter() {
-    this.networkService.NetworkCheck();
-
-    console.log(
-      "network Connection Status!",
-      this.networkService.connectionStatus
-    );
+    this.networkService.get().subscribe((res) => {
+    });
   }
 
-  ionViewDidLoad() {
-    try {
-      this.loading = this.loadingCtrl.create({
-        showBackdrop: true
-      });
+  ngOnInit() {
+    this.afAuth.authState.subscribe(data => {
+      if (data && data.email && data.uid) {
+        this.toastCtrl
+          .create({
+            message: `Welcome, ${data.email}`,
+            duration: 3000
+          })
+          .present();
+      } else {
+        this.toastCtrl
+          .create({
+            message: `You have logged out`,
+            duration: 3000
+          })
+          .present();
+      }
+    });
+    this.loading = this.loadingCtrl.create({
+      showBackdrop: true
+    });
 
-      this.loading.present().then(() => {
-        this.determineAccess();
-      });
-
-      this.afAuth.authState.subscribe(data => {
-        if (data && data.email && data.uid) {
-          this.toastCtrl
-            .create({
-              message: `Welcome, ${data.email}`,
-              duration: 3000
-            })
-            .present();
-        } else {
-          this.toastCtrl
-            .create({
-              message: `You have logged out`,
-              duration: 3000
-            })
-            .present();
-        }
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    this.loading.present().then(() => {
+      this.loading.dismiss();
+    });
   }
 
   determineAccess() {
-    this.authService.isAdmin();
-    this.authService.isSecurity();
-    this.authService.isUser();
-    this.loading.dismiss();
+    
   }
 
   gotoCheckin(): void {
@@ -85,7 +69,6 @@ export class HomePage {
   }
 
   gotoMap(event) {
-    console.log(event);
     this.navCtrl.push(SiteLocationsPage);
   }
 

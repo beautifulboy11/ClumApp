@@ -45,18 +45,18 @@ export class SearchPage {
 
   getItems(ev) {
     let val = ev.target.value;
-    console.log(JSON.stringify(val));
+   
     if (!val || !val.trim()) {
       this.members = [];
       return;
     }
-    console.log(JSON.stringify(this.members));
+   
     this.members = this.query({
       firstName: val,
       lastName: val,
       membershipNumber: val
     });
-    console.info("**Search Results", this.members);
+
   }
 
   query(params?: any) {
@@ -64,12 +64,9 @@ export class SearchPage {
       return;
     }
     return _.chain(this.currentItems)
-      .filter(membersArr => {
-        console.log("Member in query ", membersArr);
-        for (let key in params) {
-          console.log("Params in query ",params);
-          let field = membersArr[key];
-          console.log("Fiels in Array ",field);
+      .filter(membersArr => {       
+        for (let key in params) {        
+          let field = membersArr[key];         
           if (
             _.includes(membersArr, params[key])
             //typeof field == 'string' && field.toLowerCase().indexOf(params[key].toLowerCase()) >= 0
@@ -85,8 +82,7 @@ export class SearchPage {
         let isActive = member.status === "active";
         let status = isActive ? true : false;
         let chk = status ? "secondary" : "dark";
-        let name = this.concatenateName(member.firstName, member.lastName);
-        console.log("****");
+        let name = this.concatenateName(member.firstName, member.lastName);       
         return {
           About: member.about,
           Club: member.club,

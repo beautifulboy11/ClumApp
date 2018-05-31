@@ -8,7 +8,7 @@
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
-    "ionic:build": "ionic-app-scripts build",
+    "ionic:build": "node --max-old-space-size=150000 ./node_modules/@ionic/app-scripts/bin/ionic-app-scripts.js build",
     "ionic:serve": "ionic-app-scripts serve"
   },
   "dependencies": {
@@ -68,7 +68,8 @@
     "ionicons": "3.0.0",
     "lodash": "^4.17.5",
     "promise-polyfill": "^7.1.2",
-    "rxjs": "5.5.2",
+    "rxjs": "^6.2.0",
+    "rxjs-compat": "^6.2.0",
     "sw-toolbox": "3.6.0",
     "zone.js": "0.8.18"
   },

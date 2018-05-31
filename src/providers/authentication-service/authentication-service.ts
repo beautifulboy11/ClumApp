@@ -20,26 +20,24 @@ export class AuthService {
   private fireAuth: any;
   private userData: any;
   userRoles: Array<string>;
- 
+  userSite: string;
   constructor(
     private http: HttpClient,
     private af: AngularFireAuth,
     private db: AngularFireDatabase
   ) {
     this.fireAuth = this.af.auth;
-    this.af.authState
-      .switchMap(auth => {
-        if (auth) {
-          return this.db.object('/users/' + auth.uid).valueChanges();
-        } else {
-          return Observable.of(null)
-        }
-      })
-      .subscribe(user => {
-        this.user$.next(user);
-      });
-
+    this.af.authState.switchMap(auth => {
+      if (auth) {
+        return this.db.object('/users/' + auth.uid).valueChanges();
+      } else {
+        return Observable.of(null)
+      }
+    }).subscribe(user => {
+      this.user$.next(user);
+    });
     this.user$.map(user => {
+      this.userSite =  _.get(user, 'site');
       return this.userRoles = _.keys(_.get(user, 'roles'));
     }).subscribe();
   }
@@ -112,7 +110,7 @@ export class AuthService {
     });
   }
 
-  private checkAuthorization(allowedRoles: string[]): boolean {     
+  private checkAuthorization(allowedRoles: string[]): boolean {
     return !_.isEmpty(_.intersection(allowedRoles, this.userRoles))
   }
 
@@ -127,5 +125,11 @@ export class AuthService {
   public isSecurity(): boolean {
     const allowed = ['security']
     return this.checkAuthorization(allowed);
+  }
+
+  public uSite(): Observable<any[]> {
+    return Observable.create(observer => {
+      return observer.next(this.userSite);
+    })
   }
 }

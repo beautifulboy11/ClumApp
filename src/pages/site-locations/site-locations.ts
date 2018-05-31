@@ -17,18 +17,13 @@ export class SiteLocationsPage implements OnInit {
     this.club = 'Nkana';
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SiteLocationsPage');
-  }
-
   ngOnInit() {
     this.getUserLocation();
   }
 
   private getUserLocation() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        console.log("Current Location",position);
+      navigator.geolocation.getCurrentPosition(position => {       
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
       });
@@ -50,8 +45,7 @@ export class SiteLocationsPage implements OnInit {
     });
   }
 
-  onLocationChosen(event) {
-    console.log(event);
+  onLocationChosen(event) {   
     this.lat = event.coords.lat;
     this.lng = event.coords.lng;
     this.locationSelected = true;

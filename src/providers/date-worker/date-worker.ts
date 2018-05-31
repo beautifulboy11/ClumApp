@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class DateWorker {
+export class DateWorkerService {
 
-  constructor() {
-    console.log('Hello DateWorkerProvider Provider');
-  }
+  constructor() {}
 
   public CurrentYear(): number {
     let d = new Date();

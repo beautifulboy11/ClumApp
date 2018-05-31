@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import {
   IonicPage,
@@ -18,7 +18,7 @@ import { ApplicationUser } from "../../models/applicationUser";
   selector: "page-login",
   templateUrl: "login.html"
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
   public loginForm;
   private submitAttempt: boolean = false;
   private loginErrorString: string;
@@ -39,23 +39,12 @@ export class LoginPage {
     public authservice: AuthService,
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
-    public formBuilder: FormBuilder,
+    public fb: FormBuilder,
     public loadingCtrl: LoadingController,
     public translateService: TranslateService,
     private screenOrientation: ScreenOrientation,
     private menu: MenuController
-  ) {
-    this.loginForm = formBuilder.group({
-      email: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.pattern(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)
-        ])
-      ],
-      password: ["", Validators.required]
-    });
-
+  ) {    
     this.translateService.get("LOGIN_ERROR").subscribe(value => {
       this.loginErrorString = value;
     });
@@ -76,7 +65,24 @@ export class LoginPage {
     });
   }
 
-  public togglePasswordVisible(event) {
+  ngOnInit(){
+    this.createForm();
+  }
+
+  createForm(){
+    this.loginForm = this.fb.group({
+      email: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.pattern(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)
+        ])
+      ],
+      password: ["", Validators.required]
+    });
+  }
+
+  togglePasswordVisible(event) {
     event.preventDefault();
     if (this.passicon == "eye") {
       this.passicon = "eye-off";

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, ModalController, NavController, AlertController, LoadingController, PopoverController, ToastController, NavParams } from 'ionic-angular';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { AngularFireStorage } from 'angularfire2/storage';
@@ -17,7 +17,7 @@ import { User } from '../../providers/authentication-service/user';
   templateUrl: 'member.html'
 })
 
-export class MemberPage {
+export class MemberPage implements OnInit {
 
   club: string;
   membersRef: AngularFireList<any>;
@@ -38,21 +38,13 @@ export class MemberPage {
     public modalCtrl: ModalController,
     public popoverCtrl: PopoverController,
     public toastCtrl: ToastController,
-    private authService: AuthService,
-    public db: AngularFireDatabase,
+    private authService: AuthService, 
     private storage: AngularFireStorage
   ) {
-
     this.club = 'Nkana';
-    this.membersRef = db.list<Member>('members');
-    //const ref = this.storage.ref('users/davideast.jpg');
-    //this.profileUrl = ref.getDownloadURL();    
   }
-
-  ionViewDidEnter() {
-  }
-
-  ionViewDidLoad() {
+  
+  ngOnInit() {
     this.loadMembers();
   }
 
@@ -120,8 +112,5 @@ export class MemberPage {
     const file = event.target.files[0];
     const filePath = 'name-your-file-path-here';
     const task = this.storage.upload(filePath, file);
-
-    //this.uploadPercent = task.percentageChanges();
-    //this.downloadURL = task.downloadURL();
   }
 }

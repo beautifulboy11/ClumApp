@@ -51,14 +51,14 @@ export class ResetPasswordPage {
   }
 
   elementChanged(input) {
-    console.log("**Input Recieved", input);
+   
     let field = input.ngControl.name;
     this[field + "Changed"] = true;
   }
 
   resetPassword() {
     if (!this.resetpwdForm.valid) {
-      console.log(this.resetpwdForm.value);
+    return;
     } else {
       this.authService.resetPassword(this.resetpwdForm.value.email).subscribe(
         auth => {

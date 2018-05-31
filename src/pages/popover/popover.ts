@@ -8,11 +8,9 @@ import { AuthService } from '../../providers/providers';
 @Component({
   selector: 'page-popover',
   template: `
-  <ion-list>
-    <ion-list-header>What would you like to do?</ion-list-header>  
+  <ion-list>    
     <button ion-item (click)="openMemberDetails(member)" *ngIf="authService.isAdmin()">Details</button>
-    <button ion-item (click)="showCheckin(member)" *ngIf="authService.isSecurity()">Checkin</button>
-    <button ion-item (click)="close()">Close</button>
+    <button ion-item (click)="showCheckin(member)" *ngIf="authService.isSecurity()">Checkin</button> 
     <button ion-item (click)="showConfirm(member)" *ngIf="authService.isAdmin()">Delete</button>
   </ion-list>
 `

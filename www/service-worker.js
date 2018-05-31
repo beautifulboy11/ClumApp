@@ -9,9 +9,7 @@ importScripts('./build/sw-toolbox.js');
 importScripts('./build/workbox-sw.js');
 
 if (workbox) {
-  console.log(`Yay! Workbox is loaded 🎉`);
 } else {
-  console.log(`Boo! Workbox didn't load 😬`);
 }
 self.toolbox.options.cache = {
   name: 'ionic-cache'

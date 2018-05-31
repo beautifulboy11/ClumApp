@@ -14,10 +14,9 @@ export class MemberDetailPage {
   member: any;
   show: boolean;
   noResults: boolean;
-  checkinRef: AngularFireList<any>;
   public signatureImage: any;
   checkins: any = [];
-  constructor(private api: Api, private modalCtrl: ModalController, public navCtrl: NavController, public db: AngularFireDatabase, navParams: NavParams) {
+  constructor(private api: Api, private modalCtrl: ModalController, public navCtrl: NavController, navParams: NavParams) {
     this.member = navParams.get('member');
     this.DidLoad(this.member);
     this.show = true;

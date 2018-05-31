@@ -10,7 +10,6 @@ export class ParallaxProfileDirective {
   header: any;
   scrollContent: any;
   constructor(public element: ElementRef, public renderer: Renderer) {
-    console.log('Hello ParallaxProfileDirective Directive');
   }
 
   ngOnInit() {
@@ -19,9 +18,7 @@ export class ParallaxProfileDirective {
     this.header = this.scrollContent.getElementsByClassName("main-content")[0]
     this.renderer.setElementStyle(this.header, 'webTransformOrigin', 'center bottom');
   }
-  onContentScroll(event) {
-    console.log('***Parallax',event);
-  }
+  onContentScroll(event) {}
 
 
 
