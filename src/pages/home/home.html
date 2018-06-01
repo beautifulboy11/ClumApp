@@ -21,8 +21,8 @@
         <ion-card>
           <img src="assets/imgs/card-saopaolo.png" />
           <div class="card-title">Member</div>
-          <div (click)="goto('MemberPage')" *ngIf="authService.isAdmin()" tappable>           
-            <div class="card-subtitle">
+          <div class="card-subtitle">
+            <div (click)="goto('MemberPage')" *ngIf="authService.isAdmin()" tappable>
               Listings
               <br/>
               <button ion-button icon-only clear style="color:azure;">
@@ -30,17 +30,21 @@
               </button>
             </div>
           </div>
-          <div (click)="gotoCheckin()" *ngIf="authService.isSecurity() && !authService.isAdmin()" tappable>                   
-            <div class="card-subtitle">
+
+
+         
+            <div class="card-subtitle"> 
+              <div (click)="gotoCheckin()" *ngIf="authService.isSecurity() && !authService.isAdmin()" tappable>
               Check-in
               <br/>
               <button ion-button icon-only clear style="color:azure;">
                 <ion-icon name="arrow-forward"></ion-icon>
               </button>
             </div>
-          </div>  
-          <div (click)="goto('CheckinSummaryPage')" *ngIf="authService.isUser()" tappable>          
+          </div>
+          
             <div class="card-subtitle">
+              <div (click)="goto('CheckinSummaryPage')" *ngIf="authService.isUser() && !authService.isAdmin() && !authService.isSecurity()" tappable>
               History
               <br/>
               <button ion-button icon-only clear style="color:azure;">
@@ -50,7 +54,7 @@
           </div>
         </ion-card>
 
-        
+
       </ion-col>
 
       <ion-col col-12 col-sm-12 col-md-6 md-offest-3 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3>

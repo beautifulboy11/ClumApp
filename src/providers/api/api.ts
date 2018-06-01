@@ -12,6 +12,7 @@ import { catchError, retry, max } from "rxjs/operators";
 import { AngularFireDatabase } from "angularfire2/database";
 import { CheckIn } from "../../models/check-in";
 import { Member } from "../../models/member";
+import { MessageService } from "../message-service/message-service";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -26,7 +27,7 @@ export class Api {
   private maxCheckin: number;
   private url: string = "https://boating-manager.firebaseio.com";
 
-  constructor(public http: HttpClient, private db: AngularFireDatabase) { }
+  constructor(private http: HttpClient, private db: AngularFireDatabase,private messageService: MessageService) { }
 
   getPreviousCheckins(membershipNumber: any) {
     return Observable.create(q => {
@@ -51,6 +52,7 @@ export class Api {
         .subscribe(
           res => {
             this.members = res;
+            this.messageService.add('Api: fetched members');
             return observer.next(res);
           },
           error => {

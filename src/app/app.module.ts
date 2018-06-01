@@ -1,41 +1,48 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { Camera } from '@ionic-native/camera';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { StatusBar } from '@ionic-native/status-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule, ErrorHandler } from '@angular/core';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { TranslateModule,TranslateLoader } from '@ngx-translate/core';
 import { IonicStorageModule, Storage } from '@ionic/storage';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-import { Calendar } from '@ionic-native/calendar';
+import { IonicModule, IonicApp, IonicErrorHandler} from 'ionic-angular';
 import { AngularFireModule } from 'angularfire2/';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireAuthModule } from "angularfire2/auth";
 import { SignaturePadModule } from 'angular2-signaturepad';
-import { MyApp } from './app.component';
-import { ParallaxHeaderDirective } from '../directives/parallax-header/parallax-header';
-import { ParallaxProfileDirective } from '../directives/parallax-profile/parallax-profile';
-import { Network } from '@ionic-native/network';
-import { Api, Settings, AuthService } from '../providers/providers';
-import { HomePage, SignaturePage, PopoverPage, SiteLocationsPage, ResetPasswordPage, CheckinPage} from '../pages/pages';
+import { FormsModule } from '@angular/forms';
 import { AgmCoreModule } from '@agm/core';
+
+import { MyApp } from './app.component';
+import { Camera } from '@ionic-native/camera';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { Calendar } from '@ionic-native/calendar';
+
+import { Network } from '@ionic-native/network';
+
 import { SQLite } from '@ionic-native/sqlite'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ScreenOrientation } from '@ionic-native/screen-orientation'
 import { Geolocation } from '@ionic-native/geolocation';
 import { environment } from '../environments/environment';
 import { Sqlstorage } from '../providers/sqlstorage/sqlstorage';
-// import{ LocationStrategy, PathLocationStrategy, APP_BASE_HREF } from '@angular/common';
-import { E2EPage } from '../pages/e2e/e2e';
-import { AddEventPageModule } from '../pages/add-event/add-event.module';
-import { MemberDetailPageModule } from '../pages/member-detail/member-detail.module';
-import { ResetPasswordPageModule } from '../pages/reset-password/reset-password.module';
+/*Services*/
 import { DateWorkerService } from '../providers/date-worker/date-worker';
 import { NetworkService } from '../providers/network-service/network-service';
+import { MessageService } from '../providers/message-service/message-service';
+import { Api, Settings, AuthService } from '../providers/providers';
+/*Pages and Pages Module*/
+import { MessageComponent } from '../components/message/message';
+import { DirectivesModule } from '../directives/directive.module';
 import { GuestCheckinPage } from '../pages/guest-checkin/guest-checkin';
-import { FormsModule } from '@angular/forms';
+import { MemberDetailPageModule } from '../pages/member-detail/member-detail.module';
+import { ResetPasswordPageModule } from '../pages/reset-password/reset-password.module';
+import { AddEventPageModule } from '../pages/add-event/add-event.module';
+import { E2EPage } from '../pages/e2e/e2e';
+import { HomePage, SignaturePage, PopoverPage, SiteLocationsPage, CheckinPage} from '../pages/pages';
+
 
 export const firebaseConfig = environment.firebaseConfig;
 export function createTranslateLoader(http: HttpClient) {
@@ -60,20 +67,24 @@ export function provideSettings(storage: Storage) {
     CheckinPage, 
     PopoverPage,        
     SiteLocationsPage,
-    GuestCheckinPage,    
-    ParallaxHeaderDirective,
-    ParallaxProfileDirective
+    GuestCheckinPage,
+    MessageComponent
   ],
 
   imports: [
-    BrowserModule,            
-    MemberDetailPageModule,
-    ResetPasswordPageModule,    
-    AddEventPageModule,
+    BrowserModule,
     SignaturePadModule,    
     HttpClientModule,
     BrowserAnimationsModule,
-    FormsModule,    
+    FormsModule,            
+    MemberDetailPageModule,
+    ResetPasswordPageModule,    
+    AddEventPageModule,
+    // ComponentsModule,
+    DirectivesModule,
+    AngularFireDatabaseModule,
+    AngularFireStorageModule,
+    AngularFireAuthModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -90,14 +101,10 @@ export function provideSettings(storage: Storage) {
       modalEnter: 'modal-slide-in',
       modalLeave: 'modal-slide-out',
       tabsPlacement: 'bottom',
-      pageTransition: 'ios-transition',
-      //pageTransitionDelay: 16
+      pageTransition: 'ios-transition'
     }),
     IonicStorageModule.forRoot(),
-    AngularFireModule.initializeApp(firebaseConfig),    
-    AngularFireDatabaseModule,
-    AngularFireStorageModule,
-    AngularFireAuthModule,
+    AngularFireModule.initializeApp(firebaseConfig),        
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsKey
     })
@@ -130,7 +137,8 @@ export function provideSettings(storage: Storage) {
     SQLite,
     Sqlstorage,
     DateWorkerService,
-    NetworkService
+    NetworkService,
+    MessageService
   ]
 })
 export class AppModule { }

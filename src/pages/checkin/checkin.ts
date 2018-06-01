@@ -33,6 +33,7 @@ export class CheckinPage implements OnInit {
   ) {
     this.club = "Nkana";
   }
+  
   ngOnInit() {
     this.loadMembers();
   }

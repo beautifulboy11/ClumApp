@@ -35,7 +35,7 @@ export class HomePage implements OnInit {
         this.toastCtrl
           .create({
             message: `Welcome, ${data.email}`,
-            duration: 3000
+            duration: 4000
           })
           .present();
       } else {
@@ -57,7 +57,7 @@ export class HomePage implements OnInit {
   }
 
   determineAccess() {
-    
+
   }
 
   gotoCheckin(): void {

@@ -1,0 +1,13 @@
+<div *ngIf="messageService.messages.length" class="message">
+  <div role="dialog" class="toast-md" aria-labelledby="toast-hdr-0" style="z-index: 20000;">
+    <div class="toast-wrapper toast-bottom" style="transform: translateY(0%);">
+      <div class="toast-container" *ngFor='let message of messageService.messages'>
+        <div class="toast-message" id="toast-hdr-0">
+          {{message}}
+        </div>
+        <button ion-button class="toast-button" clear (click)="messageService.clear()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
