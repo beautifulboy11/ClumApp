@@ -9,7 +9,7 @@ import {
   ToastController
 } from "ionic-angular";
 import { SignaturePad } from "angular2-signaturepad/signature-pad";
-import { AngularFireDatabase, AngularFireList } from "angularfire2/database";
+// import { AngularFireDatabase, AngularFireList } from "angularfire2/database";
 import { DataService } from "../../providers/providers";
 import { DateWorkerService } from "../../providers/date-worker/date-worker";
 import { Member } from "../../models/member";
@@ -49,7 +49,7 @@ export class SignaturePage implements OnInit {
     private authService: AuthService,
     private dateWorker: DateWorkerService,
     public navParams: NavParams,
-    public db: AngularFireDatabase,
+    //public db: AngularFireDatabase,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController
