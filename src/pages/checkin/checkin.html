@@ -35,7 +35,11 @@
     </div>
 
     <ion-row align-items-center justify-content-center>
-      <ion-col col-12 col-sm-12 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2 align-self-center>
+      <ion-col col-12 col-sm col-md-2 col-lg-2 col-xl-2 align-self-center>
+       
+      </ion-col>
+
+      <ion-col col-12 col-sm col-md-8 col-lg-8 col-xl-8 align-self-center>
         <div [ngSwitch]="club">
 
           <ion-list *ngSwitchCase="'Nkana'">
@@ -89,6 +93,10 @@
             </div>
           </ion-list>
         </div>
+      </ion-col>
+
+      <ion-col col-12 col-sm col-md-2 col-lg-2 col-xl-2 align-self-stretch>
+   
       </ion-col>
     </ion-row>
   </ion-grid>

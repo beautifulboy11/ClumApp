@@ -9,7 +9,6 @@ import {
   ToastController
 } from "ionic-angular";
 import { SignaturePad } from "angular2-signaturepad/signature-pad";
-// import { AngularFireDatabase, AngularFireList } from "angularfire2/database";
 import { DataService } from "../../providers/providers";
 import { DateWorkerService } from "../../providers/date-worker/date-worker";
 import { Member } from "../../models/member";
@@ -33,8 +32,6 @@ export class SignaturePage implements OnInit {
   signatureImage: string;
   member: any;
   prevCheckin: any = [];
-  // checkinRef: AngularFireList<any>;
-  // MaxcheckinRef: AngularFireList<any>;
   previousCheckin: any = [];
   maxAllowed: number;
   loading: any;
@@ -49,21 +46,42 @@ export class SignaturePage implements OnInit {
     private authService: AuthService,
     private dateWorker: DateWorkerService,
     public navParams: NavParams,
-    //public db: AngularFireDatabase,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController
   ) {
     this.member = navParams.get("member");
   }
-  ionViewDidEnter() { }
+
+  ionViewWillEnter() {
+
+
+  }
+
+  ionViewDidEnter() {
+    this.verifyEligibility();
+  }
 
   ngOnInit() {
     this.getPrevious();
     this.authService.uSite().subscribe(res => {
       this.securitySite = res;
     });
-    this.verifyEligibility();
+  }
+
+  ngAfterViewInit() {
+    this.signaturePad.clear();
+    this.canvasResize();
+    this.getMax();
+  }
+
+  getMax() {
+    this.api.getMaxCheckInLock()
+      .subscribe(res => {
+        this.maxAllowed = res;
+      },
+        error => { }
+      );
   }
 
   verifyEligibility() {
@@ -73,6 +91,13 @@ export class SignaturePage implements OnInit {
     });
 
     this.loading.present().then(() => {
+      this.checkinLoad();
+      this.countCheckins();
+    });
+  }
+
+  checkinLoad() {
+    if (this.previousCheckin.length > 0) {
       for (let element of this.previousCheckin) {
         var mon = this.dateWorker.getMonthFromDate(element.date);
         var year = this.dateWorker.getYearFromDate(element.date);
@@ -85,32 +110,40 @@ export class SignaturePage implements OnInit {
           this.prevCheckin.push(ob);
         }
       }
-      this.countCheckins();
-    });
+    } {
+      return;
+    }
   }
 
   getPrevious() {
     this.api.getPreviousCheckins(this.member.membershipNumber)
       .subscribe(res => {
         this.previousCheckin = res;
-        this.getMax();
       },
         error => { }
       );
   }
 
-  getMax() {
-    this.api.getMaxCheckInLock()
-      .subscribe(res => {
-        this.maxAllowed = res;
-      },
-        error => { }
-      );
+  isLocalClub(): boolean {
+    return this.member.club == this.securitySite;
   }
 
-  ngAfterViewInit() {
-    this.signaturePad.clear();
-    this.canvasResize();
+  countCheckins() {
+    var isMax = this.prevCheckin.length < this.maxAllowed ? true : false;
+    if (this.isLocalClub()) {
+      //member at local club... no limitations on checkin
+      this.loading.dismiss();
+      this.isReadyToSave = true;
+    }
+    else {
+      if (isMax) {
+        this.loading.dismiss();
+        this.isReadyToSave = true;
+      } else {
+        this.loading.dismiss();
+        this.presentToast();
+      }
+    }
   }
 
   canvasResize() {
@@ -120,17 +153,6 @@ export class SignaturePage implements OnInit {
     this.signaturePad.set("canvasHeight", canvas.offsetHeight);
   }
 
-  countCheckins() {
-    var isMax = this.prevCheckin.length < this.maxAllowed ? true : false;
-    if (isMax) {
-      this.loading.dismiss();
-      this.isReadyToSave = true;
-    } else {
-      this.loading.dismiss();
-      this.presentToast();
-    }
-  }
-
   presentToast() {
     // `You have used up ${this.maxAllowed} checkin this month`
     let toast = this.toastCtrl.create({
@@ -138,7 +160,6 @@ export class SignaturePage implements OnInit {
       duration: 4000,
       position: "top",
       showCloseButton: true,
-      dismissOnPageChange: true,
       closeButtonText: "OK"
     });
 
@@ -150,7 +171,6 @@ export class SignaturePage implements OnInit {
   }
 
   cancel() {
-    // this.viewCtrl.dismiss();
     this.navCtrl.popTo(CheckinPage);
   }
 
@@ -190,10 +210,12 @@ export class SignaturePage implements OnInit {
   }
 
   GuestCheckin(mem: Member) {
-    let addGuestModal = this.modalCtrl.create(GuestCheckinPage);
+    let addGuestModal = this.modalCtrl.create(GuestCheckinPage, {
+      member: mem
+    });
     addGuestModal.onDidDismiss(guests => {
       if (guests) {
-        this.api.postGuestCheckin(mem.membershipNumber, guests);
+        //this.api.postGuestCheckin(mem.membershipNumber, guests);
       }
     });
     addGuestModal.present();
@@ -210,7 +232,12 @@ export class SignaturePage implements OnInit {
     });
 
     toast.onDidDismiss(() => {
-      this.GuestCheckin(this.member);
+      if (this.isLocalClub()) {
+        this.GuestCheckin(this.member);
+      }
+      else {
+        this.navCtrl.popTo(CheckinPage);
+      }
     });
 
     toast.present();

@@ -7,7 +7,7 @@ import {
 } from "ionic-angular";
 import { SiteLocationsPage, CheckinPage } from "../pages";
 import { AngularFireAuth } from "angularfire2/auth";
-import { AuthService } from "../../providers/providers";
+import { AuthService, MessageService } from "../../providers/providers";
 
 //@IonicPage()
 @Component({
@@ -24,7 +24,8 @@ export class HomePage implements OnInit {
     private afAuth: AngularFireAuth,
     private toastCtrl: ToastController,
     private authService: AuthService,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private messageService: MessageService
   ) {
   }
 
@@ -56,12 +57,15 @@ export class HomePage implements OnInit {
   }
 
   determineAccess() {
-    this.authService.user$.subscribe(
-      res => {
-        this.userType = res;
-        this.loading.dismiss();
-      }
-    );
+    // this.authService.uSite().subscribe(
+    //   res => {        
+    //     res.map(resp =>{
+    //       this.userType = resp;
+          
+    //     });        
+    //   }
+    // );
+    this.loading.dismiss();
   }
 
   gotoCheckin(): void {

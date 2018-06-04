@@ -1,12 +1,9 @@
 import { Component } from "@angular/core";
 import {
   ViewController,
-  ModalController,
-  NavController,
-  AlertController,
-  NavParams
+  NavParams,
+  App
 } from "ionic-angular";
-import { AngularFireDatabase, AngularFireList } from "angularfire2/database";
 import { SignaturePage, MemberDetailPage } from "../pages";
 import { Member } from "../../models/member";
 import { AuthService } from "../../providers/providers";
@@ -24,23 +21,15 @@ import { AuthService } from "../../providers/providers";
 })
 export class PopoverPage {
   member: any;
-  membersRef: AngularFireList<any>;
-  public signatureImage: any;
 
   constructor(
     public viewCtrl: ViewController,
-    private alertCtrl: AlertController,
+    public appCtrl: App,
     private authService: AuthService,
-    public db: AngularFireDatabase,
-    public modalCtrl: ModalController,
     public navParams: NavParams,
-    public navCtrl: NavController
   ) {
-    this.membersRef = db.list("members");
     this.member = navParams.get("member");
   }
-
-  ionViewDidLoad() {}
 
   close() {
     this.viewCtrl.dismiss();
@@ -48,62 +37,13 @@ export class PopoverPage {
 
   openMemberDetails(member: Member) {
     this.viewCtrl.dismiss();
-    this.navCtrl.push(MemberDetailPage, {
+    this.appCtrl.getRootNav().push(MemberDetailPage, {
       member: member
     });
   }
 
   showCheckin(member: any) {
     this.viewCtrl.dismiss();
-    this.navCtrl.push(SignaturePage, { member: member });
-    // this.viewCtrl.dismiss();
-    // let modal = this.modalCtrl.create(SignaturePage, { member: member });
-    // modal.onDidDismiss((item) => {
-    //   this.signatureImage = item;
-    // });
-    // modal.present();
-  }
-
-  showConfirm(item) {
-    this.viewCtrl.dismiss();
-    let confirm = this.alertCtrl.create({
-      title: "Delete",
-      message: "Are you sure you want to Delete this record?",
-      buttons: [
-        {
-          text: "No",
-          handler: () => {}
-        },
-        {
-          text: "Yes",
-          handler: () => {
-            this.removeMember(item);
-          }
-        }
-      ]
-    });
-    confirm.present();
-  }
-
-  removeMember(item) {
-    this.viewCtrl.dismiss();
-    this.membersRef
-      .remove(item.name)
-      .then(res => {
-        let alert = this.alertCtrl.create({
-          title: "Delete Member",
-          message: "Member Removed Successfully!" + res,
-          buttons: ["Ok"]
-        });
-        alert.present();
-      })
-      .catch(error => {
-        let alert = this.alertCtrl.create({
-          title: "Delete Member",
-          message: "Member Removed Successfully!" + error,
-          buttons: ["Ok"]
-        });
-        alert.present();
-      });
+    this.appCtrl.getRootNav().push(SignaturePage, { member: member });   
   }
 }

@@ -34,7 +34,6 @@ export class AuthService {
         return Observable.of(null)
       }
     }).subscribe(user => {
-
       this.user$.next(user);
     });
     this.user$.map(user => {      

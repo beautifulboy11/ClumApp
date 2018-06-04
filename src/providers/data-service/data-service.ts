@@ -10,23 +10,28 @@ import "rxjs/add/operator/map";
 import { catchError, retry, max } from "rxjs/operators";
 import { AngularFireDatabase } from "angularfire2/database";
 import { Member } from "../../models/member";
-import { Checkin } from '../../models/check-in';
+import { Checkin } from "../../models/check-in";
 import { MessageService } from "../message-service/message-service";
+import { Guest } from "../../models/Guest";
 
 @Injectable()
 export class DataService {
   members: any;
-  maxCheckin:any;
+  maxCheckin: any;
   private url: string = "https://boating-manager.firebaseio.com";
 
-  constructor(private http: HttpClient, private db: AngularFireDatabase, private messageService: MessageService) { }
+  constructor(
+    private http: HttpClient,
+    private db: AngularFireDatabase,
+    private messageService: MessageService
+  ) { }
 
   post(endpoint: string, body: any): any {
     return Observable.create(observer => {
       return this.db
         .object(endpoint)
         .set(body)
-        .then((value) => {
+        .then(value => {
           return observer.next(value);
         });
     });
@@ -35,27 +40,39 @@ export class DataService {
   postCheckin(checkinRec: Checkin): any {
     return Observable.create(observer => {
       return this.db
-        .list('checkins/' + checkinRec.memberId)
+        .list("checkins/" + checkinRec.memberId)
         .push({
           date: checkinRec.date,
           memberId: checkinRec.memberId,
           signature: checkinRec.signature
-        }).then((value) => {
+        })
+        .then(value => {
           return observer.next(value);
         });
     });
   }
 
-  postGuestCheckin(membershipNumber: string, guests: string[]): any {
-    try {
-      this.db
-        .list('guests/' + membershipNumber + "/" + new Date().getFullYear() + "/" + new Date().getMonth() + 1)
+  postGuestCheckin(
+    membershipNumber: string,
+    guests: Array<Guest>
+  ): Observable<any> {
+    return Observable.create(observer => {
+      return this.db
+        .list(
+          "guests/" +
+          membershipNumber +
+          "/" +
+          new Date().getFullYear() +
+          "-" +
+          (new Date().getMonth() + 1)
+        )
         .push({
           guests
-        }).then((value) => {
-          return value;
+        })
+        .then(value => {
+          return observer.next(value);
         });
-    } catch (error) { }
+    });
   }
 
   get(endpoint: string, params?: any, reqOpts?: any): Observable<any> {
@@ -65,18 +82,21 @@ export class DataService {
     //   };
     // }
     if (params) {
-     
     }
 
     return Observable.create(observer => {
       return this.db
         .list(endpoint)
-        .valueChanges().pipe(retry(3), catchError(this.handleError))
+        .valueChanges()
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
         .subscribe(
-          res => {            
-            if(reqOpts){
+          res => {
+            if (reqOpts) {
               this.members = res;
-            }            
+            }
             return observer.next(res);
           },
           error => {
@@ -89,9 +109,12 @@ export class DataService {
   getPreviousCheckins(membershipNumber: any) {
     return Observable.create(q => {
       return this.db
-        .list('/checkins/' + membershipNumber, ref => ref.orderByChild("memberId").equalTo(membershipNumber)).valueChanges()
+        .list("/checkins/" + membershipNumber, ref =>
+          ref.orderByChild("memberId").equalTo(membershipNumber)
+        )
+        .valueChanges()
         .subscribe(
-          (res) => {
+          res => {
             return q.next(res);
           },
           error => { }
@@ -99,11 +122,9 @@ export class DataService {
     });
   }
 
-
-
   getMaxCheckInLock(): Observable<any> {
     return Observable.create(observer => {
-      if(this.maxCheckin != null){
+      if (this.maxCheckin != null) {
         return of(this.maxCheckin);
       }
       return this.db
@@ -120,34 +141,45 @@ export class DataService {
 
   getMemberCheckins(member: any): Observable<Member> {
     return Observable.create(observer => {
-      return this.db.list('/checkins/' + member.membershipNumber, ref =>
-        ref.orderByChild("memberId").equalTo(member.membershipNumber)
-      ).valueChanges().subscribe(res => {
-        return observer.next(res);
-      });
+      return this.db
+        .list("/checkins/" + member.membershipNumber, ref =>
+          ref.orderByChild("memberId").equalTo(member.membershipNumber)
+        )
+        .valueChanges()
+        .subscribe(res => {
+          return observer.next(res);
+        });
     });
   }
 
   getLatestCheckin(membershipNumber: string): any {
     return Observable.create(observer => {
-      return this.db.list('/checkins/' + membershipNumber, ref => ref.orderByChild('memberId')
-        .equalTo(membershipNumber).limitToLast(1))
+      return this.db
+        .list("/checkins/" + membershipNumber, ref =>
+          ref
+            .orderByChild("memberId")
+            .equalTo(membershipNumber)
+            .limitToLast(1)
+        )
         .valueChanges()
         .subscribe(data => {
           return observer.next(data);
         });
     });
   }
- 
+
   query(params?: any) {
     if (!params) {
       return this.members;
     }
 
-    return this.members.filter((item) => {
+    return this.members.filter(item => {
       for (let key in params) {
         let field = item[key];
-        if (typeof field == 'string' && field.toLowerCase().indexOf(params[key].toLowerCase()) >= 0) {
+        if (
+          typeof field == "string" &&
+          field.toLowerCase().indexOf(params[key].toLowerCase()) >= 0
+        ) {
           return item;
         } else if (field == params[key]) {
           return item;
@@ -160,7 +192,7 @@ export class DataService {
     //   let isActive = member.status === "active";
     //   let status = isActive ? true : false;
     //   let chk = status ? "secondary" : "dark";
-    //   let name = this.concatenateName(member.firstName, member.lastName);       
+    //   let name = this.concatenateName(member.firstName, member.lastName);
     //   return {
     //     About: member.about,
     //     Club: member.club,
@@ -192,11 +224,12 @@ export class DataService {
   }
 
   handleError(error: HttpErrorResponse) {
-
     if (error.error instanceof ErrorEvent) {
       console.log("An error occurred:" + error.error.message);
     } else {
-      console.log(`Backend returned code ${error.status}, ` + `body was: ${error.error}`);
+      console.log(
+        `Backend returned code ${error.status}, ` + `body was: ${error.error}`
+      );
     }
     return new ErrorObservable();
   }
