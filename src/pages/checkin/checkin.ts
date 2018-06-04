@@ -7,13 +7,14 @@ import {
   PopoverController
 } from "ionic-angular";
 
-import { Api } from "../../providers/providers";
+import { DataService } from "../../providers/providers";
 import { MemberDetailPage, PopoverPage } from "../pages";
 
 @Component({
   selector: "page-checkin",
   templateUrl: "checkin.html"
 })
+
 export class CheckinPage implements OnInit {
   club: string;
   private membersList: any;
@@ -29,18 +30,18 @@ export class CheckinPage implements OnInit {
     private popoverCtrl: PopoverController,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
-    private api: Api
+    private api: DataService
   ) {
     this.club = "Nkana";
   }
-  
+
   ngOnInit() {
     this.loadMembers();
   }
 
-  loadMembers(): any {
+  loadMembers(): void {
     this.isLoading = true;
-    this.api.getMembers().subscribe(
+    this.api.get("/members", true, true).subscribe(
       res => {
         res.forEach(resp => {
           if (resp.club === "Nkana") {
@@ -56,20 +57,20 @@ export class CheckinPage implements OnInit {
       }
     );
   }
-  
+
   showAlert(error) {
-    this.loading.dismiss().then(() => {
-      this.toastCtrl
-        .create({
-          position: "bottom",
-          message: error.message,
-          showCloseButton: true,
-          cssClass: "toast-message",
-          closeButtonText: "Dismiss",
-          dismissOnPageChange: true
-        })
-        .present();
-    });
+    this.isLoading = false;
+    this.toastCtrl
+      .create({
+        position: "bottom",
+        message: error.message,
+        showCloseButton: true,
+        cssClass: "toast-message",
+        closeButtonText: "Dismiss",
+        dismissOnPageChange: true
+      })
+      .present();
+
   }
 
   showPopOver($event, member: any) {

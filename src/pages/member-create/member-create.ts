@@ -24,9 +24,9 @@ export class MemberCreatePage {
    
     this.form = formBuilder.group({
       profilePic: [''],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-      membershipNumber: ['', Validators.compose([Validators.required, Validators.minLength(8)])],
+      firstName: ['', Validators.compose([Validators.required, Validators.minLength(2)])],
+      lastName: ['', Validators.compose([Validators.required, Validators.minLength(2)], )],
+      membershipNumber: ['', Validators.compose([Validators.required, Validators.minLength(8), Validators.pattern(/[0-9]/g)])],
       contact: ['', Validators.compose([Validators.required, Validators.pattern(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)])],
       status: [''],
       about: [''],

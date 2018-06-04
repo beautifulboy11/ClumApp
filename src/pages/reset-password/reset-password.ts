@@ -7,7 +7,7 @@ import {
   AlertController,
   MenuController
 } from "ionic-angular";
-import { FormBuilder, Validators, FormControl } from "@angular/forms";
+import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { AuthService } from "../../providers/providers";
 
 @IonicPage()
@@ -16,7 +16,7 @@ import { AuthService } from "../../providers/providers";
   templateUrl: "reset-password.html"
 })
 export class ResetPasswordPage {
-  public resetpwdForm;
+  resetpwdForm: FormGroup;
   emailChanged: boolean = false;
   submitAttempt: boolean = false;
   loading: any;
@@ -50,8 +50,7 @@ export class ResetPasswordPage {
     this.menu.enable(true);
   }
 
-  elementChanged(input) {
-   
+  elementChanged(input) {   
     let field = input.ngControl.name;
     this[field + "Changed"] = true;
   }

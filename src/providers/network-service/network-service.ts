@@ -7,7 +7,7 @@ export class NetworkService {
 
   constructor(public network: Network) {}
 
-  get(): any {
+  get(): Observable<any> {
     return Observable.create(observer => {
       return this.network.onchange()
         .subscribe(

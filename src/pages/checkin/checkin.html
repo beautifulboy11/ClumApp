@@ -27,7 +27,7 @@
 
       </ion-col>
     </ion-row>
-    <div *ngIf="isLoading" style="margin: auto; margin-top: 10px;" text-center>
+    <div *ngIf="isLoading" style="margin: auto; margin-top: 5px;" text-center>
       <ion-spinner name="bubbles" style="color:#488aff;" item-center></ion-spinner>
       <p style="color:#488aff;">
         <i>Loading... </i>
@@ -39,11 +39,18 @@
         <div [ngSwitch]="club">
 
           <ion-list *ngSwitchCase="'Nkana'">
+            <ion-card>
+              <ion-item *ngIf="!members">
+                No Member Loaded Yet!!!
+              </ion-item>
+
+            </ion-card>
             <ion-item *ngIf="!members">
               No Member Loaded Yet!!!
             </ion-item>
             <div *ngIf="members">
-              <ion-item *ngFor="let member of members">
+              <!-- <ion-card> </ion-card> -->
+              <ion-card ion-item *ngFor="let member of members">
                 <ion-avatar item-start>
                   <img *ngIf="item?.profilePic" [src]="item?.profilePic" />
                   <ion-icon name="ios-contact" style="font-size: 50px;"></ion-icon>
@@ -52,20 +59,21 @@
                   <h2>{{member.firstName}} {{member.lastName}}</h2>
                   <h6 style="color:grey;">{{member.about}}</h6>
                 </div>
-
                 <button item-end ion-button icon-only clear (click)="showPopOver($event, member)">
                   <ion-icon name='more' style="font-size: 30px;"></ion-icon>
                 </button>
-              </ion-item>
+              </ion-card>
             </div>
           </ion-list>
 
           <ion-list *ngSwitchCase="'Mufulira'">
-            <ion-item *ngIf="!mufMembers">
-              No Member Loaded Yet!!!
-            </ion-item>
+            <ion-card>
+              <ion-item *ngIf="!mufMembers">
+                No Member Loaded Yet!!!
+              </ion-item>
+            </ion-card>
             <div *ngIf="mufMembers">
-              <ion-item *ngFor="let member of mufMembers">
+              <ion-card ion-item *ngFor="let member of mufMembers">
                 <ion-avatar item-start>
                   <img *ngIf="item?.profilePic" [src]="item?.profilePic" />
                   <ion-icon name="ios-contact" style="font-size: 50px;"></ion-icon>
@@ -77,13 +85,12 @@
                 <button item-end ion-button icon-only clear (click)="showPopOver($event, member)">
                   <ion-icon name='more' style="font-size: 30px;"></ion-icon>
                 </button>
-              </ion-item>
+              </ion-card>
             </div>
-
           </ion-list>
         </div>
       </ion-col>
     </ion-row>
-  </ion-grid> 
+  </ion-grid>
 </ion-content>
 

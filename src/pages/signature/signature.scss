@@ -2,6 +2,13 @@
 .md,
 .wd {
   page-signature {
+    ion-spinner * {
+      width: 28px;
+      height: 28px;
+      stroke: #444;
+      fill: #222;
+    }
+
     .ion-icon {
       font-size: 1.8em;
     }

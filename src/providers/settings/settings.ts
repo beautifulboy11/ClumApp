@@ -23,6 +23,15 @@ export class Settings {
   getActiveTheme() {
     return this.theme.asObservable();
   }
+
+  loadSetting(){
+    return this.storage.get("introShown");
+  }
+
+  setSetting(){
+    this.storage.set("introShown", true);
+  }
+
   load() {
     return this.storage.get(this.SETTINGS_KEY).then(value => {
       if (value) {

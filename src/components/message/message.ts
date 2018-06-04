@@ -8,8 +8,8 @@ import { MessageService } from '../../providers/message-service/message-service'
   templateUrl: 'message.html'
 })
 export  class MessageComponent implements AfterViewInit {
-  _viewCtrl: ViewController;
-  _elementRef: ElementRef;
+  // _viewCtrl: ViewController;
+  // _elementRef: ElementRef;
   d: {
     message?: string;
     cssClass?: string;
@@ -25,7 +25,7 @@ export  class MessageComponent implements AfterViewInit {
   hdrId: string;
   id: number;
 
-  constructor(public messageService: MessageService, _viewCtrl: ViewController, _elementRef: ElementRef, params: NavParams, renderer: Renderer)
+  constructor(public messageService: MessageService)
   {};
   ngAfterViewInit(){};
   ionViewDidEnter(){}; 

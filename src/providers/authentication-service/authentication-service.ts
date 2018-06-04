@@ -34,9 +34,10 @@ export class AuthService {
         return Observable.of(null)
       }
     }).subscribe(user => {
+
       this.user$.next(user);
     });
-    this.user$.map(user => {
+    this.user$.map(user => {      
       this.userSite =  _.get(user, 'site');
       return this.userRoles = _.keys(_.get(user, 'roles'));
     }).subscribe();

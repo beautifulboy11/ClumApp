@@ -38,7 +38,7 @@ export class SignupPage {
       this.signupErrorString = value;
     });
 
-    this.registerForm = formBuilder.group({
+    this.registerForm = this.formBuilder.group({
       email: [
         "",
         Validators.compose([

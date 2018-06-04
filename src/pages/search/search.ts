@@ -1,105 +1,51 @@
-import { Component } from "@angular/core";
-import {
-  IonicPage,
-  NavController,
-  ToastController,
-  NavParams
-} from "ionic-angular";
-import * as _ from "lodash";
-import { Api } from "../../providers/providers";
+import { Component, OnInit } from "@angular/core";
+import { IonicPage, NavController, ToastController } from "ionic-angular";
+import { DataService } from "../../providers/providers";
 import { Member } from "../../models/member";
+import { MessageService } from "../../providers/message-service/message-service";
 
 @IonicPage()
 @Component({
   selector: "page-search",
   templateUrl: "search.html"
 })
-export class SearchPage {
+export class SearchPage implements OnInit {
   currentItems: any = [];
   members: any;
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
     public toastCtrl: ToastController,
-    public api: Api
+    public api: DataService,
+    private messageService: MessageService
   ) {}
 
-  ionViewDidLoad() {
-    this.api.getMembers().subscribe(
-      (resp) => {      
-        this.currentItems = resp;       
+  ngOnInit() {
+    this.getMembers();
+  }
+  getMembers() {
+    this.api.get("/members", true, true).subscribe(
+      resp => {
+        this.currentItems = resp;
       },
-      (error) => {
-        let toast = this.toastCtrl.create({
-          position: "bottom",
-          message: error,
-          showCloseButton: true,
-          cssClass: "toast-message",
-          closeButtonText: "OK",
-          dismissOnPageChange: true
-        });
-        toast.present();
+      error => {
+        this.messageService.add(error);
       }
     );
   }
-
+  
   getItems(ev) {
     let val = ev.target.value;
-   
+
     if (!val || !val.trim()) {
       this.members = [];
       return;
     }
-   
-    this.members = this.query({
+
+    this.members = this.api.query({
       firstName: val,
       lastName: val,
       membershipNumber: val
     });
-
-  }
-
-  query(params?: any) {
-    if (!params) {
-      return;
-    }
-    return _.chain(this.currentItems)
-      .filter(membersArr => {       
-        for (let key in params) {        
-          let field = membersArr[key];         
-          if (
-            _.includes(membersArr, params[key])
-            //typeof field == 'string' && field.toLowerCase().indexOf(params[key].toLowerCase()) >= 0
-          ) {
-            return membersArr;
-          } else if (field == params[key]) {
-            return membersArr;
-          }
-        }
-        return null;
-      })
-      .map(member => {
-        let isActive = member.status === "active";
-        let status = isActive ? true : false;
-        let chk = status ? "secondary" : "dark";
-        let name = this.concatenateName(member.firstName, member.lastName);       
-        return {
-          About: member.about,
-          Club: member.club,
-          Contact: member.contact,
-          Name: name,
-          MemberShipNumber: member.membershipNumber,
-          ProfilePic: member.profilePic,
-          Status: status,
-          Note: member.status,
-          Chk: chk
-        };
-      })
-      .value();
-  }
-
-  concatenateName(firstname: string, lastname: string): string {
-    return firstname + " " + lastname;
   }
 
   openItem(item: Member) {

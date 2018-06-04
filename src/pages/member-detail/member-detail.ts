@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angu
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SignaturePage } from '../pages';
-import { Api } from '../../providers/api/api';
+import { DataService } from '../../providers/providers';
 import { Member } from '../../models/member';
 @IonicPage()
 @Component({
@@ -16,29 +16,29 @@ export class MemberDetailPage {
   noResults: boolean;
   public signatureImage: any;
   checkins: any = [];
-  constructor(private api: Api, private modalCtrl: ModalController, public navCtrl: NavController, navParams: NavParams) {
+  constructor(private api: DataService, private modalCtrl: ModalController, public navCtrl: NavController, navParams: NavParams) {
     this.member = navParams.get('member');
     this.DidLoad(this.member);
     this.show = true;
-    this.noResults = true;   
+    this.noResults = true;
   }
 
   DidLoad(member: Member) {
     this.api.getLatestCheckin(member.membershipNumber)
-    .subscribe(
-      resp => { 
-        this.checkins = [];       
-        this.show = false;      
-        resp.map(res => {         
-          this.noResults = false;        
-          var ob = {            
-            date: Date.parse(res.date),
-            memberId: res.memberId,
-            signature: res.signature,
-          }          
-          this.checkins.push(ob);         
-        });         
-      });
+      .subscribe(
+        resp => {
+          this.checkins = [];
+          this.show = false;
+          resp.map(res => {
+            this.noResults = false;
+            var ob = {
+              date: Date.parse(res.date),
+              memberId: res.memberId,
+              signature: res.signature,
+            }
+            this.checkins.push(ob);
+          });
+        });
   }
 
   gotoCheckin() {

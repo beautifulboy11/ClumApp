@@ -8,25 +8,24 @@ import {
 import { SiteLocationsPage, CheckinPage } from "../pages";
 import { AngularFireAuth } from "angularfire2/auth";
 import { AuthService } from "../../providers/providers";
-import { NetworkService } from "../../providers/network-service/network-service";
-// @IonicPage()
+
+//@IonicPage()
 @Component({
   selector: "page-home",
   templateUrl: "home.html"
 })
 export class HomePage implements OnInit {
   loading: any;
+  userType: any;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private afAuth: AngularFireAuth,
     private toastCtrl: ToastController,
     private authService: AuthService,
-    private loadingCtrl: LoadingController,
-    public networkService: NetworkService
+    private loadingCtrl: LoadingController
   ) {
-    this.networkService.get().subscribe((res) => {
-    });
   }
 
   ngOnInit() {
@@ -52,12 +51,17 @@ export class HomePage implements OnInit {
     });
 
     this.loading.present().then(() => {
-      this.loading.dismiss();
+      this.determineAccess();
     });
   }
 
   determineAccess() {
-
+    this.authService.user$.subscribe(
+      res => {
+        this.userType = res;
+        this.loading.dismiss();
+      }
+    );
   }
 
   gotoCheckin(): void {

@@ -43,7 +43,6 @@ export class Sqlstorage {
       this.db = db;
       return this.db.executeSql('CREATE TABLE IF NOT EXISTS kv (key text primary key, value text)', [])
         .then(data => {
-          console.log('**after CREATE TABLE check', data);
         });
     });
   }

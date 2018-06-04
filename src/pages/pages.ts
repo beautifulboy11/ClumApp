@@ -3,6 +3,8 @@ export const MainPage = 'TabsPage';
 export const SearchPage = 'SearchPage';
 export const SettingsPage = 'SettingsPage';
 export const MemberPage = 'MemberPage';
+
+export * from './e2e/e2e';
 export * from './add-event/add-event';
 export * from './signature/signature';
 export * from './home/home';

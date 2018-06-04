@@ -3,37 +3,95 @@
   <ion-navbar>
     <ion-title>Guest Checkin</ion-title>
     <ion-buttons left>
-        <button ion-button icon-only color="light" (click)="cancel()" tappable>
-          <ion-icon name="close" style="font-size: 1.8em; font-weight:bold;"></ion-icon>
-        </button>
-      </ion-buttons>
-      <ion-buttons end>
-        <button ion-button icon-only (click)="done()" color="light" strong tappable>
-          <ion-icon name="checkmark" style="font-size: 1.8em; font-weight:bold;"></ion-icon>
-        </button>
-      </ion-buttons>
+      <button ion-button icon-only color="light" (click)="cancel()" tappable>
+        <ion-icon name="close" style="font-size: 1.8em; font-weight:bold;"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="done()" color="light" strong tappable [disabled]="guests.length < 1">
+        Done
+        <!-- <ion-icon name="checkmark" style="font-size: 1.8em; font-weight:bold;"></ion-icon> -->
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 <ion-content padding>
-  <form (ngSubmit)="logForm()" #guestForm="ngForm">
-    <ion-item>
-      <ion-label>ID</ion-label>
-      <input type="text" class="form-control" id="Id" required [(ngModel)]="guest.Id" name="Id">
-      <div [hidden]="Id.valid || Id.pristine"class="alert alert-danger"> ID is required</div>
-    </ion-item>
-    <ion-item>
-      <ion-label>First Name:</ion-label>
-      <ion-input type="text" [(ngModel)]="guest.firstName" name="firstname"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Last Name:</ion-label>
-      <ion-textarea [(ngModel)]="guest.lastName" name="lastname"></ion-textarea>
-    </ion-item>
+  <ion-grid>
+    <ion-row align-items-center justify-content-center>
+      <ion-col col-12 col-sm col-md-2 col-lg-2 col-xl-2 align-self-center>
+      </ion-col>
 
-    <button  type="submit" block></button>
-    <button ion-button type="submit" class="btn btn-success" [disabled]="!heroForm.form.valid">Add Guest</button>
-  </form>
+      <ion-col col-12 col-sm col-md-8 col-lg-8 col-xl-8 align-self-center>
+        <form *ngIf="guestForm" [formGroup]="guestForm" (ngSubmit)="createItem()">
+          <ion-list>
+            <ion-item>
+              <ion-label stacked>NRC / Passport #</ion-label>
+              <ion-input #id type="text" placeholder="" formControlName="id"></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="guestForm.controls.id.invalid && (guestForm.controls.id.dirty || guestForm.controls.id.touched)">
+              <div class="form-control-feedback">
+                <p *ngIf="guestForm.controls.id.errors.required">ID is required</p>
+                <p *ngIf="guestForm.controls.id.errors.minlength">ID must be atleast 8 characters long</p>
+                <p *ngIf="guestForm.controls.id.errors.pattern">ID must be Numeric</p>
+                <p></p>
+              </div>
+            </ion-item>
+
+            <ion-item>
+              <ion-label stacked>First Name:</ion-label>
+              <ion-input #firstname type="text" formControlName="firstname" placeholder=""></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="guestForm.controls.firstname.invalid && (guestForm.controls.firstname.dirty || guestForm.controls.firstname.touched)">
+              <div class="form-control-feedback">
+                <p *ngIf="guestForm.controls.firstname.errors.required">First Name is required</p>
+                <p *ngIf="guestForm.controls.firstname.errors.minlength">First Name must be atleast 2 characters long</p>
+                <p></p>
+              </div>
+            </ion-item>
+
+            <ion-item>
+              <ion-label stacked>Last Name</ion-label>
+              <ion-input #lastname type="text" formControlName="lastname"></ion-input>
+            </ion-item>
+
+            <ion-item *ngIf="guestForm.controls.lastname.invalid && (guestForm.controls.lastname.dirty || guestForm.controls.lastname.touched)">
+              <div class="form-control-feedback">
+                <p *ngIf="guestForm.controls.lastname.errors.required">Name is required</p>
+                <p *ngIf="guestForm.controls.lastname.errors.minlength">Last Name must be atleast 2 characters long</p>
+                <p></p>
+              </div>
+            </ion-item>
+
+          </ion-list>
+          <button ion-button type="submit" color="primary" [disabled]="!isReadyToSave">
+            Save
+          </button>
+        </form>
+
+        <!-- <div style="margin-top: 5px"></div> -->
+        <ion-list *ngIf="guests.length > 0" inset>
+          <ion-item *ngFor="let guest of guests">
+            <ion-icon name="trash" item-start></ion-icon>
+            <h2>{{guest.firstname}} {{guest.lastname}}</h2>
+            <ion-note item-end> {{guest.id}}</ion-note>
+          </ion-item>
+        </ion-list>
+
+
+      </ion-col>
+
+      <ion-col col-12 col-sm col-md-2 col-lg-2 col-xl-2 align-self-stretch>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+
+
 </ion-content>
 

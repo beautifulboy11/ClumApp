@@ -33,19 +33,47 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>First Name</ion-label>
-              <ion-input type="text" placeholder="" formControlName="firstName"></ion-input>
+              <ion-input #firstName type="text" placeholder="" formControlName="firstName"></ion-input>
             </ion-item>
+            <ion-item *ngIf="form.controls.firstName.invalid && (form.controls.firstName.dirty || form.controls.firstName.touched)">
+              <div class="form-control-feedback">
+                <p *ngIf="form.controls.firstName.errors.required">First Name is required</p>
+                <p *ngIf="form.controls.firstName.errors.minlength">First Name must be atleast 2 characters long</p>
+              </div>
+            </ion-item>
+
             <ion-item>
               <ion-label stacked>Last Name</ion-label>
-              <ion-input type="text" placeholder="" formControlName="lastName"></ion-input>
+              <ion-input #lastName type="text" placeholder="" formControlName="lastName"></ion-input>
             </ion-item>
+            <ion-item *ngIf="form.controls.lastName.invalid && (form.controls.lastName.dirty || form.controls.lastName.touched)">
+              <div class="form-control-feedback">
+                <p *ngIf="form.controls.lastName.errors.required">Last Name is required</p>
+                <p *ngIf="form.controls.lastName.errors.minlength">Last Name must be atleast 2 characters long</p>
+              </div>
+            </ion-item>
+
             <ion-item>
               <ion-label stacked>Club MemberShip #</ion-label>
-              <ion-input type="text" formControlName="membershipNumber"></ion-input>
+              <ion-input #membershipNumber type="text" formControlName="membershipNumber"></ion-input>
             </ion-item>
+            <ion-item *ngIf="form.controls.membershipNumber.invalid && (form.controls.membershipNumber.dirty || form.controls.membershipNumber.touched)">
+              <div class="form-control-feedback">
+                <p *ngIf="form.controls.membershipNumber.errors.required">Last Name is required</p>
+                <p *ngIf="form.controls.membershipNumber.errors.minlength">Last Name must be atleast 8 characters long</p>
+                <p *ngIf="form.controls.membershipNumber.errors.pattern">Membership Number must be Numeric</p>
+              </div>
+            </ion-item>
+
             <ion-item>
               <ion-label stacked>Contact Number</ion-label>
-              <ion-input type="text" placeholder="" formControlName="contact"></ion-input>
+              <ion-input #contact type="text" placeholder="" formControlName="contact"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="form.controls.contact.invalid && (form.controls.contact.dirty || form.controls.contact.touched)">
+              <div class="form-control-feedback">
+                <p *ngIf="form.controls.contact.errors.required">Contact Number is required</p>
+                <p *ngIf="form.controls.contact.errors.pattern">Contact Number must 10 characters long </p>
+              </div>
             </ion-item>
             <ion-item>
               <ion-label stacked>Status</ion-label>
@@ -72,3 +100,4 @@
   </ion-grid>
 
 </ion-content>
+

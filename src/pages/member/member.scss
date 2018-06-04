@@ -6,4 +6,10 @@ page-member {
     .list-md {
         margin: -1px 0 32px;
     }
+    .form-control-feedback {
+        p {
+          color: red;
+          font-size: 10px;
+        }
+      }
 }
