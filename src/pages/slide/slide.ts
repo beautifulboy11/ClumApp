@@ -31,7 +31,7 @@ export interface Slide {
 })
 export class SlidePage {
   @ViewChild(Slides) slides: Slides;
-  skipMsg: string = "Skip";
+  skipMsg: string = "Skip";;
   state: string = 'x';
 
   constructor(public navCtrl: NavController, public menu: MenuController) {
@@ -41,10 +41,10 @@ export class SlidePage {
   skip() {
     this.navCtrl.push('LoginPage');
   }
-
+  
   slideChanged() {
     if (this.slides.isEnd()) {
-      this.skipMsg = "Alright, Get Started";
+      this.skipMsg = "Get Started";         
     } else {
       this.skipMsg = "Skip";
     }

@@ -7,6 +7,7 @@
   "scripts": {
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
+    "serve": "ionic-app-scripts serve",
     "lint": "ionic-app-scripts lint",
     "ionic:build": "node --max-old-space-size=150000 ./node_modules/@ionic/app-scripts/bin/ionic-app-scripts.js build",
     "ionic:serve": "ionic-app-scripts serve"

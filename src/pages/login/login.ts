@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { TranslateService } from "@ngx-translate/core";
 import {
   IonicPage,
   NavController,
@@ -8,18 +7,20 @@ import {
   LoadingController,
   MenuController
 } from "ionic-angular";
-import { FormBuilder, Validators } from "@angular/forms";
+import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { AuthService } from "../../providers/authentication-service/authentication-service";
 import { MainPage, ResetPasswordPage } from "../pages";
 import { ScreenOrientation } from "@ionic-native/screen-orientation";
 import { ApplicationUser } from "../../models/applicationUser";
+import { MessageService } from "../../providers/providers";
 @IonicPage()
 @Component({
   selector: "page-login",
   templateUrl: "login.html"
 })
 export class LoginPage implements OnInit {
-  public loginForm;
+
+  public loginForm: FormGroup;
   private submitAttempt: boolean = false;
   private loginErrorString: string;
   private loading: any;
@@ -41,14 +42,13 @@ export class LoginPage implements OnInit {
     public alertCtrl: AlertController,
     public fb: FormBuilder,
     public loadingCtrl: LoadingController,
-    public translateService: TranslateService,
     private screenOrientation: ScreenOrientation,
-    private menu: MenuController
-  ) {    
-    this.translateService.get("LOGIN_ERROR").subscribe(value => {
-      this.loginErrorString = value;
-    });
+    private menu: MenuController,
+    private message: MessageService
+  ) { }
 
+  ngOnInit() {
+    this.createForm();
     this.screenOrientation.onChange().subscribe(() => {
       if (
         this.screenOrientation.type ==
@@ -65,11 +65,7 @@ export class LoginPage implements OnInit {
     });
   }
 
-  ngOnInit(){
-    this.createForm();
-  }
-
-  createForm(){
+  createForm() {
     this.loginForm = this.fb.group({
       email: [
         "",
@@ -101,10 +97,10 @@ export class LoginPage implements OnInit {
     if (this.loginForm.controls.email.value === "") {
       this.email_dirty = "form-control empty ok input-lg";
     } else {
-      if(this.validEmail){
+      if (this.validEmail) {
         this.email_dirty = "form-control not-empty ok input-lg";
 
-      }else{
+      } else {
         this.email_dirty = "form-control not-empty not-ok input-lg";
       }
     }
@@ -123,7 +119,8 @@ export class LoginPage implements OnInit {
   }
 
   public Signup() {
-    this.navCtrl.push("SignupPage");
+    alert('Sorry, You are not allowed to sign up at this time');
+    //this.navCtrl.push("SignupPage");
   }
   public removeAuth(code: string): string {
     return code
@@ -134,38 +131,43 @@ export class LoginPage implements OnInit {
 
   public Login(): any {
     this.submitAttempt = true;
-    if (!this.isFormValid) {
-    } else {
-      var credentials = {
-        email: this.loginForm.controls.email.value,
-        password: this.loginForm.controls.password.value
-      };
-
-      this.authservice.doLogin(credentials).subscribe(
-        auth => {
-          this.navCtrl.setRoot("TabsPage");
+    if (this.isFormValid) {
+      this.authservice
+        .doLogin({ email: this.loginForm.controls.email.value, password: this.loginForm.controls.password.value })
+        .subscribe(auth => {
+          if (auth) {
+            this.navCtrl.setRoot("TabsPage");
+          }
         },
-        error => {
-          this.loading.dismiss().then(() => {
-            let alert = this.alertCtrl.create({
-              title: this.removeAuth(error.code),
-              message: error.message,
-              buttons: [
-                {
-                  text: "Ok",
-                  role: "cancel"
-                }
-              ]
+          error => {
+            this.loading.dismiss().then(() => {
+              this.showError(error);
             });
-            alert.present();
           });
-        }
-      );
-      this.loading = this.loadingCtrl.create({
-        dismissOnPageChange: true
-      });
-      this.loading.present();
+      this.showLoading();
+    } else {
+      return;
     }
+  }
+
+  showError(error) {
+    let alert = this.alertCtrl.create({
+      title: this.removeAuth(error.code),
+      message: error.message,
+      buttons: [
+        {
+          text: "Ok",
+          role: "cancel"
+        }
+      ]
+    }).present();
+  }
+
+  showLoading() {
+    this.loading = this.loadingCtrl.create({
+      dismissOnPageChange: true
+    });
+    this.loading.present();
   }
 
   public resetPassword() {

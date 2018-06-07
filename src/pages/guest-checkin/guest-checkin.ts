@@ -23,6 +23,9 @@ export class GuestCheckinPage implements OnInit {
   guestForm: FormGroup;
   isReadyToSave: boolean;
   member: any;
+  guestCount: any;
+  allowed: number = 2;
+
   constructor(
     public appCtrl: App,
     private api: DataService,
@@ -43,12 +46,22 @@ export class GuestCheckinPage implements OnInit {
     });
   }
 
+  getGuestLogs() {
+    this.api
+      .getPreviousGuestCheckins(this.member.membershipNumber, `${new Date().getFullYear()}-${(new Date().getMonth() + 1)}`)
+      .subscribe(res => {
+        if (res) {
+          this.guestCount = res;
+        }
+      });
+  }
+
   ionViewDidLoad() {
+    this.getGuestLogs();
     this.presentConfirm();
   }
 
   createForm() {
-
     this.guestForm = this.formBuilder.group({
       id: ["", Validators.compose([Validators.minLength(8), Validators.required, Validators.pattern(/[0-9]/g)])],
       firstname: [
@@ -62,11 +75,28 @@ export class GuestCheckinPage implements OnInit {
     });
   }
 
-  // elementChanged(input) {
+  checkGuestLog() {
+    var proceed = this.guestCount.length < this.allowed ? true : false;
+    if (!proceed) {
+      this.presentMessage();
+    }
+  }
 
-  //   let field = input.ngControl.name;
-  //   this[field + "Changed"] = true;
-  // }
+  presentMessage() {
+    let toast = this.toastCtrl.create({
+      message: `You have used up your free guest slots this month`,
+      duration: 4000,
+      position: "bottom",
+      showCloseButton: true,
+      closeButtonText: "OK"
+    });
+
+    toast.onDidDismiss(() => {
+      this.appCtrl.getRootNav().popTo(CheckinPage);
+    });
+
+    toast.present();
+  }
 
   presentConfirm() {
     let alert = this.alertCtrl.create({
@@ -77,13 +107,14 @@ export class GuestCheckinPage implements OnInit {
           text: "No",
           role: "cancel",
           handler: () => {
-            this.navCtrl.popTo(CheckinPage);
+            this.appCtrl.getRootNav().popTo(CheckinPage);
           }
         },
         {
           text: "Yes",
           handler: () => {
             //this.GuestCheckin(this.member);
+            this.checkGuestLog();
           }
         }
       ]

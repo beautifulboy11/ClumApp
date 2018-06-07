@@ -50,7 +50,7 @@ export class MemberDetailPage {
   }
 
   goto(page: string) {
-    this.navCtrl.push(page, this.member);
+    this.navCtrl.push(page, {member: this.member});
   }
 
 }

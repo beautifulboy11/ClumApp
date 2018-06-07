@@ -21,11 +21,16 @@ export class AuthService {
   private userData: any;
   userRoles: Array<string>;
   userSite: string;
+
   constructor(
     private http: HttpClient,
     private af: AngularFireAuth,
     private db: AngularFireDatabase
   ) {
+    this.initService();
+  }
+
+  initService() {
     this.fireAuth = this.af.auth;
     this.af.authState.switchMap(auth => {
       if (auth) {
@@ -36,8 +41,9 @@ export class AuthService {
     }).subscribe(user => {
       this.user$.next(user);
     });
-    this.user$.map(user => {      
-      this.userSite =  _.get(user, 'site');
+
+    this.user$.map(user => {
+      this.userSite = _.get(user, 'site');
       return this.userRoles = _.keys(_.get(user, 'roles'));
     }).subscribe();
   }
@@ -49,19 +55,20 @@ export class AuthService {
     });
   }
 
-  public doLogin(credentials: Credentials): Observable<any> {
+  doLogin(credentials: Credentials): Observable<any> {
     return Observable.create(observer => {
       this.fireAuth
-        .signInWithEmailAndPassword(credentials.email, credentials.password).then((authData) => {
-          this.updateUser(authData);
-          observer.next(authData);
+        .signInWithEmailAndPassword(credentials.email, credentials.password).then((auth) => {
+          console.log("AUTH DATA", auth);
+          this.updateUser(auth);
+          observer.next(auth);
         }).catch((error) => {
           observer.error(error);
         })
     });
   }
 
-  private updateUser(authData): void {
+  updateUser(authData): void {
     const data = new User(authData);
     const ref = this.db.object('users/' + authData.uid);
     ref.valueChanges()

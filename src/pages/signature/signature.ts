@@ -54,8 +54,7 @@ export class SignaturePage implements OnInit {
   }
 
   ionViewWillEnter() {
-
-
+    this.getPrevious();
   }
 
   ionViewDidEnter() {
@@ -63,7 +62,6 @@ export class SignaturePage implements OnInit {
   }
 
   ngOnInit() {
-    this.getPrevious();
     this.authService.uSite().subscribe(res => {
       this.securitySite = res;
     });
@@ -154,11 +152,10 @@ export class SignaturePage implements OnInit {
   }
 
   presentToast() {
-    // `You have used up ${this.maxAllowed} checkin this month`
     let toast = this.toastCtrl.create({
       message: `You have used up the free checkin this month`,
       duration: 4000,
-      position: "top",
+      position: "bottom",
       showCloseButton: true,
       closeButtonText: "OK"
     });
@@ -223,9 +220,9 @@ export class SignaturePage implements OnInit {
 
   showSuccess() {
     let toast = this.toastCtrl.create({
-      message: "Checked-in successfully",
+      message: "Checked in successfully",
       duration: 3000,
-      position: "top",
+      position: "bottom",
       showCloseButton: true,
       dismissOnPageChange: true,
       closeButtonText: "OK"

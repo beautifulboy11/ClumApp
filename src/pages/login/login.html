@@ -18,19 +18,19 @@
               <div class="form-wrapper">
                 <form [formGroup]="loginForm" (submit)="Login()" novalidate>
                   <div class="floating relatively">
-                    <input type="email" value="" [class]="email_dirty" name="email" id="id_email" tabindex="1"
-                      #email formControlName="email" (change)="emailChanged()" [class.invalid]="!validEmail && (emailchanged || submitAttempt)"
-                      required>
+                    <input type="email" value="" [class]="email_dirty" name="email" id="id_email" tabindex="1" #email formControlName="email"
+                      (change)="emailChanged()" [class.invalid]="!validEmail && (emailchanged || submitAttempt)" required>
                     <label for="id_email">
                       <span>Email</span>
                     </label>
                   </div>
                   <div *ngIf="!validEmail && (emailchanged || submitAttempt)" class="alert alert-danger">
                     Email is invalid
-                  </div>                  
+                  </div>
                   <div class="floating relatively">
                     <input [type]="type" value="" name="password" id="id_password" tabindex="2" [class]="password_dirty" required="" #password
-                      formControlName="password" (change)="passwordChanged()" [class.invalid]="!validPassword && (passwordchanged || submitAttempt)" autocomplete="false">                   
+                      formControlName="password" (change)="passwordChanged()" [class.invalid]="!validPassword && (passwordchanged || submitAttempt)"
+                      autocomplete="false">
                     <label for="id_password">
                       <span>Password</span>
                     </label>
@@ -43,7 +43,7 @@
                     <p>You must provide a password.</p>
                   </div>
                   <div class="form-group">
-                    <button class="btn btn-primary btn-lg btn-block" type="submit" tabindex="3" >
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" tabindex="3">
                       <span class="login-button-icon"></span>Log in</button>
                   </div>
                   <div ion-col col-12 no-padding>
@@ -62,11 +62,11 @@
                     <div padding-horizontal class="text-center help">
                       <div class="text-center help">Don't have a Member account?
                         <br/>
-                        
+
                       </div>
-                      <button ion-button class="btn white outline" block (click)="Signup()">
-                          Sign Up
-                        </button>
+                      <a (click)="Signup()" ion-button block color="secondary">
+                        Sign Up
+                      </a>
                     </div>
                   </ion-col>
                 </div>

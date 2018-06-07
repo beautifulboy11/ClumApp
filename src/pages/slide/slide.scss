@@ -1,19 +1,19 @@
 .ios,
 .md {
-  page-slide {     
+  page-slide {
     .diag {
       position: absolute;
       z-index: 1;
       width: 100%;
       top: 0;
-      height: 66%;
+      height: 90%;
     }
     ion-icon {
-      margin-top: 40%;
+      margin-top: 15%;
       font-size: 7em;
     }
     h2 {
-      margin-top: 50% !important;
+      margin-top: 10% !important;
       font-weight: bold;
       font-size: 1em;
     }
@@ -25,45 +25,22 @@
       font-size: .9em;
     }
     .swiper-pagination-bullet-active {
-      //background: #C400FF;
-      background: #0067b8;
+      background: #C400FF; //background: #0067b8;
     }
     .swiper-pagination {
       bottom: 12% !important;
     }
+
     #skip {
       position: absolute;
       bottom: 20px;
       width: 100%;
-      background: none !important;
+      //background: none !important;
       text-align: center;
       cursor: pointer;
       z-index: 5;
     }
-
-    //   .toolbar-background {
-    //     background: transparent;
-    //     border-color: transparent;
-    //   }
-    //   .slide-image.fa-eercast {
-    //     max-height: 40%;
-    //     max-width: 60%;
-    //     margin: 36px 0;
-    //   }
-    //   .fa {
-    //     font-size: 17px;
-    //   }
-    //   .slide-title {
-    //     margin-top: 2.8rem;
-    //   }
-    //   ion-slide {
-    //     //background-color: #f7f7f7;
-    //     padding-top: 20%;
-    //   } 
-    //   ion-slide  {
-    //     height: 70vh !important;
-    //     //width: auto !important;
-    //   }  
+    
   }
 }
 

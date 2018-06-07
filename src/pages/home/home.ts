@@ -27,26 +27,29 @@ export class HomePage implements OnInit {
     private loadingCtrl: LoadingController,
     private messageService: MessageService
   ) {
+    this.afAuth.authState.subscribe(data => {
+      this.initPage(data);
+    });  
   }
 
-  ngOnInit() {
-    this.afAuth.authState.subscribe(data => {
-      if (data && data.email && data.uid) {
-        this.toastCtrl
-          .create({
-            message: `Welcome, ${data.email}`,
-            duration: 4000
-          })
-          .present();
-      } else {
-        this.toastCtrl
-          .create({
-            message: `You have logged out`,
-            duration: 3000
-          })
-          .present();
-      }
-    });
+  ngOnInit() {}
+
+  initPage(data) {
+    if (data && data.email && data.uid) {
+      this.toastCtrl
+        .create({
+          message: `Welcome, ${data.email}`,
+          duration: 4000
+        }).present();
+    } else {
+      this.toastCtrl
+        .create({
+          message: `You have logged out`,
+          duration: 3000
+        })
+        .present();
+    }
+
     this.loading = this.loadingCtrl.create({
       showBackdrop: true
     });

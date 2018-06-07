@@ -55,7 +55,7 @@ export class DataService {
   postGuestCheckin(
     membershipNumber: string,
     guests: Array<Guest>
-  ): Observable<any> {
+  ): Observable<any> {    
     return Observable.create(observer => {
       return this.db
         .list(
@@ -112,6 +112,20 @@ export class DataService {
         .list("/checkins/" + membershipNumber, ref =>
           ref.orderByChild("memberId").equalTo(membershipNumber)
         )
+        .valueChanges()
+        .subscribe(
+          res => {
+            return q.next(res);
+          },
+          error => { }
+        );
+    });
+  }
+  getPreviousGuestCheckins(membershipNumber: any, date: string) {
+    console.log('ARRIVED AT API');
+    return Observable.create(q => {
+      return this.db
+        .list(`/guests/${membershipNumber}/${date}`)
         .valueChanges()
         .subscribe(
           res => {

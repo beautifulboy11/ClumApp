@@ -1,9 +1,7 @@
 import { Component, ViewChild } from "@angular/core";
 import { SplashScreen } from "@ionic-native/splash-screen";
 import { StatusBar } from "@ionic-native/status-bar";
-import { Config, Nav, Platform, LoadingController } from "ionic-angular";
-//import { Storage } from "@ionic/storage";
-//import { TranslateService } from "@ngx-translate/core";
+import { Config, Nav, Platform } from "ionic-angular";
 import { Settings, AuthService } from "../providers/providers";
 import { AngularFireAuth } from "angularfire2/auth";
 import { timer } from "rxjs/observable/timer";
@@ -28,9 +26,6 @@ export class MyApp {
     public settings: Settings,
     private authService: AuthService,
     private af: AngularFireAuth,
-    //private translate: TranslateService,
-    //public loadingCtrl: LoadingController,
-    //private storage: Storage
   ) {
     this.initializeApp();
     this.pages = [
@@ -55,9 +50,6 @@ export class MyApp {
         component: "SettingsPage"
       }
     ];
-    // this.settings.getActiveTheme().subscribe(val => {
-    //   this.selectedTheme = val;      
-    // });    
   }
 
   initializeApp() {
@@ -65,24 +57,23 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      timer(3000)
+      timer(2000)
         .subscribe(() => this.showSplash = false);
 
       this.settings.loadSetting()
         .then(result => {
           if (result) {
-            this.AuthenticationState();
+            this.initState();
           } else {
             this.rootPage = "SlidePage";
             this.settings.setSetting();
           }
         });
-    });
 
-    //this.initTranslate();
+    });
   }
 
-  AuthenticationState() {
+  initState() {
     this.af.authState.subscribe(user => {
       if (user) {
         this.userProfile = user;
