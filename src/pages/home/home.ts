@@ -5,9 +5,10 @@ import {
   ToastController,
   LoadingController
 } from "ionic-angular";
-import { SiteLocationsPage, CheckinPage } from "../pages";
-import { AngularFireAuth } from "angularfire2/auth";
-import { AuthService, MessageService } from "../../providers/providers";
+
+import { AuthService } from "../../providers/providers";
+import { Observable } from 'rxjs';
+import { tap, map, take } from 'rxjs/operators';
 
 //@IonicPage()
 @Component({
@@ -21,26 +22,33 @@ export class HomePage implements OnInit {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private afAuth: AngularFireAuth,
     private toastCtrl: ToastController,
-    private authService: AuthService,
-    private loadingCtrl: LoadingController,
-    private messageService: MessageService
-  ) {
-    this.afAuth.authState.subscribe(data => {
-      this.initPage(data);
-    });  
+    private auth: AuthService,
+    private loadingCtrl: LoadingController
+  ) {}
+
+  ngOnInit() {
+    return this.auth.user
+      .pipe(
+        take(1),
+        // map(user => !!user),
+        // tap(loggedIn => {
+        //   if (loggedIn) {
+        //  }})
+        ).subscribe(data => {
+        this.initPage(data);
+      });
   }
 
-  ngOnInit() {}
 
-  initPage(data) {
+  initPage(data) {   
     if (data && data.email && data.uid) {
       this.toastCtrl
         .create({
           message: `Welcome, ${data.email}`,
           duration: 4000
-        }).present();
+        })
+        .present();
     } else {
       this.toastCtrl
         .create({
@@ -59,20 +67,26 @@ export class HomePage implements OnInit {
     });
   }
 
+  gotoContent() {
+    if (this.auth.isAdmin()) {
+      this.goto("MemberPage");
+    } else if (this.auth.isSecurity()) {
+      this.gotoCheckin();
+    } else {
+      this.goto("CheckinSummaryPage");
+    }
+  }
+
   determineAccess() {
-    // this.authService.uSite().subscribe(
-    //   res => {        
-    //     res.map(resp =>{
-    //       this.userType = resp;
-          
-    //     });        
-    //   }
-    // );
-    this.loading.dismiss();
+    this.auth.user.subscribe(res => {
+      if (res) {
+        this.loading.dismiss();
+      }
+    });
   }
 
   gotoCheckin(): void {
-    this.navCtrl.push(CheckinPage);
+    this.navCtrl.push("CheckinPage");
   }
 
   goto(page: string): void {
@@ -80,10 +94,10 @@ export class HomePage implements OnInit {
   }
 
   gotoMap(event) {
-    this.navCtrl.push(SiteLocationsPage);
+    this.navCtrl.push("SiteLocationsPage");
   }
 
   search() {
-    this.navCtrl.push(CheckinPage);
+    this.navCtrl.push("CheckinPage");
   }
 }

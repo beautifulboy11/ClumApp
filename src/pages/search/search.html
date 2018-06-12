@@ -1,13 +1,12 @@
 <ion-header>
   <ion-navbar>
-    <!-- <button menuToggle ion-button clear>
+    <button menuToggle ion-button clear>
       <ion-icon name="menu" color="light"></ion-icon>
-    </button> -->
+    </button>
     <ion-title>Search</ion-title>
-    <ion-searchbar (ionInput)="getItems($event)" placeholder="Search the members list"></ion-searchbar>
   </ion-navbar>
   <ion-toolbar>
-   
+    <ion-searchbar (ionInput)="getItems($event)" placeholder="Search the members list"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -17,7 +16,7 @@
       <ion-avatar item-start>
         <!-- <img [src]="item.profilePic" /> -->
         <ion-icon name="ios-contact" style="font-size: 50px;"></ion-icon>
-      </ion-avatar>     
+      </ion-avatar>
       <h2 style="color:black;" [innerHTML]="member.Name"></h2>
       <p style="color:black;">{{member.About}}</p>
       <div item-end>

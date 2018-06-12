@@ -3,14 +3,14 @@
       <button menuToggle ion-button>
           <ion-icon name="menu" clear></ion-icon>
         </button>
-    <ion-title>{{ 'CARDS_TITLE' | translate }}</ion-title>
+    <ion-title>News & Stories</ion-title>
   </ion-navbar>
 </ion-header>
 
 
-<ion-content>
+<ion-content no-padding no-margin fullscreen>
 
-  <ion-card *ngFor="let item of cardItems">
+  <ion-card *ngFor="let item of cardItems" style="margin:0px; width: 100%;">
 
     <ion-item>
       <ion-avatar item-start>

@@ -1,14 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, ErrorHandler, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule, Storage } from '@ionic/storage';
 import { IonicModule, IonicApp, IonicErrorHandler } from 'ionic-angular';
 import { AngularFireModule } from 'angularfire2/';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireAuthModule } from "angularfire2/auth";
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { AgmCoreModule } from '@agm/core';
 
@@ -17,11 +17,8 @@ import { Camera } from '@ionic-native/camera';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { Calendar } from '@ionic-native/calendar';
-
 import { Network } from '@ionic-native/network';
-
 import { SQLite } from '@ionic-native/sqlite'
 import { ScreenOrientation } from '@ionic-native/screen-orientation'
 import { Geolocation } from '@ionic-native/geolocation';
@@ -33,15 +30,19 @@ import { NetworkService } from '../providers/network-service/network-service';
 import { MessageService } from '../providers/message-service/message-service';
 import { DataService, Settings, AuthService } from '../providers/providers';
 /*Pages and Pages Module*/
-import { MessageComponent } from '../components/message/message';
 import { DirectivesModule } from '../directives/directive.module';
-import { GuestCheckinPage } from '../pages/guest-checkin/guest-checkin';
 import { MemberDetailPageModule } from '../pages/member-detail/member-detail.module';
 import { ResetPasswordPageModule } from '../pages/reset-password/reset-password.module';
 import { AddEventPageModule } from '../pages/add-event/add-event.module';
-
-import { HomePage, SignaturePage, PopoverPage, SiteLocationsPage, CheckinPage, E2EPage } from '../pages/pages';
+import { SiteLocationsPageModule } from '../pages/site-locations/site-locations.module';
+import { HomePage } from '../pages/pages';
 import { PipesModule } from '../pipes/pipes.module';
+import { MyProfilePageModule } from '../pages/my-profile/my-profile.module';
+import { ComponentsModule } from '../components/components.module';
+import { SignaturePageModule } from '../pages/signature/signature.module';
+import { GuestCheckinPageModule } from '../pages/guest-checkin/guest-checkin.module';
+import { CheckinPageModule } from '../pages/checkin/checkin.module';
+import { CheckinSummaryPageModule } from '../pages/checkin-summary/checkin-summary.module';
 
 export const firebaseConfig = environment.firebaseConfig;
 // juhy6t5
@@ -58,14 +59,7 @@ export function provideSettings(storage: Storage) {
 @NgModule({
   declarations: [
     MyApp,
-    SignaturePage,
-    E2EPage,
-    HomePage,
-    CheckinPage,
-    PopoverPage,
-    SiteLocationsPage,
-    GuestCheckinPage,
-    MessageComponent
+    HomePage
   ],
 
   imports: [
@@ -73,21 +67,10 @@ export function provideSettings(storage: Storage) {
     SignaturePadModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MemberDetailPageModule,
-    ResetPasswordPageModule,
-    AddEventPageModule,
-    DirectivesModule,
     AngularFireDatabaseModule,
     AngularFireStorageModule,
+    AngularFirestoreModule,
     AngularFireAuthModule,
-    PipesModule,
-    //TranslateModule.forRoot({
-    // loader: {
-    //    provide: TranslateLoader,
-    //     useFactory: (createTranslateLoader),
-    //    deps: [HttpClient]
-    //   }
-    // }),
     IonicModule.forRoot(MyApp, {
       backButtonText: '',
       tabsHideOnSubPages: true,
@@ -103,19 +86,25 @@ export function provideSettings(storage: Storage) {
     AngularFireModule.initializeApp(firebaseConfig),
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsKey
-    })
+    }),
+    PipesModule,
+    DirectivesModule,
+    ComponentsModule,
+    MemberDetailPageModule,
+    ResetPasswordPageModule,
+    MyProfilePageModule,
+    AddEventPageModule,
+    SignaturePageModule,
+    GuestCheckinPageModule,
+    CheckinSummaryPageModule,
+    CheckinPageModule,
+    SiteLocationsPageModule
   ],
 
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
-    E2EPage,
-    CheckinPage,
-    SignaturePage,
-    PopoverPage,
-    SiteLocationsPage,
-    GuestCheckinPage
+    HomePage
   ],
   providers: [
     DataService,
@@ -127,7 +116,6 @@ export function provideSettings(storage: Storage) {
     Geolocation,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    // { provide: LocationStrategy, useClass: PathLocationStrategy },
     Calendar,
     AuthService,
     SQLite,

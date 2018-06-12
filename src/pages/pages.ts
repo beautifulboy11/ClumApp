@@ -14,3 +14,4 @@ export * from './site-locations/site-locations';
 export * from './reset-password/reset-password';
 export * from './checkin/checkin';
 export * from './checkin-summary/checkin-summary';
+export * from './my-profile/my-profile';

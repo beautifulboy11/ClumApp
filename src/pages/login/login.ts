@@ -8,21 +8,18 @@ import {
   MenuController
 } from "ionic-angular";
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
-import { AuthService } from "../../providers/authentication-service/authentication-service";
-import { MainPage, ResetPasswordPage } from "../pages";
+import { AuthService } from "../../providers/authservice/authservice";
 import { ScreenOrientation } from "@ionic-native/screen-orientation";
 import { ApplicationUser } from "../../models/applicationUser";
-import { MessageService } from "../../providers/providers";
+
 @IonicPage()
 @Component({
   selector: "page-login",
   templateUrl: "login.html"
 })
 export class LoginPage implements OnInit {
-
   public loginForm: FormGroup;
   private submitAttempt: boolean = false;
-  private loginErrorString: string;
   private loading: any;
   private showImage: string;
   model: ApplicationUser = { email: "", password: "" };
@@ -44,7 +41,6 @@ export class LoginPage implements OnInit {
     public loadingCtrl: LoadingController,
     private screenOrientation: ScreenOrientation,
     private menu: MenuController,
-    private message: MessageService
   ) { }
 
   ngOnInit() {
@@ -99,7 +95,6 @@ export class LoginPage implements OnInit {
     } else {
       if (this.validEmail) {
         this.email_dirty = "form-control not-empty ok input-lg";
-
       } else {
         this.email_dirty = "form-control not-empty not-ok input-lg";
       }
@@ -119,10 +114,10 @@ export class LoginPage implements OnInit {
   }
 
   public Signup() {
-    alert('Sorry, You are not allowed to sign up at this time');
+    alert('Sorry, You are not allowed to sign up at this time, Contact administrator to add you');
     //this.navCtrl.push("SignupPage");
   }
-  public removeAuth(code: string): string {
+  removeAuth(code: string): string {
     return code
       .substring(5)
       .replace("-", " ")
@@ -133,17 +128,23 @@ export class LoginPage implements OnInit {
     this.submitAttempt = true;
     if (this.isFormValid) {
       this.authservice
-        .doLogin({ email: this.loginForm.controls.email.value, password: this.loginForm.controls.password.value })
-        .subscribe(auth => {
-          if (auth) {
-            this.navCtrl.setRoot("TabsPage");
-          }
-        },
+        .doLogin({
+          email: this.loginForm.controls.email.value,
+          password: this.loginForm.controls.password.value
+        })
+        .subscribe(
+          auth => {
+            if (auth) {
+              this.loading.dismiss();
+              this.navCtrl.setRoot('TabsPage');
+            }
+          },
           error => {
             this.loading.dismiss().then(() => {
               this.showError(error);
             });
-          });
+          }
+        );
       this.showLoading();
     } else {
       return;
@@ -151,27 +152,29 @@ export class LoginPage implements OnInit {
   }
 
   showError(error) {
-    let alert = this.alertCtrl.create({
-      title: this.removeAuth(error.code),
-      message: error.message,
-      buttons: [
-        {
-          text: "Ok",
-          role: "cancel"
-        }
-      ]
-    }).present();
+    this.alertCtrl
+      .create({
+        title: this.removeAuth(error.code),
+        message: error.message,
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel'
+          }
+        ]
+      })
+      .present();
   }
 
   showLoading() {
     this.loading = this.loadingCtrl.create({
-      dismissOnPageChange: true
+      //dismissOnPageChange: true
     });
     this.loading.present();
   }
 
   public resetPassword() {
-    this.navCtrl.push(ResetPasswordPage);
+    this.navCtrl.push('ResetPasswordPage');
   }
 
   ionViewDidEnter() {

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 
-// @IonicPage()
+@IonicPage()
 @Component({
   selector: 'page-site-locations',
   templateUrl: 'site-locations.html',

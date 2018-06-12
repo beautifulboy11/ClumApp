@@ -8,48 +8,25 @@
 </div>
 
 <ion-menu [content]="content">
-    <ion-header no-shadow>
-        <ion-toolbar class="side-toolbar">
-          <div class="profile" [style.background-image]="'url(' + userProfile?.photoURL + ')'">
-      
-            <div class="profile-image">
-              <img *ngIf="userProfile?.photoURL" [src]="userProfile?.photoURL" alt="User Profile Picture" />
-              <ion-icon *ngIf="!userProfile?.photoURL" name="ios-contact" style="font-size: 100px;text-align: center; margin-left: 5px; margin-bottom: 15px;"></ion-icon>
-            </div>
-      
-            <div class="userdata">
-              <h2 style="margin-bottom:3px;">{{ userProfile?.displayName }}</h2>
-              <p>{{ userProfile?.email }}</p>
-            </div>
-      
-          </div>
-        </ion-toolbar>
-      </ion-header>
-      
-      <ion-content padding-top>
-      
-        <ion-list no-lines class="list-on-ios">
-          <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-            <ion-icon [name]='p.icon' item-start></ion-icon>
-            {{p.title}}
-          </button>
-        </ion-list>
-        <ion-list no-lines>
-          <div style="height: 0px; margin-bottom: 5px; padding: 0px; border-top: 1px solid #dedede;"></div>
-          <button menuClose ion-item>
-            <ion-icon name='person' item-start></ion-icon>
-            Account
-          </button>
-          <button menuClose ion-item (click)="SwipePage()">
-            <ion-icon name='person' item-start></ion-icon>
-            Swipe
-          </button>
-          <button menuClose ion-item (click)="signOut()">
-            <ion-icon name='log-out' item-start></ion-icon>
-            Logout
-          </button>
-        </ion-list>
-      </ion-content>
+  <ion-header no-shadow>
+    <ion-toolbar class="side-toolbar">
+      <div class="profile" [style.background-image]="'url(' + userProfile?.photoURL + ')'">
+        <div class="profile-image">
+          <img *ngIf="userProfile?.photoURL" [src]="userProfile?.photoURL" alt="User Profile Picture" />
+          <ion-icon *ngIf="!userProfile?.photoURL" name="ios-contact" style="font-size: 100px;text-align: center; margin-left: 5px; margin-bottom: 15px;"></ion-icon>
+        </div>
+
+        <div class="userdata">
+          <h2 style="margin-bottom:3px;">{{ userProfile?.displayName }}</h2>
+          <p>{{ userProfile?.email }}</p>
+        </div>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content padding-top>
+    <sidemenu></sidemenu>
+  </ion-content>
 </ion-menu>
 <app-messages></app-messages>
 <ion-nav #content [root]="rootPage" [class]="selectedTheme"></ion-nav>

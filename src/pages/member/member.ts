@@ -8,8 +8,8 @@ import {
 } from "ionic-angular";
 import { PopoverPage, MemberDetailPage } from "../pages";
 import { Observable } from "rxjs";
-import { AuthService } from "../../providers/providers";
-import { User } from "../../providers/authentication-service/user";
+//import { AuthService } from "../../providers/providers";
+//import { User } from "../../providers/authservice/user";
 import { DataService, MessageService } from "../../providers/providers";
 
 @IonicPage()
@@ -36,7 +36,7 @@ export class MemberPage implements OnInit {
     private modalCtrl: ModalController,
     private popoverCtrl: PopoverController,
     private message: MessageService,
-    private authService: AuthService
+    // private authService: AuthService
   ) {
     this.club = "Nkana";
   }

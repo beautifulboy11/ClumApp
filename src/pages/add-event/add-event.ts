@@ -17,14 +17,10 @@ export class AddEventPage {
     private calendar: Calendar) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AddEventPage');
-  }
   closeModal() {
     this.viewCtrl.dismiss()
   }
   save() {
-    //use promise to show appropriate messages
     this.calendar
       .createEvent(this.event.title, this.event.location, this.event.message, new Date(this.event.startDate), new Date(this.event.endDate))
       .then(
@@ -35,7 +31,6 @@ export class AddEventPage {
             buttons: ['OK']
           });
           alert.present();
-          //this.navCtrl.pop();
         },
         (err) => {
           let alert = this.alertCtrl.create({

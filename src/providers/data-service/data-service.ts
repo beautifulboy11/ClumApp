@@ -1,13 +1,8 @@
 import { Injectable } from "@angular/core";
-import {
-  HttpClient,
-  HttpParams,
-  HttpErrorResponse
-} from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { ErrorObservable } from "rxjs/observable/ErrorObservable";
 import "rxjs/add/operator/map";
-import { catchError, retry, max } from "rxjs/operators";
+import { catchError, retry } from "rxjs/operators";
 import { AngularFireDatabase } from "angularfire2/database";
 import { Member } from "../../models/member";
 import { Checkin } from "../../models/check-in";
@@ -18,10 +13,7 @@ import { Guest } from "../../models/Guest";
 export class DataService {
   members: any;
   maxCheckin: any;
-  private url: string = "https://boating-manager.firebaseio.com";
-
   constructor(
-    private http: HttpClient,
     private db: AngularFireDatabase,
     private messageService: MessageService
   ) { }
@@ -121,8 +113,7 @@ export class DataService {
         );
     });
   }
-  getPreviousGuestCheckins(membershipNumber: any, date: string) {
-    console.log('ARRIVED AT API');
+  getPreviousGuestCheckins(membershipNumber: any, date: string) {   
     return Observable.create(q => {
       return this.db
         .list(`/guests/${membershipNumber}/${date}`)
@@ -186,7 +177,6 @@ export class DataService {
     if (!params) {
       return this.members;
     }
-
     return this.members.filter(item => {
       for (let key in params) {
         let field = item[key];
@@ -225,23 +215,11 @@ export class DataService {
     return firstname + " " + lastname;
   }
 
-  put(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.put(this.url + "/" + endpoint, body, reqOpts);
-  }
-
-  delete(endpoint: string, reqOpts?: any) {
-    return this.http.delete(this.url + "/" + endpoint, reqOpts);
-  }
-
-  patch(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.patch(this.url + "/" + endpoint, body, reqOpts);
-  }
-
-  handleError(error: HttpErrorResponse) {
+  handleError(error: any) {
     if (error.error instanceof ErrorEvent) {
-      console.log("An error occurred:" + error.error.message);
+      alert("An error occurred:" + error.error.message);
     } else {
-      console.log(
+      alert(
         `Backend returned code ${error.status}, ` + `body was: ${error.error}`
       );
     }

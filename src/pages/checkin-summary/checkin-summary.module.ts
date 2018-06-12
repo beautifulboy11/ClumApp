@@ -9,5 +9,8 @@ import { CheckinSummaryPage } from './checkin-summary';
   imports: [
     IonicPageModule.forChild(CheckinSummaryPage),
   ],
+  exports:[
+    CheckinSummaryPage
+  ]
 })
 export class CheckinSummaryPageModule {}

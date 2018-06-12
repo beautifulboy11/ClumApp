@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
-import { DomSanitizer } from '@angular/platform-browser';
 import { SignaturePage } from '../pages';
 import { DataService } from '../../providers/providers';
 import { Member } from '../../models/member';

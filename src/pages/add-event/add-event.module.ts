@@ -9,5 +9,8 @@ import { AddEventPage } from './add-event';
   imports: [
     IonicPageModule.forChild(AddEventPage),
   ],
+  exports:[
+    AddEventPage
+  ]
 })
 export class AddEventPageModule {}

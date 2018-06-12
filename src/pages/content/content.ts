@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, AlertController, ModalController } from 'ionic-angular';
 import { Calendar } from '@ionic-native/calendar';
-import { AddEventPage } from '../pages';
-
 @IonicPage()
 @Component({
   selector: 'page-content',
@@ -45,7 +43,7 @@ export class ContentPage {
   }
     
   addEvent() {
-    let modal = this.modalCtrl.create(AddEventPage);
+    let modal = this.modalCtrl.create('AddEventPage');
     modal.present();
   }
 
@@ -68,9 +66,6 @@ export class ContentPage {
     var thisDate2 = Date.parse(this.date.getFullYear() + "-" + (this.date.getMonth() + 1) + "-" + day + " 23:59:59");
 
     this.eventList.forEach(event => {
-      //var eventStart =  (event.dtstart);
-      //var eventEnd =  (event.dtend);
-
       if ((event.dtstart >= thisDate1) && (event.dtstart <= thisDate2) || ( event.dtstart < thisDate1) && (event.dtend > thisDate2))
       {
         this.isSelected = true;
@@ -88,22 +83,17 @@ export class ContentPage {
         {
           text: 'Cancel',
           role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
+          handler: () => {}
         },
         {
           text: 'Ok',
           handler: () => {
             this.calendar.deleteEvent(evt.title, evt.location, evt.notes, new Date(evt.startDate.replace(/\s/, 'T')), new Date(evt.endDate.replace(/\s/, 'T'))).then(
-              (msg) => {
-                console.log(msg);
+              (msg) => {              
                 this.loadEventThisMonth();
                 this.selectDate(new Date(evt.startDate.replace(/\s/, 'T')).getDate());
               },
-              (err) => {
-                console.log(err);
-              }
+              (err) => {}
             )
           }
         }
@@ -136,7 +126,7 @@ export class ContentPage {
     }
 
     var lastDayThisMonth = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDay();
-    var nextNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth() + 2, 0).getDate();
+    //var nextNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth() + 2, 0).getDate();
     for (let i = 0; i < (6 - lastDayThisMonth); i++) {
       this.daysInNextMonth.push(i + 1);
     }

@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AfterViewInit, ElementRef, Renderer } from '@angular/core';
-import { ViewController, NavParams } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { AfterViewInit } from '@angular/core';
 import { MessageService } from '../../providers/message-service/message-service';
 
 @Component({

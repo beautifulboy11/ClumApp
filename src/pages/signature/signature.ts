@@ -6,16 +6,17 @@ import {
   NavParams,
   ModalController,
   LoadingController,
-  ToastController
+  ToastController,
+  IonicPage
 } from "ionic-angular";
 import { SignaturePad } from "angular2-signaturepad/signature-pad";
 import { DataService } from "../../providers/providers";
 import { DateWorkerService } from "../../providers/date-worker/date-worker";
 import { Member } from "../../models/member";
-import { GuestCheckinPage } from "../guest-checkin/guest-checkin";
 import { AuthService } from "../../providers/providers";
-import { CheckinPage } from "../pages";
 
+
+@IonicPage()
 @Component({
   selector: "page-signature",
   templateUrl: "signature.html"
@@ -168,7 +169,7 @@ export class SignaturePage implements OnInit {
   }
 
   cancel() {
-    this.navCtrl.popTo(CheckinPage);
+    this.navCtrl.popTo('CheckinPage');
   }
 
   drawClear() {
@@ -207,7 +208,7 @@ export class SignaturePage implements OnInit {
   }
 
   GuestCheckin(mem: Member) {
-    let addGuestModal = this.modalCtrl.create(GuestCheckinPage, {
+    let addGuestModal = this.modalCtrl.create('GuestCheckinPage', {
       member: mem
     });
     addGuestModal.onDidDismiss(guests => {
@@ -233,7 +234,7 @@ export class SignaturePage implements OnInit {
         this.GuestCheckin(this.member);
       }
       else {
-        this.navCtrl.popTo(CheckinPage);
+        this.navCtrl.popTo('CheckinPage');
       }
     });
 

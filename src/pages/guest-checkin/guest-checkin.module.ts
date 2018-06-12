@@ -9,5 +9,7 @@ import { GuestCheckinPage } from './guest-checkin';
   imports: [
     IonicPageModule.forChild(GuestCheckinPage),
   ],
+  exports:
+  [GuestCheckinPage]
 })
 export class GuestCheckinPageModule {}
