@@ -107,7 +107,7 @@ export class GuestCheckinPage implements OnInit {
           text: "No",
           role: "cancel",
           handler: () => {
-            this.appCtrl.getRootNav().popTo(CheckinPage);
+            this.viewCtrl.dismiss();
           }
         },
         {

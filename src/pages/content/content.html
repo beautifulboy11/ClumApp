@@ -1,80 +1,63 @@
-<ion-header>
-  <ion-navbar color="primary">
-    <ion-title>
-      {{currentMonth}} {{currentYear}}
-    </ion-title>
-
-    <ion-buttons end>
-      <button ion-button icon-only (click)="openModal()">
+<ion-header >  
+  <ion-navbar color="primary" no-shadow>
+    <title>Events</title>
+    <!-- <ion-buttons end>
+      <button ion-button icon-only>
         <ion-icon name="more"></ion-icon>
       </button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-navbar>
   <ion-toolbar color="primary" class="toolbar">
-    <ion-row class="calendar-month">
-      <ion-col col-2 (click)="goToLastMonth()">
-        <ion-icon name="ios-arrow-dropleft" style="font-size:20px;" item-start></ion-icon> Prev
-      </ion-col>
-      <ion-col col-8></ion-col>
-      <ion-col col-2 (click)="goToNextMonth()">
-        Next
-        <ion-icon name="ios-arrow-dropright" style="font-size:20px;"></ion-icon>
-      </ion-col>
-    </ion-row>
-    <ion-row class="calendar-weekday" style="margin-bottom:0px;">
-      <ion-col>Su</ion-col>
-      <ion-col>Mo</ion-col>
-      <ion-col>Tu</ion-col>
-      <ion-col>We</ion-col>
-      <ion-col>Th</ion-col>
-      <ion-col>Fr</ion-col>
-      <ion-col>Sa</ion-col>
-    </ion-row>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content no-padding no-margin>
-
-  <ion-card>
-    <div class="calendar-body">
+    <div class="header-line">
       <ion-row>
-        <ion-col col-1 *ngFor="let lastDay of daysInLastMonth" class="last-month" (click)="goToLastMonth()">{{lastDay}}</ion-col>
-        <ion-col col-1 *ngFor="let day of daysInThisMonth" (click)="selectDate(day)" tappable="true">
-          <span class="currentDate" *ngIf="currentDate === day; else otherDate">{{day}}</span>
-          <ng-template #otherDate class="otherDate">{{day}}
-            <br>
-            <div class="event-bullet" *ngIf="checkEvent(day)"></div>
-          </ng-template>
+        <ion-col>
+          <h1 class="leading-text">
+            UPCOMING
+          </h1>
         </ion-col>
-        <ion-col col-1 *ngFor="let nextDay of daysInNextMonth" class="next-month" (click)="goToNextMonth()">{{nextDay}}</ion-col>
+      </ion-row>
+      <ion-row style="margin-top: -20px;">
+        <ion-col></ion-col>
+        <ion-col style="margin-right: -30px;">
+          <div style="text-align:center; background-color:#fff; color:#1976D2; width: 100%; height: 30px;">
+            <h2>
+              EVENTS
+            </h2>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div style="text-align:center; background-color:#003366; color:#fff; width: 100%; height: 50px;">
+            <h1 style="vertical-align: center; font-size: 4rem; margin-top:2px;">
+              {{currentYear}}
+            </h1>
+          </div>
+        </ion-col>
       </ion-row>
     </div>
-  </ion-card>
-  <div style="margin-top:10px;">
-    <div class="selected-event">
-      <ion-list>
-        <ion-item *ngFor="let se of selectedEvent">
-          <div class="eventDate" text-left>
-            <h2>{{se.title}}</h2>
-          </div>
-          <ion-row no-padding no-margin (click)="openEvent(se)">
-            <ion-col col-3 text-left>
-            <p *ngIf="se.allDay">
-              All day
-            </p>
-            <p *ngIf="!se.allDay">
-              1 day
-            </p>
-            </ion-col>
-            <ion-col col-9 text-left>              
-              <ion-icon ios="ios-pin" md="md-pin" style="color:#999999;" *ngIf="se.eventLocation"></ion-icon> {{se.eventLocation}}
-            </ion-col>
-          </ion-row>
-        </ion-item>
-      </ion-list>
-    </div>
-  </div>
+  </ion-toolbar>
 
+</ion-header>
+
+<ion-content padding no-margin>  
+  <ion-card *ngFor="let se of eventList">
+    <ion-card-header class="eventDate" text-left>
+      <h2 style=" font-size:2.5rem; font-weight: 900;">{{se.title}}</h2>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row no-padding no-margin>
+        <ion-col col-3 text-left>
+          <div>
+            <h2>{{se.startDate | date:'mediumDate'}}</h2>
+          </div>
+        </ion-col>
+        <ion-col col-9 text-left>
+          <ion-icon ios="ios-pin" md="md-pin" style="color:#999999;" *ngIf="se.location"></ion-icon> {{se.location}}
+          <p>{{se.description}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+ 
   <ion-fab right bottom>
     <button ion-fab icon-only (click)="addEvent()">
       <ion-icon name="add"></ion-icon>

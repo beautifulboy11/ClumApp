@@ -30,6 +30,7 @@ import { NetworkService } from '../providers/network-service/network-service';
 import { MessageService } from '../providers/message-service/message-service';
 import { DataService, Settings, AuthService } from '../providers/providers';
 /*Pages and Pages Module*/
+import {PopoverPageModule} from '../pages/popover/popover.module';
 import { DirectivesModule } from '../directives/directive.module';
 import { MemberDetailPageModule } from '../pages/member-detail/member-detail.module';
 import { ResetPasswordPageModule } from '../pages/reset-password/reset-password.module';
@@ -43,6 +44,7 @@ import { SignaturePageModule } from '../pages/signature/signature.module';
 import { GuestCheckinPageModule } from '../pages/guest-checkin/guest-checkin.module';
 import { CheckinPageModule } from '../pages/checkin/checkin.module';
 import { CheckinSummaryPageModule } from '../pages/checkin-summary/checkin-summary.module';
+import { E2EPageModule } from '../pages/e2e/e2e.module';
 
 export const firebaseConfig = environment.firebaseConfig;
 // juhy6t5
@@ -69,7 +71,7 @@ export function provideSettings(storage: Storage) {
     BrowserAnimationsModule,
     AngularFireDatabaseModule,
     AngularFireStorageModule,
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
     IonicModule.forRoot(MyApp, {
       backButtonText: '',
@@ -98,7 +100,9 @@ export function provideSettings(storage: Storage) {
     GuestCheckinPageModule,
     CheckinSummaryPageModule,
     CheckinPageModule,
-    SiteLocationsPageModule
+    SiteLocationsPageModule,
+    E2EPageModule,
+    PopoverPageModule
   ],
 
   bootstrap: [IonicApp],

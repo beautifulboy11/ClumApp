@@ -1,4 +1,56 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,700');
+@media screen and (max-height: 799px)
+{
+  .widget-settings-header, .widget-settings-list {
+    padding: 6px 16px;
+  }
+}
+@media screen and (max-height: 799px)
+{
+  .widget-settings-icon-close {
+    top: 9px;
+  }
+}
+.widget-settings-icon-close {
+  position: absolute;
+  //right: 24px;
+  right: 10px;
+  cursor: pointer;
+  opacity: .8;
+}
+.bt{
+  button{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    outline: 0;
+    font: inherit;
+    vertical-align: baseline;
+    background: transparent;
+    list-style: none;
+    overflow: visible;
+}
+}
+.maps-sprite-settings-chevron-left {
+  height: 24px;
+  width: 24px;
+}
+.widget-settings-header{  
+  div{
+    display: block;
+  }
+  .boating-logo {
+    display: block;
+    height: 24px;
+    padding: 0px 0 0px;
+  }   
+  .list-on-ios.boating-logo {
+      display: block;
+      height: 24px;
+      padding: 5px 0 3px;
+  }   
+}
 body, html{
   margin: 0;
   background: #F2F2F2;
@@ -12,43 +64,10 @@ body, html{
 p{
   color: #fff;
 }
-.profile {
-  width: 100%;
-  height: 180px;
-  background-position: center top;
-  background-size: cover;
-  padding-top: 20px;
-  padding-bottom: 5px;
-}
-
-.img-cirle {
-  height: 90px;
-  width: 90px;
-  display: block;
-  border-radius: 50% !important;
-  overflow: hidden;
-}
-
-.userdata {
-  padding-top: 10px;
-  padding-left: 16px;
-  margin-bottom: 10px;
-  //color: #fff;
-  text-align: left;
-}
-
-.profile-image {
-  margin: 0px 0px 0px 16px;
-  height: 90px;
-  width: 90px; //box-shadow: 0 0 5px gray;
-  display: block;
-  border-radius: 50% !important;
-  overflow: hidden;
-}
 
 .side-toolbar {
   margin: 0px;
-  padding: 0px;
+  padding: 0px;  
 }
 
 .splash {

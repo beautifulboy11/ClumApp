@@ -6,11 +6,34 @@
     </button>
     <ion-title>MyProfile</ion-title>
   </ion-navbar>
+  <ion-toolbar>
+      <div class="profile" [style.background-image]="'url(' + userProfile?.photoURL + ')'">
+          <div class="profile-image">
+            <img *ngIf="userProfile?.photoURL" [src]="userProfile?.photoURL" alt="User Profile Picture" />
+            <ion-icon *ngIf="!userProfile?.photoURL" name="ios-contact" style="font-size: 100px;text-align: center; margin-left: 5px; margin-bottom: 15px;"></ion-icon>
+          </div>
+  
+          <div class="userdata">
+            <h2 style="margin-bottom:3px;">{{ userProfile?.displayName }}</h2>
+            <p>{{ userProfile?.email }}</p>
+          </div>
+        </div>
+  </ion-toolbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <div *ngIf="userProfile.user;">
+    <ng-template #authenticated>
+      <div *ngIf="userProfile.user | async as user">
+        <h3>Hello, {{ user.displayName }}</h3>
+        <img [src]="userProfile?.photoURL">
+        <p>User ID: {{ user.uid }}</p>
+        <p>Email: {{ user?.email }} </p>
+        <button (click)="signOut()">Logout</button>
+      </div>
+    </ng-template>
+  </div>
 
 </ion-content>
-

@@ -23,7 +23,7 @@ export class SearchPage implements OnInit {
     this.getMembers();
   }
   getMembers() {
-    this.api.get("/members", true, true).subscribe(
+    this.api.getCollection("/members", true, true).subscribe(
       resp => {
         this.currentItems = resp;
       },

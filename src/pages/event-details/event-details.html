@@ -8,5 +8,31 @@
 
 
 <ion-content padding>
-
-</ion-content>
+    <form>
+      <ion-list no-lines>
+        <ion-item>
+          <ion-label floating>Title</ion-label>
+          <ion-input type="text" [(ngModel)]="event.title" name="event.title"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Location</ion-label>
+          <ion-input type="text" [(ngModel)]="event.location" name="event.location"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Event Description</ion-label>
+          <ion-input type="text" [(ngModel)]="event.message" name="event.message"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Start Date</ion-label>
+          <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="MMM/DD/YYYY HH:mm" [(ngModel)]="event.startDate" name="event.startDate"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>End Date</ion-label>
+          <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="MMM/DD/YYYY HH:mm" [(ngModel)]="event.endDate" name="event.endDate"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <button ion-button type="submit" small round>Save</button>
+        </ion-item>
+      </ion-list>
+    </form>
+  </ion-content>

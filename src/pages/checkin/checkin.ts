@@ -1,11 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import {
-  NavController,    
+  NavController,
   ToastController,
-  PopoverController
+  PopoverController,
+  IonicPage
 } from "ionic-angular";
 import { DataService } from "../../providers/providers";
 
+@IonicPage()
 @Component({
   selector: "page-checkin",
   templateUrl: "checkin.html"
@@ -34,7 +36,7 @@ export class CheckinPage implements OnInit {
 
   loadMembers(): void {
     this.isLoading = true;
-    this.api.get("/members", true, true).subscribe(
+    this.api.getCollection("members", true, true).subscribe(
       res => {
         res.forEach(resp => {
           if (resp.club === "Nkana") {
@@ -56,11 +58,12 @@ export class CheckinPage implements OnInit {
     this.toastCtrl
       .create({
         position: "bottom",
+        duration: 4000,
         message: error.message,
         showCloseButton: true,
         cssClass: "toast-message",
         closeButtonText: "Dismiss",
-        dismissOnPageChange: true
+        dismissOnPageChange: false
       })
       .present();
 

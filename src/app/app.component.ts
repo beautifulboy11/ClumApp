@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { SplashScreen } from "@ionic-native/splash-screen";
 import { StatusBar } from "@ionic-native/status-bar";
-import { Config, Platform } from "ionic-angular";
+import { Platform } from "ionic-angular";
 import { Settings, AuthService } from "../providers/providers";
 import { timer } from "rxjs/observable/timer";
 
@@ -12,13 +12,13 @@ export class MyApp {
   rootPage: any;
   selectedTheme: String;
   showSplash: boolean = true;
-  userProfile: any;
+
 
   constructor(
     private platform: Platform,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
-    private config: Config,
+    //private config: Config,
     public settings: Settings,
     private authService: AuthService
   ) {
@@ -50,7 +50,6 @@ export class MyApp {
   initAppState() {
     this.authService.isAuthenticated().subscribe(user => {
       if (user) {
-        this.userProfile = user;
         this.rootPage = "TabsPage";
       } else {
         this.rootPage = "LoginPage";

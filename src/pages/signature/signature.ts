@@ -15,7 +15,6 @@ import { DateWorkerService } from "../../providers/date-worker/date-worker";
 import { Member } from "../../models/member";
 import { AuthService } from "../../providers/providers";
 
-
 @IonicPage()
 @Component({
   selector: "page-signature",
@@ -55,11 +54,25 @@ export class SignaturePage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.getPrevious();
+    this.getLatest();
+    this.getMax();
   }
 
   ionViewDidEnter() {
     this.verifyEligibility();
+  }
+
+  verifyEligibility() {
+    this.loading = this.loadingCtrl.create({
+      spinner: "dots",
+      content: 'Checking',
+      showBackdrop: false
+    });
+
+    this.loading.present().then(() => {
+      this.checkinLoad();
+      this.countCheckins();
+    });
   }
 
   ngOnInit() {
@@ -70,31 +83,27 @@ export class SignaturePage implements OnInit {
 
   ngAfterViewInit() {
     this.signaturePad.clear();
-    this.canvasResize();
-    this.getMax();
+    this.canvasResize();    
+  }
+
+  canvasResize() {
+    let canvas = document.querySelector("canvas");
+    this.signaturePad.set("minWidth", 1);
+    this.signaturePad.set("canvasWidth", canvas.offsetWidth);
+    this.signaturePad.set("canvasHeight", canvas.offsetHeight);
   }
 
   getMax() {
     this.api.getMaxCheckInLock()
       .subscribe(res => {
-        this.maxAllowed = res;
-      },
-        error => { }
-      );
+        if (res) {         
+          res.forEach(element => {
+            this.maxAllowed = element.maxCheckinsAllowed;
+          });         
+        }
+      });
   }
-
-  verifyEligibility() {
-    this.loading = this.loadingCtrl.create({
-      spinner: "dots",
-      showBackdrop: false
-    });
-
-    this.loading.present().then(() => {
-      this.checkinLoad();
-      this.countCheckins();
-    });
-  }
-
+  
   checkinLoad() {
     if (this.previousCheckin.length > 0) {
       for (let element of this.previousCheckin) {
@@ -114,28 +123,26 @@ export class SignaturePage implements OnInit {
     }
   }
 
-  getPrevious() {
-    this.api.getPreviousCheckins(this.member.membershipNumber)
-      .subscribe(res => {
-        this.previousCheckin = res;
-      },
-        error => { }
-      );
+  async getLatest() {
+   await this.api.getLatestCheckin(this.member.membershipNumber)
+      .subscribe(res => {       
+        if (res) {
+          this.previousCheckin = res;
+        }
+      });
   }
 
   isLocalClub(): boolean {
     return this.member.club == this.securitySite;
   }
 
-  countCheckins() {
-    var isMax = this.prevCheckin.length < this.maxAllowed ? true : false;
+  countCheckins() {  
     if (this.isLocalClub()) {
-      //member at local club... no limitations on checkin
       this.loading.dismiss();
       this.isReadyToSave = true;
     }
     else {
-      if (isMax) {
+      if (this.prevCheckin.length < this.maxAllowed) {
         this.loading.dismiss();
         this.isReadyToSave = true;
       } else {
@@ -144,14 +151,7 @@ export class SignaturePage implements OnInit {
       }
     }
   }
-
-  canvasResize() {
-    let canvas = document.querySelector("canvas");
-    this.signaturePad.set("minWidth", 1);
-    this.signaturePad.set("canvasWidth", canvas.offsetWidth);
-    this.signaturePad.set("canvasHeight", canvas.offsetHeight);
-  }
-
+  
   presentToast() {
     let toast = this.toastCtrl.create({
       message: `You have used up the free checkin this month`,
@@ -184,19 +184,15 @@ export class SignaturePage implements OnInit {
     });
 
     this.loading.present().then(() => {
+
       this.signatureImage = this.signaturePad.toDataURL();
-      var today = new Date();
-      var date =
-        today.getFullYear() +
-        "-" +
-        (today.getMonth() + 1) +
-        "-" +
-        today.getDate();
-      this.api
-        .postCheckin({
+
+      var date = this.fullDate();
+      this.api.postCheckin({
           date: date,
           memberId: this.member.membershipNumber,
-          signature: this.signatureImage
+          signature: this.signatureImage,
+          site: this.securitySite
         })
         .subscribe(res => {
           this.isReadyToSave = false;
@@ -207,6 +203,11 @@ export class SignaturePage implements OnInit {
     });
   }
 
+  fullDate(): string {
+    var today = new Date();
+    return `${today.getFullYear()}-${(today.getMonth() + 1)}-${today.getDate()}`;
+  }
+
   GuestCheckin(mem: Member) {
     let addGuestModal = this.modalCtrl.create('GuestCheckinPage', {
       member: mem
@@ -214,6 +215,8 @@ export class SignaturePage implements OnInit {
     addGuestModal.onDidDismiss(guests => {
       if (guests) {
         //this.api.postGuestCheckin(mem.membershipNumber, guests);
+      } else {
+        //this.viewCtrl.
       }
     });
     addGuestModal.present();
@@ -221,7 +224,7 @@ export class SignaturePage implements OnInit {
 
   showSuccess() {
     let toast = this.toastCtrl.create({
-      message: "Checked in successfully",
+      message: "Check-in Saved successfully",
       duration: 3000,
       position: "bottom",
       showCloseButton: true,

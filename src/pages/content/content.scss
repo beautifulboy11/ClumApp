@@ -1,4 +1,23 @@
+.ios, .md, .wp {
+  // .toolbar-content{
+  //  background-color: #283747;
+  // }
 page-content {
+.header-line{
+  // margin-left: -7px;
+  // margin-right: -7px;
+  border: 2px solid #fff;
+  z-index: 999;
+  width: 100%;
+}
+  .leading-text{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    text-align: center;
+    color: #FFF;
+    font-weight: 900;
+    font-size: 4.5rem;
+  }
   .item:first-child {
     border-top: 1px solid #dedede;
   }
@@ -20,26 +39,28 @@ page-content {
     margin: 0px 0px 0px 0;
   }
   .eventDate {
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    margin-left: 0px;
-    background-color: #c1cfe05c;
-    padding-top: 5px;
-    padding-right: 10px;
-    padding-bottom: 5px;
-    padding-left: 5px;
+    // margin-top: 0px;
+    // margin-right: 0px;
+    // margin-bottom: 0px;
+    // margin-left: 0px;
+    // background-color: #c1cfe05c;
+    // padding-top: 5px;
+    // padding-right: 10px;
+    // padding-bottom: 5px;
+    // padding-left: 5px;
+    font-size: 3rem;
+    font-weight: 900;
     color: #0067b8;
-    border-bottom: 1px solid #dedede;
-    width: 100%;
+    // border-bottom: 1px solid #dedede;
+    // width: 100%;
   }
   .eventTitle {
     padding: 10px;
     border-top: 1px solid #dedede;
   }
-  .toolbar {
-    color: #FFFFFF;
-  }
+  // .toolbar {
+  //   color: #FFFFFF;    
+  // }
   [col-1] {
     -webkit-box-flex: 0;
     -webkit-flex: 0 0 8.33333%;
@@ -72,7 +93,7 @@ page-content {
   }
   .calendar-header {
     background-color: map-get($colors, primary); // #1a732d;
-    color: #FFFFFF;
+    //color: #FFFFFF;
   }
   .event-bullet {
     margin: 2px auto;
@@ -115,5 +136,5 @@ page-content {
       color: white;
     }
   }
-}
+}}
 

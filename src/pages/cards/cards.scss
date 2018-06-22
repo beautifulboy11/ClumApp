@@ -1,3 +1,43 @@
 page-cards {
-
+  .source {
+    color: map-get($colors, primary);
+  }
+ 
+  .notification {
+    position: fixed;
+    top: 45px;
+    width: 100%;   
+    color: #fff;
+    background-color: #000;
+    border-color: #1a1919b0;
+    padding: 2px 5px;
+    font-size: 0.8em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-family: 'Roboto';
+    opacity: 0;
+    transform: translateY(-110%);
+    z-index: 1000;
+    transition: opacity .3s ease-in-out, transform .3s ease-in-out
+  }
+  .notification.visible {
+    transform: translateY(10px);
+    opacity: 1
+  }
+  .notification span {
+    flex: 1
+  }
+  .notification button {
+    margin-left: 10px
+  }
+  .reload-button {
+    position: absolute;
+    top: 11px;
+    z-index: -2;
+    margin-bottom: 10px
+  }
+  button .flex-row mat-icon {
+    margin-right: 5px
+  }
 }

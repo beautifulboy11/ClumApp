@@ -1,3 +1,36 @@
 page-my-profile {
+    .profile {
+        width: 100%;
+        height: 180px;
+        background-position: center top;
+        background-size: cover;
+        padding-top: 20px;
+        padding-bottom: 5px;
+      }
+      
+      .img-cirle {
+        height: 90px;
+        width: 90px;
+        display: block;
+        border-radius: 50% !important;
+        overflow: hidden;
+      }
+      
+      .userdata {
+        padding-top: 10px;
+        padding-left: 16px;
+        margin-bottom: 10px;
+        //color: #fff;
+        text-align: left;
+      }
+      
+      .profile-image {
+        margin: 0px 0px 0px 16px;
+        height: 90px;
+        width: 90px; //box-shadow: 0 0 5px gray;
+        display: block;
+        border-radius: 50% !important;
+        overflow: hidden;
+      }
 
 }

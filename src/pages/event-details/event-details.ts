@@ -12,8 +12,7 @@ export class EventDetailsPage {
     this.event = navParams.data;
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EventDetailsPage');
+  ionViewDidLoad() {   
   }
 
 }

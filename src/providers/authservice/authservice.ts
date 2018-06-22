@@ -1,10 +1,8 @@
 import { Injectable } from "@angular/core";
-import { auth } from 'firebase/app';
+//import { auth } from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabase } from "angularfire2/database";
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { User } from "./user";
-
 import { Observable, of, BehaviorSubject } from "rxjs";
 import { switchMap } from "rxjs/operators";
 
@@ -21,8 +19,7 @@ export class AuthService {
   userRoles: Array<string>;
   userSite: string;
   user: Observable<User>;
-  constructor(private auth$: AngularFireAuth, private db: AngularFireDatabase,
-    private afs: AngularFirestore) {
+  constructor(private auth$: AngularFireAuth, private afs: AngularFirestore) {
     auth$.authState.subscribe(state => {
       this.authState = state;
     });
@@ -42,8 +39,7 @@ export class AuthService {
         this.user$.next(user);
       });
           
-    this.user$
-      .map(user => {
+    this.user$.map(user => {
         this.userSite = _.get(user, "site");       
         return (this.userRoles = _.keys(_.get(user, "roles")));
       })
@@ -60,7 +56,7 @@ export class AuthService {
   getUser(): Observable<any> {
     return Observable.create(observer => {
       let user = this.auth$.auth.currentUser ? this.auth$.auth.currentUser : null;
-      observer.next(user);
+      return observer.next(user);
     });
   }
 
@@ -83,48 +79,40 @@ export class AuthService {
     });
   }
 
-  private updateUserData(authData): void {
-    const data = new User(authData.user);
-    const ref = this.db.object(`users/${data.uid}`);
-    ref
-      .valueChanges()
-      .take(1)
-      .subscribe((user: User) => {
-        if (!user) {
-          ref.update(data);
-        }
-      });
-  }
+  // private updateUserData(authData): void {
+  //   const data = new User(authData.user);
+  //   const ref = this.db.object(`users/${data.uid}`);
+  //   ref
+  //     .valueChanges()
+  //     .take(1)
+  //     .subscribe((user: User) => {
+  //       if (!user) {
+  //         ref.update(data);
+  //       }
+  //     });
+  // }
 
   private updateUser(user) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
-
     const data = new User(user.user);
-
     return userRef.set(data, { merge: true })
-
   }
 
   public registerUser(email: string, password: string): Observable<any> {
     return Observable.create(observer => {
       this.auth$.auth
         .createUserWithEmailAndPassword(email, password)
-        .then(authData => {
-          this.auth$
-            .auth
-            .createUserWithEmailAndPassword(email, password)
-            .then(newUser => {
-              this.afs.doc("users/" + newUser.uid).set({
-                uid: newUser.uid,
-                email: email,
-                roles: {
-                  member: true
-                },
-                photoURL: '',
-                displayName: ''
-              });
-            });
-          observer.next(authData);
+        .then(userCredential => {
+          this.afs.doc("users/" + userCredential.user.uid).set({
+            uid: userCredential.user.uid,
+            email: email,
+            roles: {
+              member: true
+            },
+            photoURL: '',
+            displayName: ''
+          });
+          return observer.next(userCredential.user);
         })
         .catch(error => {
           observer.error(error);

@@ -11,5 +11,6 @@ export interface Checkin {
   date: string;
   memberId: string;
   signature: string;
+  site?: string
 }
 

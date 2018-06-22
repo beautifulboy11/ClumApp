@@ -16,8 +16,7 @@ export class CheckinSummaryPage {
     this.member = navParams.get('member');
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CheckinSummaryPage');
+  ionViewDidLoad() {   
     this.api.getMemberCheckins(this.member).subscribe(res => {
       this.allCheckins = res;
     })

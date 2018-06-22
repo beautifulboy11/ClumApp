@@ -1,6 +1,7 @@
 import { Component, ViewChild } from "@angular/core";
-import { Slides, SegmentButton } from "ionic-angular";
+import { Slides, SegmentButton, IonicPage } from "ionic-angular";
 
+@IonicPage()
 @Component({
   selector: "page-e2e",
   templateUrl: "e2e.html"

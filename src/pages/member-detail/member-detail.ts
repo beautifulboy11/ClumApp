@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angu
 import { SignaturePage } from '../pages';
 import { DataService } from '../../providers/providers';
 import { Member } from '../../models/member';
+
 @IonicPage()
 @Component({
   selector: 'page-member-detail',
@@ -26,16 +27,19 @@ export class MemberDetailPage {
       .subscribe(
         resp => {
           this.checkins = [];
+          this.checkins = resp;
           this.show = false;
-          resp.map(res => {
-            this.noResults = false;
-            var ob = {
-              date: Date.parse(res.date),
-              memberId: res.memberId,
-              signature: res.signature,
-            }
-            this.checkins.push(ob);
-          });
+          // if (resp) {
+          //   resp.map(res => {
+          //     this.noResults = false;
+          //     var ob = {
+          //       date: Date.parse(res.date),
+          //       memberId: res.memberId,
+          //       signature: res.signature,
+          //     }
+          //     this.checkins.push(ob);
+          //   });
+          // }        
         });
   }
 
@@ -48,7 +52,7 @@ export class MemberDetailPage {
   }
 
   goto(page: string) {
-    this.navCtrl.push(page, {member: this.member});
+    this.navCtrl.push(page, { member: this.member });
   }
 
 }

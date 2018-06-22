@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
-import { Calendar } from '@ionic-native/calendar';
+import { DataService } from '../../providers/providers';
 
 @IonicPage()
 @Component({
@@ -14,34 +14,40 @@ export class AddEventPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
-    private calendar: Calendar) {
+    private api: DataService
+  ) {
   }
 
   closeModal() {
     this.viewCtrl.dismiss()
   }
   save() {
-    this.calendar
-      .createEvent(this.event.title, this.event.location, this.event.message, new Date(this.event.startDate), new Date(this.event.endDate))
-      .then(
-        (msg) => {
-          let alert = this.alertCtrl.create({
-            title: 'Success!',
-            subTitle: 'Event saved successfully',
-            buttons: ['OK']
+    if (this.event.title != null) {
+      this.api
+        .createEvent(this.event.title, this.event.location, this.event.message, new Date(this.event.startDate).toDateString(), new Date(this.event.endDate).toDateString())
+        .subscribe(
+          (msg) => {
+            if (msg) {
+              this.alertCtrl.create({
+                title: 'Success!',
+                subTitle: 'Event saved successfully',
+                buttons: ['OK']
+              }).present();
+            }
+          },
+          (err) => {
+            this.presentError(err);
           });
-          alert.present();
-        },
-        (err) => {
-          let alert = this.alertCtrl.create({
-            title: 'Failed!',
-            subTitle: err,
-            buttons: ['OK']
-          });
-          alert.present();
-        }
-      );
+    }else{
+      this.presentError('An Event requires a title');
+    }
   }
 
-
+  presentError(err: string) {
+    this.alertCtrl.create({
+      title: 'Failed!',
+      subTitle: err,
+      buttons: ['OK']
+    }).present();
+  }
 }

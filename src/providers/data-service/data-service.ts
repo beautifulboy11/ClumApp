@@ -1,84 +1,70 @@
 import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { HttpClient } from '@angular/common/http';
+import { Observable } from "rxjs";
 import { ErrorObservable } from "rxjs/observable/ErrorObservable";
-import "rxjs/add/operator/map";
-import { catchError, retry } from "rxjs/operators";
-import { AngularFireDatabase } from "angularfire2/database";
+import { timer } from 'rxjs/observable/timer';
+import { catchError, retry, shareReplay, switchMap, map, takeUntil } from "rxjs/operators";
+import { Subject } from 'rxjs/Subject';
+import { AngularFirestore } from 'angularfire2/firestore';
 import { Member } from "../../models/member";
 import { Checkin } from "../../models/check-in";
 import { MessageService } from "../message-service/message-service";
 import { Guest } from "../../models/Guest";
-
+//8009dd7edc5d41619595b7df38d4c554
+export interface article {
+  author: string;
+  description: string;
+  publishedAt: string;
+  source: { id: string, name: string };
+  title: string;
+  url: string;
+  urlToImage: string;
+}
+export interface ArticleReponse {
+  status: string;
+  totalResults: number;
+  articles: Array<article>;
+}
+const API_ENDPOINT = 'https://newsapi.org/v2/top-headlines?country=us&apiKey=8009dd7edc5d41619595b7df38d4c554';
+const CACHE_SIZE = 1;
+const REFRESH_INTERVAL = 10000;
 @Injectable()
 export class DataService {
   members: any;
   maxCheckin: any;
+  private cache$: Observable<Array<article>>;
+  private reload$ = new Subject<void>();
+
   constructor(
-    private db: AngularFireDatabase,
-    private messageService: MessageService
+    private http: HttpClient,
+    private messageService: MessageService,
+    private afs: AngularFirestore
   ) { }
 
-  post(endpoint: string, body: any): any {
-    return Observable.create(observer => {
-      return this.db
-        .object(endpoint)
-        .set(body)
-        .then(value => {
-          return observer.next(value);
-        });
-    });
+  get getGoogleNews() {
+    if (!this.cache$) {
+      const timer$ = timer(0, REFRESH_INTERVAL);
+      this.cache$ = timer$.pipe(
+        switchMap(_ => this.getNews()),
+        takeUntil(this.reload$),
+        shareReplay(CACHE_SIZE));
+    }  
+    return this.cache$;
   }
 
-  postCheckin(checkinRec: Checkin): any {
-    return Observable.create(observer => {
-      return this.db
-        .list("checkins/" + checkinRec.memberId)
-        .push({
-          date: checkinRec.date,
-          memberId: checkinRec.memberId,
-          signature: checkinRec.signature
-        })
-        .then(value => {
-          return observer.next(value);
-        });
-    });
+  forceReload() {
+    this.reload$.next();
+    this.cache$ = null;
   }
 
-  postGuestCheckin(
-    membershipNumber: string,
-    guests: Array<Guest>
-  ): Observable<any> {    
-    return Observable.create(observer => {
-      return this.db
-        .list(
-          "guests/" +
-          membershipNumber +
-          "/" +
-          new Date().getFullYear() +
-          "-" +
-          (new Date().getMonth() + 1)
-        )
-        .push({
-          guests
-        })
-        .then(value => {
-          return observer.next(value);
-        });
-    });
+  private getNews() {
+    return this.http.get<ArticleReponse>(API_ENDPOINT).pipe(     
+      map(response => response.articles));
   }
 
-  get(endpoint: string, params?: any, reqOpts?: any): Observable<any> {
-    // if (!reqOpts) {
-    //   reqOpts = {
-    //     params: new HttpParams()
-    //   };
-    // }
-    if (params) {
-    }
-
+  getMemberCollection(endpoint: string, params?: any, reqOpts?: any): Observable<any> {
     return Observable.create(observer => {
-      return this.db
-        .list(endpoint)
+      return this.afs.collection(endpoint)
         .valueChanges()
         .pipe(
           retry(3),
@@ -98,77 +84,163 @@ export class DataService {
     });
   }
 
-  getPreviousCheckins(membershipNumber: any) {
-    return Observable.create(q => {
-      return this.db
-        .list("/checkins/" + membershipNumber, ref =>
-          ref.orderByChild("memberId").equalTo(membershipNumber)
-        )
-        .valueChanges()
-        .subscribe(
-          res => {
-            return q.next(res);
-          },
-          error => { }
-        );
-    });
-  }
-  getPreviousGuestCheckins(membershipNumber: any, date: string) {   
-    return Observable.create(q => {
-      return this.db
-        .list(`/guests/${membershipNumber}/${date}`)
-        .valueChanges()
-        .subscribe(
-          res => {
-            return q.next(res);
-          },
-          error => { }
-        );
-    });
-  }
-
-  getMaxCheckInLock(): Observable<any> {
+  post(endpoint: string, body: any): any {
     return Observable.create(observer => {
-      if (this.maxCheckin != null) {
-        return of(this.maxCheckin);
-      }
-      return this.db
-        .list("maxCheckin")
-        .valueChanges()
-        .subscribe(data => {
-          this.maxCheckin = data;
-          data.map(result => {
-            return observer.next(result);
-          });
+      return this.afs
+        .doc(endpoint)
+        .set(body)
+        .then(value => {
+          return observer.next(value);
         });
     });
   }
 
-  getMemberCheckins(member: any): Observable<Member> {
+  postCheckin(checkinRec: Checkin): any {
     return Observable.create(observer => {
-      return this.db
-        .list("/checkins/" + member.membershipNumber, ref =>
-          ref.orderByChild("memberId").equalTo(member.membershipNumber)
-        )
-        .valueChanges()
-        .subscribe(res => {
-          return observer.next(res);
+      return this.afs
+        .doc(`checkins/${checkinRec.memberId}`)
+        .collection('my-checkins')
+        .add({
+          date: checkinRec.date,
+          memberId: checkinRec.memberId,
+          signature: checkinRec.signature
+        })
+        .then(value => {
+          return observer.next(value);
+        });
+    });
+  }
+
+  postGuestCheckin(membershipNumber: string, guests: Array<Guest>): Observable<any> {
+    return Observable.create(observer => {
+      return this.afs
+        .doc(`checkins/${membershipNumber}`)
+        .collection('guests')
+        .doc(`${new Date().getFullYear()}-${(new Date().getMonth() + 1)}`)
+        .set({
+          guests
+        })
+        .then(value => {
+          return observer.next(value);
         });
     });
   }
 
   getLatestCheckin(membershipNumber: string): any {
+    return this.afs.doc(`checkins/${membershipNumber}`)
+      .collection('my-checkins', ref => ref.orderBy('date', 'desc').limit(1)).valueChanges();
+  }
+
+  getPreviousCheckins(membershipNumber: any) {
+    return this.afs.doc(`checkins/${membershipNumber}`)
+      .collection('my-checkins', ref => {
+        return ref.orderBy('date', 'desc')
+      })
+      .valueChanges();
+
+  }
+
+  getPreviousGuestCheckins(membershipNumber: any, date: string) {
+    return this.afs
+      .doc(`checkins/${membershipNumber}`)
+      .collection('guests')
+      .doc(`/${date}`)
+      .valueChanges();
+  }
+
+
+  getDocument(endpoint: string, params?: any, reqOpts?: any): Observable<any> {
     return Observable.create(observer => {
-      return this.db
-        .list("/checkins/" + membershipNumber, ref =>
-          ref
-            .orderByChild("memberId")
-            .equalTo(membershipNumber)
-            .limitToLast(1)
-        )
+      return this.afs.doc(endpoint)
         .valueChanges()
-        .subscribe(data => {
-          return observer.next(data);
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
+        .subscribe(
+          res => {
+            if (reqOpts) {
+              this.members = res;
+            }
+            return observer.next(res);
+          },
+          error => {
+            this.messageService.add(error);
+          }
+        );
+    });
+  }
+
+  getCollection(endpoint: string, params?: any, reqOpts?: any): Observable<any> {
+    return Observable.create(observer => {
+      return this.afs.collection(endpoint)
+        .valueChanges()
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
+        .subscribe(
+          res => {
+            if (reqOpts) {
+              this.members = res;
+            }
+            return observer.next(res);
+          },
+          error => {
+            this.messageService.add(error);
+          }
+        );
+    });
+  }
+
+  getEventCollection(): Observable<any> {
+    return Observable.create(observer => {
+      return this.afs.collection(`events`, ref => { return ref.where('startDate', '>=', new Date().toDateString()) })
+        .valueChanges()
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
+        .subscribe((res) => {
+          return observer.next(res);
+        },
+          error => {
+            this.messageService.add(error);
+          }
+        );
+    });
+  }
+
+  createEvent(title: string, location: string, description: string, startDate: string, endDate: string): Observable<any> {
+    return Observable.create(observer => {
+      var id = this.afs.createId();
+      return this.afs.doc(`events/${id}`).set({
+        title,
+        location,
+        description,
+        startDate,
+        endDate
+      }).then((res) => {
+        return observer.next(res);
+      })
+    })
+  }
+
+  getMaxCheckInLock(): Observable<any> {
+    return this.afs
+      .collection('maxCheckin')
+      .valueChanges();
+  }
+
+  getMemberCheckins(member: any): Observable<Member> {
+    return Observable.create(observer => {
+      return this.afs
+        .collection(`checkins/${member.membershipNumber}`, ref => {
+          return ref.orderBy("date")
+        })
+        .valueChanges()
+        .subscribe(res => {
+          return observer.next(res);
         });
     });
   }
@@ -191,24 +263,6 @@ export class DataService {
       }
       return null;
     });
-
-    //.map(member => {
-    //   let isActive = member.status === "active";
-    //   let status = isActive ? true : false;
-    //   let chk = status ? "secondary" : "dark";
-    //   let name = this.concatenateName(member.firstName, member.lastName);
-    //   return {
-    //     About: member.about,
-    //     Club: member.club,
-    //     Contact: member.contact,
-    //     Name: name,
-    //     MemberShipNumber: member.membershipNumber,
-    //     ProfilePic: member.profilePic,
-    //     Status: status,
-    //     Note: member.status,
-    //     Chk: chk
-    //   };
-    // });
   }
 
   concatenateName(firstname: string, lastname: string): string {

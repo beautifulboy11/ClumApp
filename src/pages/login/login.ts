@@ -19,9 +19,9 @@ import { ApplicationUser } from "../../models/applicationUser";
 })
 export class LoginPage implements OnInit {
   public loginForm: FormGroup;
-  private submitAttempt: boolean = false;
-  private loading: any;
-  private showImage: string;
+  public submitAttempt: boolean = false;
+  public loading: any;
+  public showImage: string;
   model: ApplicationUser = { email: "", password: "" };
   passicon: string = "eye";
   type: string = "password";
@@ -32,13 +32,14 @@ export class LoginPage implements OnInit {
   isFormValid: boolean;
   email_dirty: string = "form-control empty ok input-lg";
   password_dirty: string = "form-control empty ok input-lg";
+  
   constructor(
-    public navCtrl: NavController,
+    private navCtrl: NavController,
     public authservice: AuthService,
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
-    public fb: FormBuilder,
-    public loadingCtrl: LoadingController,
+    private fb: FormBuilder,
+    private loadingCtrl: LoadingController,
     private screenOrientation: ScreenOrientation,
     private menu: MenuController,
   ) { }
@@ -85,7 +86,7 @@ export class LoginPage implements OnInit {
     }
   }
 
-  public emailChanged() {
+  emailChanged() {
     let field = "email";
     this[field + "changed"] = true;
     this.isFormValid = this.loginForm.valid;
@@ -101,7 +102,7 @@ export class LoginPage implements OnInit {
     }
   }
 
-  public passwordChanged() {
+  passwordChanged() {
     let field = "password";
     this[field + "changed"] = true;
     this.isFormValid = this.loginForm.valid;
@@ -113,7 +114,7 @@ export class LoginPage implements OnInit {
     }
   }
 
-  public Signup() {
+  Signup() {
     alert('Sorry, You are not allowed to sign up at this time, Contact administrator to add you');
     //this.navCtrl.push("SignupPage");
   }
@@ -124,8 +125,9 @@ export class LoginPage implements OnInit {
       .toUpperCase();
   }
 
-  public Login(): any {
+  Login(): any {
     this.submitAttempt = true;
+    this.showLoading();
     if (this.isFormValid) {
       this.authservice
         .doLogin({
@@ -143,9 +145,7 @@ export class LoginPage implements OnInit {
             this.loading.dismiss().then(() => {
               this.showError(error);
             });
-          }
-        );
-      this.showLoading();
+          });      
     } else {
       return;
     }

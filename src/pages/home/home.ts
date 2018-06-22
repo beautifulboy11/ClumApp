@@ -1,14 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import {
   NavController,
-  NavParams,
   ToastController,
   LoadingController
 } from "ionic-angular";
-
 import { AuthService } from "../../providers/providers";
-import { Observable } from 'rxjs';
-import { tap, map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 //@IonicPage()
 @Component({
@@ -21,7 +18,6 @@ export class HomePage implements OnInit {
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
     private toastCtrl: ToastController,
     private auth: AuthService,
     private loadingCtrl: LoadingController
@@ -30,11 +26,7 @@ export class HomePage implements OnInit {
   ngOnInit() {
     return this.auth.user
       .pipe(
-        take(1),
-        // map(user => !!user),
-        // tap(loggedIn => {
-        //   if (loggedIn) {
-        //  }})
+        take(1)
         ).subscribe(data => {
         this.initPage(data);
       });
