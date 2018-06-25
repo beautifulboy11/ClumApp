@@ -67,7 +67,6 @@ export class CheckinPage implements OnInit {
         dismissOnPageChange: false
       })
       .present();
-
   }
 
   showPopOver($event, member: any) {
@@ -77,10 +76,7 @@ export class CheckinPage implements OnInit {
     });
   }
 
-  onCancel(event){
-
-  }
-  getItems(ev) {
+   getItems(ev) {
     this.members = [];
     this.mufMembers = [];
     let val = ev.target.value;
