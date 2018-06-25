@@ -14,8 +14,9 @@ export class MyProfilePage {
   }
 
   ionViewDidLoad() {
-    this.auth.isAuthenticated().subscribe(user => {
+    this.auth.user.subscribe(user => {
       if (user) {
+        console.log(user)
         this.userProfile = user;       
       } else {        
       }
@@ -24,9 +25,16 @@ export class MyProfilePage {
 
   signOut(): Promise<void> {
     return this.af.auth.signOut()
-    .then(res => {
+    .then(() => {
       this.navCtrl.setRoot("LoginPage");
     });
+  }
+
+  mailPreferences(): void{
+
+  }
+  gotoHistory(): void{
+    alert('Will goto MyHistory Page');
   }
 
 }

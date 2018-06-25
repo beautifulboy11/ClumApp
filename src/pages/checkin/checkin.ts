@@ -14,13 +14,14 @@ import { DataService } from "../../providers/providers";
 })
 
 export class CheckinPage implements OnInit {
-  club: string;
-  public maxAllowed: number;
+  public isSearchbarOpened = false;
+  public club: string;
   public loading: any;
-  mufMembers: any = [];
-  members: any = [];
+  public mufMembers: any = [];
+  public members: any = [];
   currentMembers: any = [];
-  isLoading = false;
+  public isLoading = false;
+
   constructor(
     private navCtrl: NavController,
     private popoverCtrl: PopoverController,
@@ -76,6 +77,9 @@ export class CheckinPage implements OnInit {
     });
   }
 
+  onCancel(event){
+
+  }
   getItems(ev) {
     this.members = [];
     this.mufMembers = [];

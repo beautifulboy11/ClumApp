@@ -19,17 +19,17 @@
                 <form [formGroup]="loginForm" (submit)="Login()" novalidate>
                   <div class="floating relatively">
                     <input type="email" value="" [class]="email_dirty" name="email" id="id_email" tabindex="1" #email formControlName="email"
-                      (change)="emailChanged()" [class.invalid]="!validEmail && (emailchanged || submitAttempt)" required>
+                      (change)="emailChanged()" required>
                     <label for="id_email">
                       <span>Email</span>
                     </label>
                   </div>
-                  <div *ngIf="!validEmail && (emailchanged || submitAttempt)" class="alert alert-danger">
+                  <div *ngIf="!validEmail && (submitAttempt)" class="alert alert-danger">
                     Email is invalid
                   </div>
                   <div class="floating relatively">
                     <input [type]="type" value="" name="password" id="id_password" tabindex="2" [class]="password_dirty" required="" #password
-                      formControlName="password" (change)="passwordChanged()" [class.invalid]="!validPassword && (passwordchanged || submitAttempt)"
+                      formControlName="password" (change)="passwordChanged()" [class.invalid]="!validPassword && submitAttempt"
                       autocomplete="false">
                     <label for="id_password">
                       <span>Password</span>
@@ -62,7 +62,6 @@
                     <div padding-horizontal class="text-center help">
                       <div class="text-center help">Don't have a Member account?
                         <br/>
-
                       </div>
                       <a (click)="Signup()" ion-button block color="secondary">
                         Sign Up

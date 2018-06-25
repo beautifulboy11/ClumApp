@@ -7,6 +7,7 @@ import {
 } from "ionic-angular";
 import { Member } from "../../models/member";
 import { AuthService } from "../../providers/providers";
+import { User } from "../../providers/authservice/user";;
 
 @IonicPage()
 @Component({
@@ -23,6 +24,7 @@ export class PopoverPage implements OnInit {
   member: any;
   security: boolean;
   admin: boolean;
+  user: User;
   constructor(
     public viewCtrl: ViewController,
     public appCtrl: App,
@@ -33,7 +35,8 @@ export class PopoverPage implements OnInit {
   }
 
   ngOnInit() {
-    this.security = this.authService.isSecurity();
+    this.authService.user.subscribe(user => this.user = user);
+    this.security = this.authService.iSecurity(this.user);
     this.admin = this.authService.isAdmin();
   }
   close() {

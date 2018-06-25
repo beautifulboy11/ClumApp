@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Input } from '@angular/core';
 import { Nav } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 
@@ -7,7 +7,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
   templateUrl: 'sidemenu.html'
 })
 export class SidemenuComponent {  
-  @ViewChild(Nav) nav: Nav;
+  @Input() nav: any;
   pages: Array<{ title: string; icon: string; component: string }>;
 
   constructor(private af: AngularFireAuth) {
@@ -45,6 +45,10 @@ export class SidemenuComponent {
     return this.af.auth.signOut().then(res => {
       this.nav.setRoot("LoginPage");
     });
+  }
+
+  profile(): void{
+    this.nav.push("MyProfilePage");
   }
 
 }

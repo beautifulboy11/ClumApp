@@ -137,7 +137,7 @@ export class LoginPage implements OnInit {
         .subscribe(
           auth => {
             if (auth) {
-              this.loading.dismiss();
+              //this.loading.dismiss();
               this.navCtrl.setRoot('TabsPage');
             }
           },
@@ -168,7 +168,7 @@ export class LoginPage implements OnInit {
 
   showLoading() {
     this.loading = this.loadingCtrl.create({
-      //dismissOnPageChange: true
+      dismissOnPageChange: true
     });
     this.loading.present();
   }

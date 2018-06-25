@@ -29,8 +29,8 @@
   </ion-header>
 
   <ion-content padding-top>
-    <sidemenu></sidemenu>
+    <sidemenu [nav]="content"></sidemenu>
   </ion-content>
 </ion-menu>
 <app-messages></app-messages>
-<ion-nav #content [root]="rootPage" [class]="selectedTheme"></ion-nav>
+<ion-nav #content [root]="rootPage" [swipeBackEnabled]="false" [class]="selectedTheme"></ion-nav>

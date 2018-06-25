@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-//import { auth } from 'firebase/app';
+//import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { User } from "./user";
-import { Observable, of, BehaviorSubject } from "rxjs";
-import { switchMap } from "rxjs/operators";
 
+import { Observable, of, BehaviorSubject } from "rxjs";
+import { switchMap, map } from "rxjs/operators";
+import { User } from "./user";
 import * as _ from "lodash";
 export interface Credentials {
   email: string;
@@ -19,30 +19,30 @@ export class AuthService {
   userRoles: Array<string>;
   userSite: string;
   user: Observable<User>;
-  constructor(private auth$: AngularFireAuth, private afs: AngularFirestore) {
-    auth$.authState.subscribe(state => {
+  constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {
+    afAuth.authState.subscribe(state => {
       this.authState = state;
     });
     this.initService();
   }
 
   initService() {
-   this.user = this.auth$.authState.pipe(
+    this.user = this.afAuth.authState.pipe(
       switchMap(user => {
         if (user) {
-          return this.afs.doc<User>(`users/${user.uid}`).valueChanges()       
+          return this.afs.doc<User>(`users/${user.uid}`).valueChanges()
         } else {
           return of(null)
         }
       }))
-      this.user.subscribe(user => {
-        this.user$.next(user);
-      });
-          
-    this.user$.map(user => {
-        this.userSite = _.get(user, "site");       
-        return (this.userRoles = _.keys(_.get(user, "roles")));
-      })
+    this.user.subscribe(user => {
+      this.user$.next(user);
+    });
+
+    this.user$.pipe(map(user => {
+      this.userSite = _.get(user, "site");
+      return (this.userRoles = _.keys(_.get(user, "roles")));
+    }))
       .subscribe();
   }
 
@@ -50,28 +50,28 @@ export class AuthService {
     return this.authState !== null;
   }
   get currentUser(): any {
-    return this.authenticated ? this.auth$.user : null;
+    return this.authenticated ? this.afAuth.user : null;
   }
 
   getUser(): Observable<any> {
     return Observable.create(observer => {
-      let user = this.auth$.auth.currentUser ? this.auth$.auth.currentUser : null;
+      let user = this.afAuth.auth.currentUser ? this.afAuth.auth.currentUser : null;
       return observer.next(user);
     });
   }
 
   isAuthenticated(): Observable<any> {
-    return this.auth$.authState;
+    return this.afAuth.authState;
   }
 
   doLogin(credentials: Credentials): Observable<any> {
     return Observable.create(observer => {
-      this.auth$.auth
+      this.afAuth.auth
         .signInWithEmailAndPassword(credentials.email, credentials.password)
-        .then((user) => {
-          this.authState = user;
-          observer.next(user);
-          this.updateUser(user);
+        .then((authCrendential) => {
+          this.authState = authCrendential;
+          observer.next(authCrendential);
+          this.updateUserData(authCrendential.user);
         })
         .catch(error => {
           observer.error(error);
@@ -92,15 +92,21 @@ export class AuthService {
   //     });
   // }
 
-  private updateUser(user) {
+  private updateUserData(user) {   
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
-    const data = new User(user.user);
+    const data: User = {
+      uid: user.uid,
+      email: user.email,
+      roles: {
+        member: true
+      }      
+    };
     return userRef.set(data, { merge: true })
   }
 
   public registerUser(email: string, password: string): Observable<any> {
     return Observable.create(observer => {
-      this.auth$.auth
+      this.afAuth.auth
         .createUserWithEmailAndPassword(email, password)
         .then(userCredential => {
           this.afs.doc("users/" + userCredential.user.uid).set({
@@ -121,12 +127,12 @@ export class AuthService {
   }
 
   public signOut(): Promise<any> {
-    return this.auth$.auth.signOut();
+    return this.afAuth.auth.signOut();
   }
 
   public resetPassword(email: string): Observable<any> {
     return Observable.create(observer => {
-      this.auth$.auth.sendPasswordResetEmail(email).then(
+      this.afAuth.auth.sendPasswordResetEmail(email).then(
         data => {
           observer.next(data);
         },
@@ -139,6 +145,21 @@ export class AuthService {
 
   private checkAuthorization(allowedRoles: string[]): boolean {
     return !_.isEmpty(_.intersection(allowedRoles, this.userRoles));
+  }
+
+  private checkAuthorisation(user: User, allowedRoles: string[]): boolean {
+    if(!user) return false;
+    for(const role of allowedRoles){
+      if(user.roles[role]){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public iSecurity(user: User): boolean {
+    const allowed = ["security"];
+    return this.checkAuthorisation(user, allowed);
   }
 
   public isUser(): boolean {

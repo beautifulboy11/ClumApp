@@ -89,7 +89,7 @@ export class HomePage implements OnInit {
     this.navCtrl.push("SiteLocationsPage");
   }
 
-  search() {
-    this.navCtrl.push("CheckinPage");
-  }
+ public showPopover(): void{
+   
+ }
 }
